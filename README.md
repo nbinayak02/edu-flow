@@ -162,6 +162,19 @@ AI integration is modular through a Gemini API client.
 
 ---
 
-*Version:* `v0.1.0 (Planning Stage)`  
+## 9. Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+---
+
+*Version:* `v0.1.0`  
 *Author:* Binayak Niraula  
 *Date:* October 2025
