@@ -16,6 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import { useActionState, useState } from "react";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
@@ -119,7 +120,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   Sign Up
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="/auth/login">Log in</a>
+                  Already have an account? <Link href="/auth/login">Log in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

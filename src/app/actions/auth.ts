@@ -46,7 +46,11 @@ export async function LoginAction(
 
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
   //jwt signing
-  const token = await new SignJWT({ id: user.id, email: user.email })
+  const token = await new SignJWT({
+    id: user.id,
+    email: user.email,
+    name: user.fullname,
+  })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("1d")

@@ -18,6 +18,7 @@ import { FormState } from "@/app/auth/types";
 import { useActionState } from "react";
 import { LoginAction } from "@/app/actions/auth";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function LoginForm({
   className,
@@ -68,12 +69,12 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
+                  <Link
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
                 <Input id="password" type="password" name="password" />
                 {state?.errors?.password && (
@@ -87,7 +88,7 @@ export function LoginForm({
                   Login
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+                  Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
