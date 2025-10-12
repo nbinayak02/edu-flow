@@ -1,5 +1,5 @@
+"use client";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -14,12 +14,25 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-
+import { FormState } from "@/app/auth/types";
+import { useActionState } from "react";
+import { LoginAction } from "@/app/_actions/auth";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const initialState: FormState = {
+    errors: {},
+  };
+
+  const [state, formAction, isPending] = useActionState(
+    LoginAction,
+    initialState
+  );
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -30,36 +43,53 @@ export function LoginForm({
           <CardDescription>
             Enter your details below to login to your account
           </CardDescription>
+          {state?.errors?.otherErrorMessage && (
+            <CardDescription className="bg-rose-500/60 rounded-sm p-3 text-white font-semibold">
+              {state?.errors?.otherErrorMessage}
+            </CardDescription>
+          )}
         </CardHeader>
         <CardContent>
-          <form>
+          <form action={formAction}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="m@example.com"
-                  required
                 />
+                {state?.errors?.email && (
+                  <FieldDescription className="text-rose-500">
+                    {state?.errors?.email}
+                  </FieldDescription>
+                )}
               </Field>
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
+                  <Link
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" name="password" />
+                {state?.errors?.password && (
+                  <FieldDescription className="text-rose-500">
+                    {state?.errors?.password}
+                  </FieldDescription>
+                )}
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-
+                <Button type="submit" disabled={isPending}>
+                  Login
+                </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+                  Don&apos;t have an account?{" "}
+                  <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
