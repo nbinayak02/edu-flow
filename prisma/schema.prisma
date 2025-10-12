@@ -19,5 +19,17 @@ model User {
   email String @unique
   password String
   createdAt DateTime @default(now())
+  school School? //user can have zero school or one
+}
 
+model School {
+  id Int @id @default(autoincrement())
+  name String
+  address String
+  email String
+  contact String
+  iemis String
+  estd Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique //school must be connected to one user
 }
