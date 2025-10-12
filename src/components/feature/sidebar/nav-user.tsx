@@ -30,7 +30,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { Logout } from "@/app/actions/auth"
+import { Logout } from "@/app/_actions/auth"
 import { Button } from "./ui/button"
 
 export function NavUser({

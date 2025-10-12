@@ -23,3 +23,30 @@ export async function findSchoolByUser(userId: number) {
     return sch;
   }
 }
+
+export async function CreateOrUpdateSchool(userId: number, data: School) {
+  const update = await prisma.school.upsert({
+    where: {
+      userId: userId,
+    },
+    update: {
+      name: data.name,
+      address: data.address,
+      email: data.email,
+      contact: data.contact,
+      iemis: data.iemis,
+      estd: data.estd,
+    },
+    create: {
+      name: data.name,
+      address: data.address,
+      email: data.email,
+      contact: data.contact,
+      iemis: data.iemis,
+      estd: data.estd,
+      userId: userId,
+    },
+  });
+
+  console.log("Updated? ", update);
+}

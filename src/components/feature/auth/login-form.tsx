@@ -16,8 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { FormState } from "@/app/auth/types";
 import { useActionState } from "react";
-import { LoginAction } from "@/app/actions/auth";
-import { Button } from "./ui/button";
+import { LoginAction } from "@/app/_actions/auth";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export function LoginForm({
@@ -88,7 +88,8 @@ export function LoginForm({
                   Login
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
+                  Don&apos;t have an account?{" "}
+                  <Link href="/auth/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

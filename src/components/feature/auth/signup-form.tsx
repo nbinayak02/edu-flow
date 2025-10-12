@@ -1,5 +1,5 @@
 "use client";
-import { SignupAction } from "@/app/actions/auth";
+import { SignupAction } from "@/app/_actions/auth";
 import { FormState } from "@/app/auth/types";
 import { Button } from "@/components/ui/button";
 import {

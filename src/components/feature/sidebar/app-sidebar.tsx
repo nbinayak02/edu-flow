@@ -20,10 +20,10 @@ import {
   School,
 } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+import { NavMain } from "@/components/feature/sidebar/nav-main";
+import { NavProjects } from "@/components/feature/sidebar/nav-projects";
+import { NavSecondary } from "@/components/feature/sidebar/nav-secondary";
+import { NavUser } from "@/components/feature/sidebar/nav-user";
 import {
   Sidebar,
   SidebarContent,

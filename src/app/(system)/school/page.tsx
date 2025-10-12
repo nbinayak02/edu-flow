@@ -1,14 +1,12 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { UpdateDialog } from "@/components/update-school-dialog";
+import { UpdateDialog } from "@/components/feature/dialog/update-school-dialog";
 import getUser from "@/lib/auth";
 import { findSchoolByUser } from "@/lib/data/school";
 
@@ -20,11 +18,15 @@ export default async function SchoolPage() {
     <section>
       <Card className="max-w-md">
         <CardHeader>
-          <CardTitle>{userSchool?.name}</CardTitle>
-          <CardDescription>{userSchool?.address}</CardDescription>
+          <CardTitle>
+            {userSchool?.name ? userSchool?.name : "School Name"}
+          </CardTitle>
+          <CardDescription>
+            {userSchool?.address ? userSchool?.address : "School Address"}
+          </CardDescription>
           <CardDescription>ESTD:{userSchool?.estd}</CardDescription>
           <CardAction>
-            <UpdateDialog schoolData={userSchool}/>
+            <UpdateDialog schoolData={userSchool} />
           </CardAction>
         </CardHeader>
         <CardContent className="flex flex-row gap-3">

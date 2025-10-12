@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/feature/auth/login-form";
 
 export default async function LoginPage() {
   await new Promise((resolve) => {
