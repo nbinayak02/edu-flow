@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { Error, FormState } from "../(system)/school/types";
 import { CreateOrUpdateSchool } from "@/lib/data/school";
-import getUser from "@/lib/auth";
+import {getUser} from "@/lib/auth";
 
 export async function UpdateSchoolAction(
   prevState: FormState,

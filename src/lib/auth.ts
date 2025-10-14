@@ -1,6 +1,8 @@
+"use server";
 import { headers } from "next/headers";
+import { prisma } from "./prisma";
 
-export default async function getUser() {
+export async function getUser() {
   const header = await headers();
   const userHeader = header.get("x-user-data");
 
@@ -10,4 +12,18 @@ export default async function getUser() {
 
   const userdata = JSON.parse(userHeader);
   return userdata;
+}
+
+export async function getSchoolId() {
+  const user = await getUser();
+  const school = await prisma.school.findUnique({
+    where: {
+      userId: user.id,
+    },
+    select: {
+      id: true,
+    }
+  });
+
+  return school?.id;
 }

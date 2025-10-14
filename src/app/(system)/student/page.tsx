@@ -1,7 +1,7 @@
-export default async function Student() {
-    await new Promise((resolve) => {
-        setTimeout(() => resolve("delay"), 3000);
-    })
+import { getSchoolId } from "@/lib/auth"
 
-    return <h1>Student</h1>
+export default async function Student() {
+   const schoolId = await getSchoolId();
+
+    return <h1>Student of school {schoolId}</h1>
 }

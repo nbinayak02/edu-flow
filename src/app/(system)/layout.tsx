@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import getUser from "@/lib/auth";
+import {getUser} from "@/lib/auth";
 import { Separator } from "@radix-ui/react-separator";
 
 export default async function SystemLayout({
