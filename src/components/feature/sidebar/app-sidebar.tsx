@@ -64,15 +64,16 @@ const data = {
       icon: SquareUser,
     },
     {
-      name: "Class",
-      url: "/class",
-      icon: TableProperties,
-    },
-    {
       name: "Subjects",
       url: "/subject",
       icon: BookMarked,
     },
+    {
+      name: "Class",
+      url: "/class",
+      icon: TableProperties,
+    },
+
     {
       name: "School",
       url: "/school",
