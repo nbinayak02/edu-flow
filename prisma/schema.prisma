@@ -26,19 +26,20 @@ model School {
   iemis     String
   estd      Int
   createdAt DateTime @default(now())
-  user   User     @relation(fields: [userId], references: [id])
-  userId Int      @unique //school must be connected to one user
-  sclass Sclass[] //one to many relationship with class
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique //school must be connected to one user
+  sclass    Sclass[] //one to many relationship with class
+  exam      Exam[]
 }
 
 model Sclass {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  school    School   @relation(fields: [schoolId], references: [id])
+  school    School    @relation(fields: [schoolId], references: [id])
   schoolId  Int
-  createdAt DateTime @default(now())
-  subject Subject[]
-  student Student[]
+  createdAt DateTime  @default(now())
+  subject   Subject[]
+  student   Student[]
 }
 
 model Subject {
@@ -46,8 +47,8 @@ model Subject {
   name        String
   credit_hour Float
   createdAt   DateTime @default(now())
-  sclass   Sclass @relation(fields: [sclassId], references: [id])
-  sclassId Int
+  sclass      Sclass   @relation(fields: [sclassId], references: [id])
+  sclassId    Int
 }
 
 model Student {
@@ -59,6 +60,15 @@ model Student {
   year      Int
   iemis     String
   createdAt DateTime @default(now())
-  sclass   Sclass @relation(fields: [sclassId], references: [id])
-  sclassId Int
+  sclass    Sclass   @relation(fields: [sclassId], references: [id])
+  sclassId  Int
+}
+
+model Exam {
+  id        Int      @id @default(autoincrement())
+  name      String
+  year      Int
+  createdAt DateTime @default(now())
+  school    School   @relation(fields: [schoolId], references: [id])
+  schoolId  Int
 }

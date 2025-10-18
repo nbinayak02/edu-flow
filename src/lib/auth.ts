@@ -7,8 +7,11 @@ export async function getUser() {
   const userHeader = header.get("x-user-data");
 
   if (!userHeader) {
+    console.log("X-User-Data header not found");
     return null;
   }
+
+  console.log("X-User-Data header found");
 
   const userdata = JSON.parse(userHeader);
   return userdata;
@@ -22,7 +25,7 @@ export async function getSchoolId() {
     },
     select: {
       id: true,
-    }
+    },
   });
 
   return school?.id;

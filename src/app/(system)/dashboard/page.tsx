@@ -1,9 +1,8 @@
+"use client";
+import { useUserContext } from "@/context/user-context";
 
-import {getUser} from "@/lib/auth";
+export default function Page() {
+  const { userId } = useUserContext();
 
-export default async function Page() {
-  const user = await getUser();
-  return (
-   <div>hello {user.email}</div>
-  );
+  return <div>hello Your user id is {userId}</div>;
 }

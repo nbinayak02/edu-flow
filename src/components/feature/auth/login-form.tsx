@@ -15,23 +15,38 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { FormState } from "@/app/auth/types";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { LoginAction } from "@/app/_actions/auth";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useUserContext } from "@/context/user-context";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { setUserContext } = useUserContext();
+  const router = useRouter();
+
   const initialState: FormState = {
     errors: {},
+    userId: null,
+    status: false,
   };
 
   const [state, formAction, isPending] = useActionState(
     LoginAction,
     initialState
   );
+
+  useEffect(() => {
+    //set context and redirect if status is true
+    if (state?.status) {
+      setUserContext(Number(state?.userId));
+      router.replace("/dashboard");
+    }
+  }, [state]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -85,7 +100,7 @@ export function LoginForm({
               </Field>
               <Field>
                 <Button type="submit" disabled={isPending}>
-                  Login
+                  {isPending ? "Logging in..." : "Log in"}
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}

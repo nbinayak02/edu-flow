@@ -30,3 +30,13 @@ export async function GetAllSubjects(schoolId: number) {
   });
   return allSubjects;
 }
+
+export async function GetSubjectsByClass(classId: number) {
+  const subjects = await prisma.subject.findMany({
+    where: {
+      sclassId: classId,
+    },
+  });
+
+  return subjects;
+}
