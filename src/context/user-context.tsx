@@ -11,8 +11,14 @@ const UserContext = createContext<ContextType>({
   userId: null,
 });
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [userId, setUserId] = useState<number | null>(null);
+export const UserProvider = ({
+  children,
+  user,
+}: {
+  children: React.ReactNode;
+  user: number | null;
+}) => {
+  const [userId, setUserId] = useState<number | null>(user);
 
   const setUserContext = (userId: number) => {
     setUserId(userId);
