@@ -10,9 +10,11 @@ export default async function ExamManagePage({
   params: Promise<{ id: number }>;
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const id = (await params).id;
+  const examId = (await params).id;
   let examName = (await searchParams).exam;
   let examYear = (await searchParams).year;
+  const schoolId = Number(await getSchoolId());
+  const allClasses = await GetAllClasses(schoolId);
 
   return (
     <section>
@@ -20,6 +22,7 @@ export default async function ExamManagePage({
         {examName}-{examYear}
       </h1>
       <p className=" text-muted-foreground mb-5">Add exam info, marks etc.</p>
+      <AddSubjectMarksDialog allClasses={allClasses} examId={examId} />
     </section>
   );
 }

@@ -33,22 +33,24 @@ model School {
 }
 
 model Sclass {
-  id        Int       @id @default(autoincrement())
-  name      String
-  school    School    @relation(fields: [schoolId], references: [id])
-  schoolId  Int
-  createdAt DateTime  @default(now())
-  subject   Subject[]
-  student   Student[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  school      School        @relation(fields: [schoolId], references: [id])
+  schoolId    Int
+  createdAt   DateTime      @default(now())
+  subject     Subject[]
+  student     Student[]
+  examDetails ExamDetails[]
 }
 
 model Subject {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   credit_hour Float
-  createdAt   DateTime @default(now())
-  sclass      Sclass   @relation(fields: [sclassId], references: [id])
+  createdAt   DateTime      @default(now())
+  sclass      Sclass        @relation(fields: [sclassId], references: [id])
   sclassId    Int
+  examDetails ExamDetails[]
 }
 
 model Student {
@@ -65,10 +67,25 @@ model Student {
 }
 
 model Exam {
-  id        Int      @id @default(autoincrement())
-  name      String
-  year      Int
-  createdAt DateTime @default(now())
-  school    School   @relation(fields: [schoolId], references: [id])
-  schoolId  Int
+  id          Int           @id @default(autoincrement())
+  name        String
+  year        Int
+  createdAt   DateTime      @default(now())
+  school      School        @relation(fields: [schoolId], references: [id])
+  schoolId    Int
+  examDetails ExamDetails[]
+}
+
+model ExamDetails {
+  id          Int     @id @default(autoincrement())
+  exam        Exam    @relation(fields: [examId], references: [id])
+  sclass      Sclass  @relation(fields: [sclassId], references: [id])
+  subject     Subject @relation(fields: [subjectId], references: [id])
+  examId      Int
+  sclassId    Int
+  subjectId   Int     @unique
+  thFullMarks Int
+  thPassMarks Int
+  prFullMarks Int
+  prPassMarks Int
 }

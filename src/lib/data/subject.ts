@@ -1,3 +1,4 @@
+
 import { Subject } from "@/app/(system)/subject/types";
 import { prisma } from "../prisma";
 

@@ -1,5 +1,5 @@
 "use server";
-import { CreateNewSubject } from "@/lib/data/subject";
+import { CreateNewSubject, GetAllSubjects } from "@/lib/data/subject";
 import { Error, FormState, Subject } from "../(system)/subject/types";
 
 export async function CreateNewSubjectAction(
@@ -39,4 +39,9 @@ export async function CreateNewSubjectAction(
   const newSubject = await CreateNewSubject(subject);
 
   return { newSubject };
+}
+
+export async function GetSubjectByClassAction(classId: number) {
+  const subjects = await GetAllSubjects(classId);
+  return subjects;
 }

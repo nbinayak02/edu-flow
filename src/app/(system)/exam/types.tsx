@@ -1,14 +1,53 @@
 export type Exam = {
-    id?: number;
-    name: string;
-    year: number;
-    schoolId: number;
-}
+  id?: number;
+  name: string;
+  year: number;
+  schoolId: number;
+};
 
 export type Error = {
-    name?: string;
-    year?: string;
-}
+  name?: string;
+  year?: string;
+};
 export type FormState = {
-    errors: Error;
-}
+  errors: Error;
+};
+
+export type ConfigureExam = {
+  classId: number;
+  subjects: string[];
+  thFm: number;
+  thPm: number;
+  prFm: number;
+  prPm: number;
+};
+
+export type ConfigureExamError = {
+  classId?: string;
+  subjects?: string;
+  thFm?: string;
+  thPm?: string;
+  prFm?: string;
+  prPm?: string;
+  otherError?: string;
+};
+
+export type ConfigureExamFormState = {
+  errors: ConfigureExamError;
+  data: Partial<ConfigureExamDbType>[] | undefined;
+};
+
+export type ConfigureExamDbType = {
+  id?: number;
+  examId: number;
+  sclassId: number;
+  subjectId: number;
+  thFullMarks: number;
+  thPassMarks: number;
+  prFullMarks: number;
+  prPassMarks: number;
+};
+
+export type AddExamReturnType =
+  | { success: true; data: ConfigureExamDbType[] }
+  | { success: false; error: ConfigureExamError };
