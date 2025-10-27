@@ -7,6 +7,8 @@ export type Error = {
 
 export type FormState = {
   errors: Error;
+  status: boolean;
+  userId: number | null;
 };
 
 export interface User {
@@ -14,4 +16,3 @@ export interface User {
   email: string;
   password: string;
 }
-

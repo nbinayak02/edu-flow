@@ -25,7 +25,7 @@ export async function LoginAction(
   }
 
   if (Object.keys(errors).length > 0) {
-    return { errors };
+    return { errors, status: false, userId: null };
   }
 
   //get email and password from db
@@ -33,7 +33,7 @@ export async function LoginAction(
 
   if (!user) {
     errors.otherErrorMessage = "User doesn't exists. Please proceed to signup.";
-    return { errors };
+    return { errors, status: false, userId: null };
   }
 
   //decode password
@@ -41,7 +41,7 @@ export async function LoginAction(
 
   if (!isMatched) {
     errors.otherErrorMessage = "Password incorrect.";
-    return { errors };
+    return { errors, status: false, userId: null };
   }
 
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
@@ -64,7 +64,7 @@ export async function LoginAction(
     path: "/",
   });
 
-  redirect("/dashboard");
+  return { errors, status: true, userId: user.id };
 }
 
 export async function SignupAction(
@@ -90,14 +90,14 @@ export async function SignupAction(
   }
 
   if (Object.keys(errors).length > 0) {
-    return { errors };
+    return { errors, status: false, userId: null };
   }
 
   const user = await findUser(email);
 
   if (user) {
     errors.otherErrorMessage = "User already exists. Please proceed to login.";
-    return { errors };
+    return { errors, status: false, userId: null };
   }
 
   const salt = await bcrypt.genSalt(10);

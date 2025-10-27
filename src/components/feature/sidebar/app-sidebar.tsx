@@ -33,6 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { getUser } from "@/lib/auth";
 
 const data = {
   navSecondary: [
@@ -92,6 +93,7 @@ interface AppSideBarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ user, ...props }: AppSideBarProps) {
+  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -117,7 +119,7 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user ?? { name: "", email: "" }} />
       </SidebarFooter>
     </Sidebar>
   );
