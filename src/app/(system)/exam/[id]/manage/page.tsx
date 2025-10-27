@@ -1,7 +1,8 @@
+import { GetExamDetailsAction } from "@/app/_actions/exam";
 import { AddSubjectMarksDialog } from "@/components/feature/dialog/exam-manage-addSubjects";
+import ExamDetailsOperations from "@/components/feature/exam/exam-details-operations";
 import { getSchoolId } from "@/lib/auth";
 import { GetAllClasses } from "@/lib/data/class";
-import { GetAllSubjects, GetSubjectsByClass } from "@/lib/data/subject";
 
 export default async function ExamManagePage({
   params,
@@ -11,10 +12,16 @@ export default async function ExamManagePage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const examId = (await params).id;
-  let examName = (await searchParams).exam;
-  let examYear = (await searchParams).year;
+  let examName = searchParams.exam;
+  let examYear = searchParams.year;
   const schoolId = Number(await getSchoolId());
   const allClasses = await GetAllClasses(schoolId);
+
+  // if (examId) {
+  const examDetails = await GetExamDetailsAction(examId);
+  // } else {
+  //throw error for invalid url format
+  // }
 
   return (
     <section>
@@ -22,7 +29,11 @@ export default async function ExamManagePage({
         {examName}-{examYear}
       </h1>
       <p className=" text-muted-foreground mb-5">Add exam info, marks etc.</p>
-      <AddSubjectMarksDialog allClasses={allClasses} examId={examId} />
+      <ExamDetailsOperations
+        initialDetails={examDetails}
+        allClasses={allClasses}
+        examId={examId}
+      />
     </section>
   );
 }

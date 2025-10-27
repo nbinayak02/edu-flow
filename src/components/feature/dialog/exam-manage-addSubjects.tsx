@@ -28,22 +28,27 @@ import { Class } from "@/app/(system)/class/types";
 import { useActionState, useEffect, useState } from "react";
 import { Subject } from "@/app/(system)/subject/types";
 import { GetSubjectByClassAction } from "@/app/_actions/subject";
-import { ConfigureExamFormState } from "@/app/(system)/exam/types";
+import {
+  ConfigureExamDbType,
+  ConfigureExamFormState,
+} from "@/app/(system)/exam/types";
 import { AddExamDetailsAction } from "@/app/_actions/exam";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function AddSubjectMarksDialog({
   allClasses,
   examId,
+  onReturn,
 }: {
   allClasses: Class[];
   examId: number;
+  onReturn: (newDetails: Partial<ConfigureExamDbType>[]) => void;
 }) {
   const [selectedClass, setSelectedClass] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [subjectList, setSubjectList] = useState<Subject[]>([]);
   const [selectedSubjects, setSelectedSubjects] = useState<number[]>([]);
-
+  const [open, setOpen] = useState(false);
   const initialState: ConfigureExamFormState = {
     errors: {},
     data: [],
@@ -70,13 +75,15 @@ export function AddSubjectMarksDialog({
   }, [selectedClass]);
 
   useEffect(() => {
-    if (state) {
-      console.log("State is: ", state);
+    console.log("The state is: ", state);
+    onReturn(state.data);
+    if (Object.entries(state?.errors).length === 0) {
+      setOpen(false);
     }
   }, [state]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={(a) => setOpen(a)}>
       <DialogTrigger asChild>
         <Button>
           <PlusCircle /> Configure Exam
@@ -197,9 +204,13 @@ export function AddSubjectMarksDialog({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline" disabled={isPending}>Cancel</Button>
+                <Button variant="outline" disabled={isPending}>
+                  Cancel
+                </Button>
               </DialogClose>
-              <Button type="submit" disabled={isPending}>Add Info</Button>
+              <Button type="submit" disabled={isPending}>
+                Add Info
+              </Button>
             </DialogFooter>
           </form>
         </ScrollArea>

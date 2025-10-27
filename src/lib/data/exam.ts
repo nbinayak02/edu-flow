@@ -46,15 +46,13 @@ export async function AddExamDetails(data: ConfigureExamDbType[]) {
 }
 
 export async function GetExamDetails(examId: number) {
-  const examDetails = await prisma.examDetails.findMany({
+  const details = await prisma.examDetails.findMany({
     relationLoadStrategy: "join",
-    where: {
-      examId: examId,
-    },
+    where: {examId},
     include: {
       sclass: true,
       subject: true,
     },
   });
-  return examDetails;
+  return details;
 }

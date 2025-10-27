@@ -77,15 +77,19 @@ model Exam {
 }
 
 model ExamDetails {
-  id          Int     @id @default(autoincrement())
   exam        Exam    @relation(fields: [examId], references: [id])
   sclass      Sclass  @relation(fields: [sclassId], references: [id])
   subject     Subject @relation(fields: [subjectId], references: [id])
   examId      Int
   sclassId    Int
-  subjectId   Int     @unique
+  subjectId   Int
   thFullMarks Int
   thPassMarks Int
   prFullMarks Int
   prPassMarks Int
+
+  //only "subjectId" unique constraint didn't work so making composite key and also
+  //model a weak entity.
+
+  @@id(name: "examDetailsId", [examId, subjectId])
 }

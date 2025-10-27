@@ -10,7 +10,7 @@ import {
   Exam,
   FormState,
 } from "../(system)/exam/types";
-import { AddExamDetails, CreateExam } from "@/lib/data/exam";
+import { AddExamDetails, CreateExam, GetExamDetails } from "@/lib/data/exam";
 
 export async function CreateExamAction(
   prevState: FormState,
@@ -56,10 +56,10 @@ export async function AddExamDetailsAction(
 
   if (!classId) errors.classId = "Please select a class.";
   if (!subjects) errors.subjects = "Please select at least one subject.";
-  if (!thfm) errors.thFm = "Theory full marks cannot be empty.";
-  if (!thpm) errors.thPm = "Theory pass marks cannot be empty.";
-  if (!prfm) errors.prFm = "Practical full marks cannot be empty.";
-  if (!prpm) errors.prPm = "Practical full marks cannot be empty.";
+  // if (!thfm) errors.thFm = "Theory full marks cannot be empty.";
+  // if (!thpm) errors.thPm = "Theory pass marks cannot be empty.";
+  // if (!prfm) errors.prFm = "Practical full marks cannot be empty.";
+  // if (!prpm) errors.prPm = "Practical full marks cannot be empty.";
   if (isNaN(thfm)) errors.thFm = "Theory full marks should be number.";
 
   if (Object.keys(errors).length > 0) {
@@ -84,9 +84,17 @@ export async function AddExamDetailsAction(
 
   const returnedValue = await AddExamDetails(data);
 
-  if (typeof returnedValue === "string") {
-    return { errors: { otherError: returnedValue }, data: [] };
-  }
+  if (returnedValue) {
+    if (typeof returnedValue === "string") {
+      return { errors: { otherError: returnedValue }, data: [] };
+    }
 
-  return { errors: {}, data: returnedValue };
+    return { errors: {}, data: returnedValue };
+  }
+  return { errors: errors, data: [] };
+}
+
+export async function GetExamDetailsAction(examId: number) {
+  const details = await GetExamDetails(Number(examId));
+  return details;
 }

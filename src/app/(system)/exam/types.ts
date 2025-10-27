@@ -34,7 +34,7 @@ export type ConfigureExamError = {
 
 export type ConfigureExamFormState = {
   errors: ConfigureExamError;
-  data: Partial<ConfigureExamDbType>[] | undefined;
+  data: Partial<ConfigureExamDbType>[];
 };
 
 export type ConfigureExamDbType = {
@@ -46,6 +46,8 @@ export type ConfigureExamDbType = {
   thPassMarks: number;
   prFullMarks: number;
   prPassMarks: number;
+  sclass?: { name: string };
+  subject?: { name: string };
 };
 
 export type AddExamReturnType =
