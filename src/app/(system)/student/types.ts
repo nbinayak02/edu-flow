@@ -10,7 +10,7 @@ export type Student = {
     sclass?: {name: string};
 }
 
-export type Error = {
+export type StudentError = {
     name?: string;
     address?: string;
     contact?: string;

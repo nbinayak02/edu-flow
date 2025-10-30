@@ -39,3 +39,26 @@ export async function GetNewStudents(schoolId: number) {
   });
   return newStudents;
 }
+
+export async function GetStudentNamesByClassAndYear(
+  sclassId: number,
+  year: number
+) {
+  const students = await prisma.student.findMany({
+    relationLoadStrategy: "join",
+    where: {
+      sclassId,
+      year,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  if (students.length > 0) {
+    return students;
+  } else {
+    throw new Error("No student found.", { cause: 404 });
+  }
+}

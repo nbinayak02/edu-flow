@@ -1,4 +1,3 @@
-
 import { Subject } from "@/app/(system)/subject/types";
 import { prisma } from "../prisma";
 
@@ -40,4 +39,22 @@ export async function GetSubjectsByClass(classId: number) {
   });
 
   return subjects;
+}
+
+export async function GetSubjectNamesByClass(classId: number) {
+  const subjectNames = await prisma.subject.findMany({
+    where: {
+      sclassId: classId,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  if (subjectNames.length > 0) {
+    return subjectNames;
+  } else {
+    throw new Error("No subject found.", { cause: 404 });
+  }
 }

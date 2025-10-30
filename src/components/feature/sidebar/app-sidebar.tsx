@@ -18,6 +18,7 @@ import {
   SquareUser,
   BookMarked,
   School,
+  Medal,
 } from "lucide-react";
 
 import { NavMain } from "@/components/feature/sidebar/nav-main";
@@ -53,6 +54,11 @@ const data = {
       name: "Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      name:"Marks",
+      url: "/marks",
+      icon: Medal,
     },
     {
       name: "Exams",

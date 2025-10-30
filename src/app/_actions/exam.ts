@@ -10,7 +10,12 @@ import {
   Exam,
   FormState,
 } from "../(system)/exam/types";
-import { AddExamDetails, CreateExam, GetExamDetails } from "@/lib/data/exam";
+import {
+  AddExamDetails,
+  CreateExam,
+  GetExamByYear,
+  GetExamDetails,
+} from "@/lib/data/exam";
 
 export async function CreateExamAction(
   prevState: FormState,
@@ -97,4 +102,9 @@ export async function AddExamDetailsAction(
 export async function GetExamDetailsAction(examId: number) {
   const details = await GetExamDetails(Number(examId));
   return details;
+}
+
+export async function GetExamByYearAction(year: number) {
+  const exams = await GetExamByYear(year);
+  return exams;
 }

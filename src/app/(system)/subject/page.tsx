@@ -7,7 +7,7 @@ export default async function SubjectPage() {
   const schoolId = Number(await getSchoolId());
   const allSubjects = await GetAllSubjects(schoolId);
   const allClasses = await GetAllClasses(schoolId);
-  console.log("All subjects are: ", allSubjects);
+
   return (
     <section>
       <h1 className="text-2xl font-semibold">Subject</h1>
