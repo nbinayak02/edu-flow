@@ -1,6 +1,8 @@
 "use client";
 import { Exam } from "@/app/(system)/exam/types";
 import {
+  MarksFormState,
+  MarksObject,
   StudentSearchReturn,
   SubjectSearchReturn,
 } from "@/app/(system)/marks/types";
@@ -24,7 +26,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 import {
   Command,
@@ -34,6 +36,8 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
+import MarksInputField from "./marks-entry-field";
+import { AddMarks } from "@/app/_actions/marks";
 
 export default function MarksInputForm({
   students,
@@ -46,8 +50,43 @@ export default function MarksInputForm({
 }) {
   // student dropdown open/close tracking
   const [open, setOpen] = useState(false);
+  const [examId, setExamId] = useState<number>();
 
   const [selectedStudent, setSelectedStudent] = useState<String>("");
+  const [formPayload, setFormPayload] = useState<MarksObject[]>([]);
+
+  const handleMarksReturn = (marksObj: MarksObject) => {
+    setFormPayload((prev) => {
+      const index = prev.findIndex(
+        (obj) => obj.subjectId === marksObj.subjectId
+      );
+
+      if (index !== -1) {
+        const updated = [...prev];
+        updated[index] = marksObj;
+        return updated;
+      }
+
+      return [...prev, marksObj];
+    });
+  };
+
+  useEffect(() => {
+    console.log("Form payload is: ", formPayload);
+  }, [formPayload]);
+
+  const initialState: MarksFormState = {
+    errors: {},
+  };
+
+  const [state, formAction, isPending] = useActionState(AddMarks, initialState);
+
+  const interceptingFormAction = (formData: FormData) => {
+    const payloadString = JSON.stringify(formPayload);
+    formData.append("marks", payloadString);
+    formAction(formData);
+    setFormPayload([]);
+  };
 
   return (
     <>
@@ -57,12 +96,15 @@ export default function MarksInputForm({
             <CardTitle>Marks Entry Form</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="flex flex-row justify-evenly gap-5">
+            <form
+              action={interceptingFormAction}
+              className="flex flex-row justify-evenly gap-5"
+            >
               {/* left side elements  */}
               <div className="grid">
                 <div className="grid gap-3">
                   <Label htmlFor="exam">Exam</Label>
-                  <Select>
+                  <Select onValueChange={(value) => setExamId(Number(value))}>
                     <SelectTrigger className="w-[250px]">
                       <SelectValue placeholder="Select exam" />
                     </SelectTrigger>
@@ -78,7 +120,7 @@ export default function MarksInputForm({
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  <input type="hidden" name="classId" />
+                  <input type="hidden" name="examId" value={examId} />
                   <CardDescription className="text-rose-500"></CardDescription>
                 </div>
 
@@ -150,15 +192,13 @@ export default function MarksInputForm({
               {/* right side elements  */}
               <div className="grid grid-cols-4 gap-8">
                 {subjects &&
-                  subjects.map((s) => {
-                    return (
-                      <div className="grid gap-3" key={s.id}>
-                        <Label>{s.name}</Label>
-                        <Input type="number" placeholder="Theory Marks" />
-                        <Input type="number" placeholder="Practical Marks" />
-                      </div>
-                    );
-                  })}
+                  subjects.map((s) => (
+                    <MarksInputField
+                      subject={s}
+                      key={s.id}
+                      onReturn={handleMarksReturn}
+                    />
+                  ))}
               </div>
             </form>
           </CardContent>

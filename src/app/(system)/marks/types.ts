@@ -1,6 +1,3 @@
-import { Student } from "../student/types";
-import { Subject } from "../subject/types";
-
 export type StudentSearch = {
   id?: number;
   class: number;
@@ -34,3 +31,19 @@ export type StudentSearchFormState = {
   errors: StudentSearchError;
   data: FetchedDataType;
 };
+
+export type MarksError = {
+  exam?: string;
+  student?: string;
+  subjectError?: string;
+};
+
+export type MarksFormState = {
+  errors: MarksError;
+}
+
+export type MarksObject = {
+  subjectId: number;
+  theoryMarks: number;
+  practicalMarks: number;
+}
