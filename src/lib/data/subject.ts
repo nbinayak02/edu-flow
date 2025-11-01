@@ -58,3 +58,16 @@ export async function GetSubjectNamesByClass(classId: number) {
     throw new Error("No subject found.", { cause: 404 });
   }
 }
+
+export async function GetNumberOfSubjectsByClass(classId: number) {
+  const subjectCount = await prisma.subject.aggregate({
+    _count: {
+      id: true,
+    },
+    where: {
+      sclassId: classId,
+    },
+  });
+
+  return subjectCount._count.id;
+}

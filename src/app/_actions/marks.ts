@@ -1,12 +1,73 @@
 "use server";
 
-import { MarksError, MarksFormState } from "../(system)/marks/types";
+import {
+  AddStudentMarks,
+  CreateMarksheet,
+  GetMarksheet,
+} from "@/lib/data/marks";
+import {
+  Marks,
+  MarksError,
+  MarksFormState,
+  Marksheet,
+} from "../(system)/marks/types";
+import { GetNumberOfSubjectsByClass } from "@/lib/data/subject";
 
 export async function AddMarks(
   prevState: MarksFormState,
   formData: FormData
 ): Promise<MarksFormState> {
-  console.log("FOrm data is: ", formData);
+  const examId = Number(formData.get("examId"));
+  const studentId = Number(formData.get("studentId"));
+  const sclassId = Number(formData.get("sclassId"));
+  const marksArray = JSON.parse(String(formData.get("marks")));
+
+  //validation
   const errors: MarksError = {};
-  return { errors };
+
+  if (!examId) errors.exam = "Please select the exam.";
+  if (!studentId) errors.student = "Please select the student.";
+
+  //counting no. of subject
+  const subjectCount = await GetNumberOfSubjectsByClass(sclassId);
+
+  if (marksArray.length < subjectCount)
+    errors.subjectError = "Please input all marks.";
+
+  if (Object.entries(errors).length > 0) {
+    return { errors, message: "Error" };
+  }
+
+  //stopping duplicate
+  const existingMarksheet = await GetMarksheet(studentId, examId);
+
+  if (existingMarksheet) {
+    errors.otherError =
+      "Marksheet for the student for this exam already exist.";
+    return { errors, message: "Error" };
+  }
+
+  try {
+    //create marksheet
+    const marksheet = await CreateMarksheet({
+      examId,
+      studentId,
+      gradeLetter: "",
+      gpa: 0.0,
+      remarks: "",
+      total: 0,
+      sclassId,
+    });
+
+    marksArray.map((m: Marks) => (m.marksheetId = marksheet.id));
+
+    //create marks
+    const marks = await AddStudentMarks(marksArray);
+
+    console.log("Marks db returned: ", marks);
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+
+  return { errors, message: "Success" };
 }

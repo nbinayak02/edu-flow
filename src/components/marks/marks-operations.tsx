@@ -133,7 +133,7 @@ export default function MarksOperations({ classes }: { classes: Class[] }) {
       </Card>
 
       {/* //render form */}
-      <MarksInputForm students={students} subjects={subjects} exams={exams}/>
+      <MarksInputForm classId={classId} students={students} subjects={subjects} exams={exams}/>
     </div>
   );
 }

@@ -41,6 +41,7 @@ model Sclass {
   subject     Subject[]
   student     Student[]
   examDetails ExamDetails[]
+  marksheet   Marksheet[]
 }
 
 model Subject {
@@ -51,19 +52,21 @@ model Subject {
   sclass      Sclass        @relation(fields: [sclassId], references: [id])
   sclassId    Int
   examDetails ExamDetails[]
+  marks       Marks[]
 }
 
 model Student {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   name      String
   address   String
   contact   String
   gurdian   String
   year      Int
   iemis     String
-  createdAt DateTime @default(now())
-  sclass    Sclass   @relation(fields: [sclassId], references: [id])
+  createdAt DateTime    @default(now())
+  sclass    Sclass      @relation(fields: [sclassId], references: [id])
   sclassId  Int
+  marksheet Marksheet[]
 }
 
 model Exam {
@@ -74,6 +77,7 @@ model Exam {
   school      School        @relation(fields: [schoolId], references: [id])
   schoolId    Int
   examDetails ExamDetails[]
+  marksheet   Marksheet[]
 }
 
 model ExamDetails {
@@ -92,4 +96,31 @@ model ExamDetails {
   //model a weak entity.
 
   @@id(name: "examDetailsId", [examId, subjectId])
+}
+
+model Marksheet {
+  id          Int      @id @default(autoincrement())
+  student     Student  @relation(fields: [studentId], references: [id])
+  sclass      Sclass   @relation(fields: [sclassId], references: [id])
+  exam        Exam     @relation(fields: [examId], references: [id])
+  studentId   Int
+  sclassId    Int
+  examId      Int
+  total       Float
+  gradeLetter String
+  gpa         Float
+  remarks     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  marks       Marks[]
+}
+
+model Marks {
+  id             Int       @id @default(autoincrement())
+  marksheet      Marksheet @relation(fields: [marksheetId], references: [id])
+  subject        Subject   @relation(fields: [subjectId], references: [id])
+  marksheetId    Int
+  subjectId      Int
+  theoryMarks    Float
+  practicalMarks Float
 }

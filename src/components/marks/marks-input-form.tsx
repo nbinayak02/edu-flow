@@ -38,25 +38,31 @@ import {
 } from "../ui/command";
 import MarksInputField from "./marks-entry-field";
 import { AddMarks } from "@/app/_actions/marks";
+import ErrorDialog from "../feature/dialog/error-dialog-box";
+import SuccessDialog from "../feature/dialog/success-dialog-box";
 
 export default function MarksInputForm({
   students,
   subjects,
   exams,
+  classId,
 }: {
   students: StudentSearchReturn[];
   subjects: SubjectSearchReturn[];
   exams: Exam[] | undefined;
+  classId: number;
 }) {
   // student dropdown open/close tracking
   const [open, setOpen] = useState(false);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [examId, setExamId] = useState<number>();
 
   const [selectedStudent, setSelectedStudent] = useState<String>("");
-  const [formPayload, setFormPayload] = useState<MarksObject[]>([]);
+  const [marksObject, setMarksObject] = useState<MarksObject[]>([]);
 
   const handleMarksReturn = (marksObj: MarksObject) => {
-    setFormPayload((prev) => {
+    setMarksObject((prev) => {
       const index = prev.findIndex(
         (obj) => obj.subjectId === marksObj.subjectId
       );
@@ -71,25 +77,47 @@ export default function MarksInputForm({
     });
   };
 
-  useEffect(() => {
-    console.log("Form payload is: ", formPayload);
-  }, [formPayload]);
-
   const initialState: MarksFormState = {
     errors: {},
+    message: "",
   };
 
   const [state, formAction, isPending] = useActionState(AddMarks, initialState);
 
+  //intercepting form submission for some actions
+
   const interceptingFormAction = (formData: FormData) => {
-    const payloadString = JSON.stringify(formPayload);
-    formData.append("marks", payloadString);
-    formAction(formData);
-    setFormPayload([]);
+    if (marksObject.length === subjects.length) {
+      const payloadString = JSON.stringify(marksObject);
+      formData.append("marks", payloadString);
+      formAction(formData);
+      setMarksObject([]);
+    } else {
+      state.errors.otherError = "Please input all marks.";
+      setErrorDialogOpen(true);
+    }
   };
+
+  useEffect(() => {
+    if (state?.message === "Error") {
+      setErrorDialogOpen(true);
+    }
+    if (state?.message === "Success") {
+      setSuccessDialogOpen(true);
+    }
+  }, [state]);
 
   return (
     <>
+      <SuccessDialog
+        open={successDialogOpen}
+        onOpenChange={(dialogOpen) => setSuccessDialogOpen(dialogOpen)}
+      />
+      <ErrorDialog
+        errors={state?.errors}
+        open={errorDialogOpen}
+        onOpenChange={(dialogOpen) => setErrorDialogOpen(dialogOpen)}
+      />
       {students.length > 0 && subjects.length > 0 && (
         <Card className="w-full">
           <CardHeader>
@@ -101,7 +129,7 @@ export default function MarksInputForm({
               className="flex flex-row justify-evenly gap-5"
             >
               {/* left side elements  */}
-              <div className="grid">
+              <div className="grid gap-4">
                 <div className="grid gap-3">
                   <Label htmlFor="exam">Exam</Label>
                   <Select onValueChange={(value) => setExamId(Number(value))}>
@@ -121,7 +149,6 @@ export default function MarksInputForm({
                     </SelectContent>
                   </Select>
                   <input type="hidden" name="examId" value={examId} />
-                  <CardDescription className="text-rose-500"></CardDescription>
                 </div>
 
                 <div className="grid gap-3">
@@ -177,19 +204,23 @@ export default function MarksInputForm({
                       )?.id
                     }
                   />
-                  <CardDescription className="text-rose-500"></CardDescription>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <Button variant={"outline"} type="reset">
+                  <Button variant={"outline"} type="reset" disabled={isPending}>
                     Reset Marks
                   </Button>
-                  <Button variant={"default"} type="submit">
-                    Save Marks
+                  <Button
+                    variant={"default"}
+                    type="submit"
+                    disabled={isPending}
+                  >
+                    {isPending ? "Saving..." : "Save Marks"}
                   </Button>
                 </div>
               </div>
 
               {/* right side elements  */}
+
               <div className="grid grid-cols-4 gap-8">
                 {subjects &&
                   subjects.map((s) => (
@@ -200,6 +231,8 @@ export default function MarksInputForm({
                     />
                   ))}
               </div>
+
+              <input type="hidden" name="sclassId" value={classId} />
             </form>
           </CardContent>
         </Card>
