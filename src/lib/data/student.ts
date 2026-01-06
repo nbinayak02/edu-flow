@@ -1,5 +1,6 @@
 import { Student } from "@/app/(system)/student/types";
-import { prisma } from "../prisma";
+import  prisma  from "../prisma";
+
 
 export async function AddStudent(studentData: Student) {
   const newStudent = await prisma.student.create({

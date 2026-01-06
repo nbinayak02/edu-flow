@@ -1,5 +1,5 @@
 import { Class } from "@/app/(system)/class/types";
-import { prisma } from "../prisma";
+import  prisma  from "../prisma";
 
 export async function CreateNewClass(schoolId: number, clss: Class) {
   const newClass = await prisma.sclass.create({

@@ -148,7 +148,7 @@ const GradeSheet = ({
                     className="border-2 border-black p-3 text-center"
                   >
                     <span>
-                      Total Credit Hour: <b>32</b>
+                      Total Credit Hour: <b>{marksheet.totalCreditHour}</b>
                     </span>
                     <span className="ml-10">
                       Grade Point Average (GPA): <b>{marksheet.gpa}</b>

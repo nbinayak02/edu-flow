@@ -28,11 +28,14 @@ export default function PrintMarksheet({
 }: {
   marksheet: Marksheet | undefined;
   setOpenChange: React.Dispatch<
-    React.SetStateAction<{
-      open: boolean;
-      data: Marksheet | undefined;
-    }>
-  >;
+    React.SetStateAction<
+      | {
+          open: boolean;
+          data: Marksheet | undefined;
+        }
+      | undefined
+    >
+  >; 
   open: boolean;
 }) {
   const [schoolDetails, setSchoolDetails] = useState<School>();

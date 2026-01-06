@@ -1,5 +1,6 @@
 import { Marks, Marksheet } from "@/app/(system)/marks/types";
-import { prisma } from "../prisma";
+import  prisma  from "../prisma";
+
 import { FinalGradeType } from "../types";
 
 export async function CreateMarksheet(data: Marksheet) {

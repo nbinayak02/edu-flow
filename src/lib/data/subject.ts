@@ -1,5 +1,6 @@
 import { Subject } from "@/app/(system)/subject/types";
-import { prisma } from "../prisma";
+import  prisma  from "../prisma";
+
 
 export async function CreateNewSubject(subject: Subject) {
   const newSubject = await prisma.subject.create({

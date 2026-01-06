@@ -63,6 +63,7 @@ export type Marksheet = {
   studentId: number;
   sclassId: number;
   examId: number;
+  totalCreditHour?: number;
   gpa?: number;
   remarks?: string;
   createdAt?: Date;

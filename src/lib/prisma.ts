@@ -1,14 +1,20 @@
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
-// creating global space for storing prisma instances safely during reloads in development mode
+const globalForPrisma = global as unknown as {
+  prisma: PrismaClient;
+};
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
 
-export const prisma =
+const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log: ["query", "info", "warn", "error"],
+    adapter,
   });
 
-//reload doesn't happen in production mode so store prisma instance to global for development only
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;

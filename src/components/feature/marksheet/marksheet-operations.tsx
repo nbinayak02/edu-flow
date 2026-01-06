@@ -36,7 +36,6 @@ import { Download, Printer } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import PrintMarksheet from "./print-marksheet-dialog";
 
-
 export default function MarksheetOperation({ classes }: { classes: Class[] }) {
   const [selectedYear, setSelectedYear] = useState<number>();
   const [allExams, setAllExams] = useState<Exam[]>([]);
@@ -88,7 +87,7 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
               {state?.errors?.otherErrors}
             </div>
           )}
-          <form className="flex flex-row gap-5" action={formAction}>
+          <form className="flex flex-row flex-wrap gap-5" action={formAction}>
             <div className="grid gap-3">
               <Label htmlFor="cname">Class</Label>
               <Select name="sclassId">
@@ -171,7 +170,7 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
           <CardHeader>
             <CardTitle>All Marksheet</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-w-xl md:max-w-full">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -191,7 +190,7 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
                     <TableCell>{marksheet.exam?.name}</TableCell>
                     <TableCell className="font-bold">{marksheet.gpa}</TableCell>
                     <TableCell>
-                      {new Date(marksheet?.updatedAt).toDateString()}
+                      {marksheet?.updatedAt && new Date(marksheet?.updatedAt).toDateString()}
                     </TableCell>
                     <TableCell>
                       <Button

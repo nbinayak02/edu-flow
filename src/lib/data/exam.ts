@@ -1,5 +1,5 @@
 import { ConfigureExamDbType, Exam } from "@/app/(system)/exam/types";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 import { Prisma } from "@prisma/client";
 
 export async function GetAllExams(schoolId: number) {
