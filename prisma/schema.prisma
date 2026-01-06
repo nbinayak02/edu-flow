@@ -115,7 +115,6 @@ model Marksheet {
 }
 
 model Marks {
-  id             Int       @id @default(autoincrement())
   marksheet      Marksheet @relation(fields: [marksheetId], references: [id])
   subject        Subject   @relation(fields: [subjectId], references: [id])
   marksheetId    Int
@@ -126,4 +125,6 @@ model Marks {
   prGradeLetter  String    @default("")
   finalGrade     String    @default("")
   gradePoint     Float     @default(0)
+
+  @@id(name: "marksId", [marksheetId, subjectId]) //unique composite key containing marksheet id and subject id
 }

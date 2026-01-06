@@ -1,4 +1,4 @@
-import { Marksheet } from "@/app/(system)/marks/types";
+import { Marksheet, MarksInMarksheet } from "@/app/(system)/marks/types";
 import { School } from "@/app/(system)/school/types";
 import { Inter } from "next/font/google";
 import React, { Ref } from "react";
@@ -24,10 +24,12 @@ const GradeSheet = ({
   ref,
   school,
   marksheet,
+  marks,
 }: {
   ref: Ref<HTMLDivElement>;
   school: School;
   marksheet: Marksheet;
+  marks: MarksInMarksheet[];
 }) => {
   return (
     <>
@@ -43,7 +45,7 @@ const GradeSheet = ({
               <img
                 src="https://picsum.photos/100"
                 alt="School Logo"
-                className="w-20 h-20 rounded-xl absolute left-0 top-10"
+                className="w-30 h-30 rounded-xl absolute translate-y-10 translate-x-1"
               />
 
               <div className="w-full flex flex-col items-center gap-1">
@@ -72,15 +74,17 @@ const GradeSheet = ({
               <div className="flex justify-between font-bold mt-1">
                 <p>
                   Class:{" "}
-                  <span className="font-medium">{marksheet.sclass.name}</span>
+                  <span className="font-medium">{marksheet.sclass?.name}</span>
                 </p>
                 <p>
                   Roll Number:{" "}
-                  <span className="font-medium">{marksheet.student.id}</span>
+                  <span className="font-medium">{marksheet.student?.id}</span>
                 </p>
                 <p>
                   Section:{" "}
-                  <span className="font-medium">{marksheet.student.iemis}</span>
+                  <span className="font-medium">
+                    {marksheet.student?.iemis}
+                  </span>
                 </p>
               </div>
             </div>
@@ -112,17 +116,27 @@ const GradeSheet = ({
               </thead>
 
               <tbody>
-                {subjects.map((subject, index) => (
+                {marks.map((mark, index) => (
                   <tr key={index}>
                     <td className="border-l-2 border-black p-2">{index + 1}</td>
                     <td className="border-l-2 border-black p-2 text-left">
-                      {subject}
+                      {mark.subject?.name}
                     </td>
-                    <td className="border-l-2 border-black p-2">4</td>
-                    <td className="border-l-2 border-black p-2">A+</td>
-                    <td className="border-l-2 border-black p-2">B+</td>
-                    <td className="border-l-2 border-black p-2">A</td>
-                    <td className="border-l-2 border-black p-2">3.6</td>
+                    <td className="border-l-2 border-black p-2">
+                      {mark.subject?.credit_hour}
+                    </td>
+                    <td className="border-l-2 border-black p-2">
+                      {mark.thGradeLetter}
+                    </td>
+                    <td className="border-l-2 border-black p-2">
+                      {mark.prGradeLetter}
+                    </td>
+                    <td className="border-l-2 border-black p-2">
+                      {mark.finalGrade}
+                    </td>
+                    <td className="border-l-2 border-black p-2">
+                      {mark.gradePoint}
+                    </td>
                     <td className="border-l-2 border-black p-2"></td>
                   </tr>
                 ))}

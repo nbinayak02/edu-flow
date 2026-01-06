@@ -4,7 +4,7 @@ import { GetAllMarksheeetByClassAndExam } from "@/lib/data/marks";
 import {
   MarksheetSearch,
   MarksheetSearchError,
-} from "../(system)/marksheet/types";
+} from "../(system)/gradesheet/types";
 
 export async function GetAllMarksheet(
   _: unknown,

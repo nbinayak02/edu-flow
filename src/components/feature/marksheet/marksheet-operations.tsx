@@ -2,7 +2,7 @@
 import { Class } from "@/app/(system)/class/types";
 import { Exam } from "@/app/(system)/exam/types";
 import { Marksheet } from "@/app/(system)/marks/types";
-import { MarksheetSearch } from "@/app/(system)/marksheet/types";
+import { MarksheetSearch } from "@/app/(system)/gradesheet/types";
 import { GetExamByYearAction } from "@/app/_actions/exam";
 import { GetAllMarksheet } from "@/app/_actions/marksheet";
 import { Button } from "@/components/ui/button";
@@ -35,10 +35,7 @@ import {
 import { Download, Printer } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import PrintMarksheet from "./print-marksheet-dialog";
-import { PDFViewer } from "@react-pdf/renderer";
-import PdfGenerator from "./marksheet-pdf-generator";
-import GradesheetPDF from "./marksheet-pdf-generator";
-import GradeSheet from "./marksheet-pdf-generator";
+
 
 export default function MarksheetOperation({ classes }: { classes: Class[] }) {
   const [selectedYear, setSelectedYear] = useState<number>();

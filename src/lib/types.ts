@@ -15,8 +15,10 @@ export interface PercentageType {
 export interface FinalGradeType extends PercentageType {
   theoryGradePoint: number;
   practicalGradePoint: number;
-  finalGrade: number;
-  gradeLetter: string;
+  thGradeLetter: string;
+  prGradeLetter: string;
+  finalGradePoint: number;
+  finalGradeLetter: string;
 }
 
 export type CreditHourType = {

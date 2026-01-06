@@ -1,6 +1,7 @@
 import { Class } from "../class/types";
 import { Exam } from "../exam/types";
 import { Student } from "../student/types";
+import { Subject } from "../subject/types";
 
 export type StudentSearch = {
   id?: number;
@@ -75,4 +76,22 @@ export type Marks = {
   subjectId: number;
   theoryMarks: number;
   practicalMarks: number;
+};
+
+export type UpdateGradeInMarksType = {
+  subjectId: number;
+  thGradeLetter: string;
+  prGradeLetter: string;
+  finalGrade: string;
+  gradePoint: number;
+};
+
+export type MarksInMarksheet = {
+  marksheetId: number;
+  subjectId: number;
+  thGradeLetter: string;
+  prGradeLetter: string;
+  finalGrade: string;
+  gradePoint: number;
+  subject?: Subject;
 };

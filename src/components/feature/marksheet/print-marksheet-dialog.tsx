@@ -1,5 +1,5 @@
 "use client";
-import { Marksheet } from "@/app/(system)/marks/types";
+import { Marksheet, MarksInMarksheet } from "@/app/(system)/marks/types";
 import { School } from "@/app/(system)/school/types";
 import { GetSchoolDetails } from "@/app/_actions/school";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ import { useEffect, useRef, useState } from "react";
 import PdfGenerator from "./marksheet-pdf-generator";
 import { useReactToPrint } from "react-to-print";
 import GradeSheet from "./marksheet-pdf-generator";
+import { GetMarks } from "@/app/_actions/marks";
+import { Marks } from "@prisma/client";
 
 export default function PrintMarksheet({
   marksheet,
@@ -34,6 +36,7 @@ export default function PrintMarksheet({
   open: boolean;
 }) {
   const [schoolDetails, setSchoolDetails] = useState<School>();
+  const [marksDetails, setMarksDetails] = useState<MarksInMarksheet[]>([]);
   const { userId } = useUserContext();
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrint = useReactToPrint({ contentRef });
@@ -48,14 +51,22 @@ export default function PrintMarksheet({
   }, [schoolDetails]);
 
   const fetchRequiredData = async () => {
-    if (!userId) {
-      console.log("User id not found");
+    if (!userId || !marksheet?.id) {
+      console.log("User id or marksheet id not found");
       return;
     }
-    const data = await GetSchoolDetails(userId);
-    if (data) {
-      setSchoolDetails(data);
+
+    const [schoolDetails, marksDetails] = await Promise.all([
+      GetSchoolDetails(userId),
+      GetMarks(marksheet?.id),
+    ]);
+
+    if (!schoolDetails || !marksDetails) {
+      return;
     }
+
+    setSchoolDetails(schoolDetails);
+    setMarksDetails(marksDetails);
   };
 
   return (
@@ -82,6 +93,7 @@ export default function PrintMarksheet({
               ref={contentRef}
               school={schoolDetails}
               marksheet={marksheet}
+              marks={marksDetails}
             />
           </div>
         )}

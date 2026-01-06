@@ -8,6 +8,7 @@ import {
 
 import { GetAllSubjectCreditHourByClass } from "@/lib/data/subject";
 import { UpdateGPAInMarksheet } from "@/lib/data/marks";
+import { UpdateGradesInMarksAction } from "@/app/_actions/marks";
 
 export async function calculateGrades(
   marks: Marks[],
@@ -37,11 +38,10 @@ export async function calculateGrades(
     const { gpa, totalCrh } = calculateGPA(creditHour, allSubjectFinalGrades);
 
     // update marks to store individual subjects grade letter, grade points
-
-    //marksheetid, {subjectId:1, thGradeLetter, prGradeLetter, finalGradePoint}
+    await UpdateGradesInMarksAction(marksheetId, allSubjectFinalGrades);
 
     // update marksheet
-    await UpdateGPAInMarksheet(marksheetId, gpa);
+    await UpdateGPAInMarksheet(marksheetId, gpa, totalCrh);
   } catch (error) {
     console.log(error);
   }

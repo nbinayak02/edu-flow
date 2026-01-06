@@ -94,8 +94,10 @@ export function calculateFinalGrade(marksInPercent: PercentageType[]) {
       practicalPercent: marks.practicalPercent,
       theoryGradePoint: thGradeScale?.gradePoint ?? 0,
       practicalGradePoint: prGradeScale?.gradePoint ?? 0,
-      finalGrade: finalGrade ?? 0,
-      gradeLetter: finalGpaScale.gradeLetter,
+      thGradeLetter: thGradeScale?.gradeLetter ?? "",
+      prGradeLetter: prGradeScale?.gradeLetter ?? "",
+      finalGradePoint: finalGrade ?? 0,
+      finalGradeLetter: finalGpaScale.gradeLetter,
     });
   });
 
@@ -112,7 +114,7 @@ export function calculateGPA(
     const crh = creditHour.find((c) => c.id === fg.subjectId)?.credit_hour ?? 0;
 
     // find product of credit hour and final grade point
-    return crh * fg.finalGrade;
+    return crh * fg.finalGradePoint;
   });
 
   console.log("Products: ", products);

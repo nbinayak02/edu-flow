@@ -3,16 +3,20 @@
 import {
   AddStudentMarks,
   CreateMarksheet,
+  GetMarksByMarksheet,
   GetMarksheet,
+  UpdateGradesInMarks,
 } from "@/lib/data/marks";
 import {
   Marks,
   MarksError,
   MarksFormState,
   Marksheet,
+  UpdateGradeInMarksType,
 } from "../(system)/marks/types";
 import { GetNumberOfSubjectsByClass } from "@/lib/data/subject";
 import { calculateGrades } from "@/services/calculateGrade";
+import { FinalGradeType } from "@/lib/types";
 
 export async function AddMarks(
   prevState: MarksFormState,
@@ -69,4 +73,27 @@ export async function AddMarks(
   }
 
   return { errors, message: "Success" };
+}
+
+export async function UpdateGradesInMarksAction(
+  marksheetId: number,
+  updateMarksPayload: FinalGradeType[]
+) {
+  try {
+    await UpdateGradesInMarks(marksheetId, updateMarksPayload);
+    return true;
+  } catch (error) {
+    console.log("Error in UpdateGradesInMarks: ", error);
+    return false;
+  }
+}
+
+export async function GetMarks(marksheetId: number) {
+  try {
+    const marks = await GetMarksByMarksheet(marksheetId);
+    return marks;
+  } catch (error) {
+    console.log("Error on GetMarks: ", error);
+    return null;
+  }
 }
