@@ -71,3 +71,16 @@ export async function GetNumberOfSubjectsByClass(classId: number) {
 
   return subjectCount._count.id;
 }
+
+export async function GetAllSubjectCreditHourByClass(classId: number) {
+  const creditHour = await prisma.subject.findMany({
+    where: {
+      sclassId: classId,
+    },
+    select: {
+      id: true,
+      credit_hour: true,
+    },
+  });
+  return creditHour;
+}

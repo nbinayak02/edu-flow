@@ -7,17 +7,15 @@ export async function CreateMarksheet(data: Marksheet) {
       studentId: data.studentId,
       sclassId: data.sclassId,
       examId: data.examId,
-      total: data.total,
-      gradeLetter: data.gradeLetter,
-      gpa: data.gpa,
-      remarks: data.remarks,
+      gpa: 0,
+      remarks: "",
     },
   });
   return msheet;
 }
 
 export async function AddStudentMarks(data: Marks[]) {
-  const mrks = await prisma.marks.createMany({
+  const mrks = await prisma.marks.createManyAndReturn({
     data: data,
   });
   return mrks;
@@ -31,4 +29,35 @@ export async function GetMarksheet(studentId: number, examId: number) {
     },
   });
   return marksheet;
+}
+
+export async function UpdateGPAInMarksheet(marksheetId: number, gpa: number) {
+  const updatedMarksheet = await prisma.marksheet.update({
+    where: {
+      id: marksheetId,
+    },
+    data: {
+      gpa: gpa,
+    },
+  });
+
+  return updatedMarksheet;
+}
+
+export async function GetAllMarksheeetByClassAndExam(
+  sclassId: number,
+  examId: number
+) {
+  const marksheets = await prisma.marksheet.findMany({
+    where: {
+      sclassId,
+      examId,
+    },
+    include: {
+      sclass: true,
+      student: true,
+      exam: true,
+    },
+  });
+  return marksheets;
 }

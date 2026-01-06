@@ -12,6 +12,7 @@ import {
   Marksheet,
 } from "../(system)/marks/types";
 import { GetNumberOfSubjectsByClass } from "@/lib/data/subject";
+import { calculateGrades } from "@/services/calculateGrade";
 
 export async function AddMarks(
   prevState: MarksFormState,
@@ -43,7 +44,7 @@ export async function AddMarks(
 
   if (existingMarksheet) {
     errors.otherError =
-      "Marksheet for the student for this exam already exist.";
+      "Marksheet for this student for this exam already exist.";
     return { errors, message: "Error" };
   }
 
@@ -52,19 +53,17 @@ export async function AddMarks(
     const marksheet = await CreateMarksheet({
       examId,
       studentId,
-      gradeLetter: "",
-      gpa: 0.0,
-      remarks: "",
-      total: 0,
       sclassId,
     });
 
+    //store marksheet id in every marks
     marksArray.map((m: Marks) => (m.marksheetId = marksheet.id));
 
     //create marks
-    const marks = await AddStudentMarks(marksArray);
+    const storedMarks = await AddStudentMarks(marksArray);
 
-    console.log("Marks db returned: ", marks);
+    //calculate grades
+    calculateGrades(storedMarks, studentId, sclassId, examId, marksheet.id);
   } catch (error) {
     console.error("Error: ", error);
   }

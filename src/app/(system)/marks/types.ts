@@ -1,3 +1,7 @@
+import { Class } from "../class/types";
+import { Exam } from "../exam/types";
+import { Student } from "../student/types";
+
 export type StudentSearch = {
   id?: number;
   class: number;
@@ -52,13 +56,16 @@ export type MarksObject = {
 // for marksheet table
 export type Marksheet = {
   id?: number;
+  student?: Student;
+  sclass?: Class;
+  exam?: Exam;
   studentId: number;
   sclassId: number;
   examId: number;
-  total: number;
-  gradeLetter: string;
-  gpa: number;
-  remarks: string;
+  gpa?: number;
+  remarks?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 // for marks table

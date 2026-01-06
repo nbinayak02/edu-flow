@@ -21,5 +21,5 @@ export type StudentError = {
 }
 
 export type FormState = {
-    errors: Error;
+    errors: StudentError;
 }

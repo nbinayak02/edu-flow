@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/user-context";
 import { getUserFromToken } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +25,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const userId = await getUserFromToken();
-  console.log("User id is: ", userId);
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

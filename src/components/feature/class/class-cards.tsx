@@ -20,10 +20,10 @@ export default function ClassCard({
   };
 
   const [mouseOver, setMouseOver] = useState(false);
-  const [deleteState, formDeleteAction, isDeletePending] = useActionState(
-    DeleteClassAction,
-    initialDeleteState
-  );
+  // const [deleteState, formDeleteAction, isDeletePending] = useActionState(
+  //   DeleteClassAction,
+  //   initialDeleteState
+  // );
   return (
     <Card
       onMouseOver={() => setMouseOver(true)}
@@ -42,8 +42,10 @@ export default function ClassCard({
               Edit
             </Button>
           </form>
-          <form action={formDeleteAction}>
-            <Input type="hidden" name="id" value={classId} defaultValue={classId}/>
+          <form
+          //  action={formDeleteAction}
+           >
+            <Input type="hidden" name="id" value={classId}/>
             <Button
               type="submit"
               variant={"destructive"}

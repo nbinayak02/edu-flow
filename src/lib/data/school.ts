@@ -7,21 +7,7 @@ export async function findSchoolByUser(userId: number) {
       userId: userId,
     },
   });
-
-  if (!sch) {
-    const s: EmptySchool = {
-      name: "",
-      address: "",
-      contact: "",
-      email: "",
-      estd: undefined,
-      iemis: "",
-    };
-
-    return s;
-  } else {
-    return sch;
-  }
+  return sch;
 }
 
 export async function CreateOrUpdateSchool(userId: number, data: School) {

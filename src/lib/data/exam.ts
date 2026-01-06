@@ -63,3 +63,51 @@ export async function GetExamByYear(year: number) {
   });
   return exams;
 }
+
+export async function GetTotalThMarks(examId: number, sclassId: number) {
+  const totalThMarks = await prisma.examDetails.aggregate({
+    _sum: {
+      thFullMarks: true,
+    },
+    where: {
+      examId,
+      sclassId,
+    },
+  });
+
+  return totalThMarks._sum.thFullMarks ?? 0;
+}
+export async function GetTotalPrMarks(examId: number, sclassId: number) {
+  const totalPrMarks = await prisma.examDetails.aggregate({
+    _sum: {
+      prFullMarks: true,
+    },
+    where: {
+      examId,
+      sclassId,
+    },
+  });
+
+  return totalPrMarks._sum.prFullMarks ?? 0;
+}
+
+export async function GetAllSubjectsThAndPrFullMarks(
+  examId: number,
+  sclassId: number
+) {
+  const allSubjectsBothFullMarks = await prisma.examDetails.findMany({
+    where: {
+      examId,
+      sclassId,
+    },
+    select: {
+      examId: true,
+      sclassId: true,
+      subjectId: true,
+      thFullMarks: true,
+      prFullMarks: true,
+    },
+  });
+
+  return allSubjectsBothFullMarks;
+}

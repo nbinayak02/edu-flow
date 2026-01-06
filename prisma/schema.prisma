@@ -99,20 +99,19 @@ model ExamDetails {
 }
 
 model Marksheet {
-  id          Int      @id @default(autoincrement())
-  student     Student  @relation(fields: [studentId], references: [id])
-  sclass      Sclass   @relation(fields: [sclassId], references: [id])
-  exam        Exam     @relation(fields: [examId], references: [id])
-  studentId   Int
-  sclassId    Int
-  examId      Int
-  total       Float
-  gradeLetter String
-  gpa         Float
-  remarks     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  marks       Marks[]
+  id              Int      @id @default(autoincrement())
+  student         Student  @relation(fields: [studentId], references: [id])
+  sclass          Sclass   @relation(fields: [sclassId], references: [id])
+  exam            Exam     @relation(fields: [examId], references: [id])
+  studentId       Int
+  sclassId        Int
+  examId          Int
+  gpa             Float
+  totalCreditHour Float    @default(0)
+  remarks         String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  marks           Marks[]
 }
 
 model Marks {
@@ -123,4 +122,8 @@ model Marks {
   subjectId      Int
   theoryMarks    Float
   practicalMarks Float
+  thGradeLetter  String    @default("")
+  prGradeLetter  String    @default("")
+  finalGrade     String    @default("")
+  gradePoint     Float     @default(0)
 }

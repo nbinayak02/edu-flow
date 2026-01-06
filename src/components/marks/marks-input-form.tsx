@@ -232,7 +232,7 @@ export default function MarksInputForm({
                   ))}
               </div>
 
-              <input type="hidden" name="sclassId" value={classId} />
+              <input type="hidden" name="sclassId" defaultValue={classId} />
             </form>
           </CardContent>
         </Card>

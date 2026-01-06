@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { Error, FormState } from "../(system)/school/types";
-import { CreateOrUpdateSchool } from "@/lib/data/school";
-import {getUser} from "@/lib/auth";
+import { CreateOrUpdateSchool, findSchoolByUser } from "@/lib/data/school";
+import { getUser } from "@/lib/auth";
 
 export async function UpdateSchoolAction(
   prevState: FormState,
@@ -30,7 +30,23 @@ export async function UpdateSchoolAction(
     return { errors };
   }
 
-  await CreateOrUpdateSchool(user.id, {name, address, email, contact, iemis, estd})
+  await CreateOrUpdateSchool(user.id, {
+    name,
+    address,
+    email,
+    contact,
+    iemis,
+    estd,
+  });
   redirect("/school");
+}
 
+export async function GetSchoolDetails(userId: number) {
+  try {
+    const school = await findSchoolByUser(userId);
+    return school;
+  } catch (error) {
+    console.log("Error on GetSchoolDetails: ", error);
+    return null;
+  }
 }

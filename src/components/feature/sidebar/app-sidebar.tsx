@@ -19,6 +19,8 @@ import {
   BookMarked,
   School,
   Medal,
+  File,
+  FileBadge2,
 } from "lucide-react";
 
 import { NavMain } from "@/components/feature/sidebar/nav-main";
@@ -56,7 +58,12 @@ const data = {
       icon: LayoutDashboard,
     },
     {
-      name:"Marks",
+      name: "Marksheet",
+      url: "/marksheet",
+      icon: FileBadge2,
+    },
+    {
+      name: "Marks",
       url: "/marks",
       icon: Medal,
     },
@@ -99,7 +106,6 @@ interface AppSideBarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ user, ...props }: AppSideBarProps) {
-  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
