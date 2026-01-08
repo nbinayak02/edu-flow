@@ -9,11 +9,11 @@ export default async function ExamManagePage({
   searchParams,
 }: {
   params: Promise<{ id: number }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const examId = (await params).id;
-  let examName = searchParams.exam;
-  let examYear = searchParams.year;
+  let examName = (await searchParams).exam;
+  let examYear = (await searchParams).year;
   const schoolId = Number(await getSchoolId());
   const allClasses = await GetAllClasses(schoolId);
 

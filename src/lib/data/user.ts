@@ -1,5 +1,5 @@
 import { User } from "@/app/auth/types";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 
 export function findUser(email: string) {
   return prisma.user.findUnique({
@@ -14,4 +14,3 @@ export function createUser(user: User) {
     data: user,
   });
 }
-

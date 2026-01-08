@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -23,7 +22,7 @@ model School {
   address   String
   email     String
   contact   String
-  iemis     String
+  iemis     String   @unique
   estd      Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
@@ -39,8 +38,8 @@ model Sclass {
   schoolId    Int
   createdAt   DateTime      @default(now())
   subject     Subject[]
-  student     Student[]
   examDetails ExamDetails[]
+  enrollment  Enrollment[]
 }
 
 model Subject {
@@ -51,29 +50,43 @@ model Subject {
   sclass      Sclass        @relation(fields: [sclassId], references: [id])
   sclassId    Int
   examDetails ExamDetails[]
+  marks       Marks[]
 }
 
 model Student {
-  id        Int      @id @default(autoincrement())
-  name      String
-  address   String
-  contact   String
-  gurdian   String
-  year      Int
-  iemis     String
-  createdAt DateTime @default(now())
-  sclass    Sclass   @relation(fields: [sclassId], references: [id])
-  sclassId  Int
+  id         Int          @id @default(autoincrement())
+  name       String
+  address    String
+  contact    String
+  gurdian    String
+  iemis      String       @unique
+  createdAt  DateTime     @default(now())
+  enrollment Enrollment[]
+}
+
+model Enrollment {
+  id           Int         @id @default(autoincrement())
+  student      Student     @relation(fields: [studentId], references: [id])
+  sclass       Sclass      @relation(fields: [sclassId], references: [id])
+  studentId    Int
+  sclassId     Int
+  academicYear Int
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  marksheets   Marksheet[]
+
+  @@unique([studentId, sclassId, academicYear])
 }
 
 model Exam {
-  id          Int           @id @default(autoincrement())
-  name        String
-  year        Int
-  createdAt   DateTime      @default(now())
-  school      School        @relation(fields: [schoolId], references: [id])
-  schoolId    Int
-  examDetails ExamDetails[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  academicYear Int
+  createdAt    DateTime      @default(now())
+  school       School        @relation(fields: [schoolId], references: [id])
+  schoolId     Int
+  examDetails  ExamDetails[]
+  marksheet    Marksheet[]
 }
 
 model ExamDetails {
@@ -92,4 +105,33 @@ model ExamDetails {
   //model a weak entity.
 
   @@id(name: "examDetailsId", [examId, subjectId])
+}
+
+model Marksheet {
+  id              Int        @id @default(autoincrement())
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  exam            Exam       @relation(fields: [examId], references: [id])
+  enrollmentId    Int
+  examId          Int
+  gpa             Float
+  totalCreditHour Float      @default(0)
+  remarks         String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  marks           Marks[]
+}
+
+model Marks {
+  marksheet      Marksheet @relation(fields: [marksheetId], references: [id])
+  subject        Subject   @relation(fields: [subjectId], references: [id])
+  marksheetId    Int
+  subjectId      Int
+  theoryMarks    Float
+  practicalMarks Float
+  thGradeLetter  String    @default("")
+  prGradeLetter  String    @default("")
+  finalGrade     String    @default("")
+  gradePoint     Float     @default(0)
+
+  @@id(name: "marksId", [marksheetId, subjectId]) //unique composite key containing marksheet id and subject id
 }

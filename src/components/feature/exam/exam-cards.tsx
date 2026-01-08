@@ -1,4 +1,5 @@
 "use client";
+import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
@@ -16,7 +17,7 @@ export default function ExamCard({
     <Card>
       <CardHeader>
         {examName} - {examYear}
-        <CardAction>
+        <CardAction className="flex flex-row gap-5">
           <Link
             href={{
               pathname: `/exam/${examId}/manage`,
@@ -25,6 +26,7 @@ export default function ExamCard({
           >
             <Button className="cursor-pointer">Manage</Button>
           </Link>
+          <EditDeleteOptions />
         </CardAction>
       </CardHeader>
     </Card>

@@ -32,7 +32,7 @@ export default function ClassOperations({
             key={i}
             className={c.name}
             classId={Number(c.id)}
-            onReturn={handleDelete}
+            // onReturn={handleDelete}
           />
         ))}
       </div>

@@ -1,5 +1,6 @@
 import { EmptySchool, School } from "@/app/(system)/school/types";
-import { prisma } from "../prisma";
+import  prisma  from "../prisma";
+
 
 export async function findSchoolByUser(userId: number) {
   const sch = await prisma.school.findUnique({
@@ -7,21 +8,7 @@ export async function findSchoolByUser(userId: number) {
       userId: userId,
     },
   });
-
-  if (!sch) {
-    const s: EmptySchool = {
-      name: "",
-      address: "",
-      contact: "",
-      email: "",
-      estd: undefined,
-      iemis: "",
-    };
-
-    return s;
-  } else {
-    return sch;
-  }
+  return sch;
 }
 
 export async function CreateOrUpdateSchool(userId: number, data: School) {

@@ -1,6 +1,5 @@
-
 import { Subject } from "@/app/(system)/subject/types";
-import { prisma } from "../prisma";
+import prisma from "../prisma";
 
 export async function CreateNewSubject(subject: Subject) {
   const newSubject = await prisma.subject.create({
@@ -40,4 +39,51 @@ export async function GetSubjectsByClass(classId: number) {
   });
 
   return subjects;
+}
+
+export async function GetSubjectNamesByClass(classId: number) {
+  const subjectNames = await prisma.subject.findMany({
+    where: {
+      sclassId: classId,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  if (subjectNames.length > 0) {
+    return subjectNames;
+  } else {
+    throw new Error(
+      "Subjects not found for the given class. Please make sure that subjects have been setup in this class, as it is required for this operation.",
+      { cause: 404 }
+    );
+  }
+}
+
+export async function GetNumberOfSubjectsByClass(classId: number) {
+  const subjectCount = await prisma.subject.aggregate({
+    _count: {
+      id: true,
+    },
+    where: {
+      sclassId: classId,
+    },
+  });
+
+  return subjectCount._count.id;
+}
+
+export async function GetAllSubjectCreditHourByClass(classId: number) {
+  const creditHour = await prisma.subject.findMany({
+    where: {
+      sclassId: classId,
+    },
+    select: {
+      id: true,
+      credit_hour: true,
+    },
+  });
+  return creditHour;
 }

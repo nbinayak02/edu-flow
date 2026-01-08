@@ -1,6 +1,6 @@
 "use server";
 import { cookies, headers } from "next/headers";
-import { prisma } from "./prisma";
+import prisma from "./prisma";
 import { jwtVerify } from "jose";
 
 export async function getUser() {

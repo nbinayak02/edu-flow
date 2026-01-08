@@ -18,6 +18,9 @@ import {
   SquareUser,
   BookMarked,
   School,
+  Medal,
+  File,
+  FileBadge2,
 } from "lucide-react";
 
 import { NavMain } from "@/components/feature/sidebar/nav-main";
@@ -33,7 +36,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { getUser } from "@/lib/auth";
 
 const data = {
   navSecondary: [
@@ -53,6 +55,16 @@ const data = {
       name: "Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      name: "Gradesheet",
+      url: "/gradesheet",
+      icon: FileBadge2,
+    },
+    {
+      name: "Marks",
+      url: "/marks",
+      icon: Medal,
     },
     {
       name: "Exams",
@@ -93,7 +105,6 @@ interface AppSideBarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ user, ...props }: AppSideBarProps) {
-  
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -105,8 +116,8 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-medium">EduFlow</span>
+                  <span className="truncate text-xs">Beta</span>
                 </div>
               </a>
             </SidebarMenuButton>
