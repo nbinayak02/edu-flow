@@ -28,12 +28,12 @@ export async function calculateGrades(
       allSubjectsBothFullMarks
     );
 
-    console.log("Obtained Marks in percent: ", obtainedMarksInPercent);
+    // console.log("Obtained Marks in percent: ", obtainedMarksInPercent);
 
     // all subjects grades
     const allSubjectFinalGrades = calculateFinalGrade(obtainedMarksInPercent);
 
-    console.log("All Subject Final Grades: ", allSubjectFinalGrades);
+    // console.log("All Subject Final Grades: ", allSubjectFinalGrades);
 
     // find credit hour
     const creditHour = await GetAllSubjectCreditHourByClass(sclassId);

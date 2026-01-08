@@ -57,28 +57,29 @@ export function calculateFinalGrade(marksInPercent: PercentageType[]) {
   marksInPercent.map((marks) => {
     //find grade scale where th percent lies
     const thGradeScale = GradePointScale.find(
-      (gps) => marks.theoryPercent > gps.min && marks.theoryPercent <= gps.max
+      (gps) => marks.theoryPercent >= gps.min && marks.theoryPercent <= gps.max
     );
 
     //find grade scale where pr percent lies
     const prGradeScale = GradePointScale.find(
       (gps) =>
-        marks.practicalPercent > gps.min && marks.practicalPercent <= gps.max
+        marks.practicalPercent >= gps.min && marks.practicalPercent <= gps.max
     );
 
     //find average of th and pr grade point
-    const finalGrade =
+    const averageOfThAndPrGrades =
       (thGradeScale && prGradeScale
         ? (thGradeScale.gradePoint + prGradeScale.gradePoint) / 2
         : thGradeScale?.gradePoint) ?? 0;
 
     //find final grade point scale
     const finalGpaScale =
-      finalGrade < 1.6
+      averageOfThAndPrGrades < 1.6
         ? GradePointScale[GradePointScale.length - 1]
         : GradePointScale.find(
             (gps) =>
-              finalGrade > gps.gradePoint - 0.4 && finalGrade <= gps.gradePoint //starting from 1.6 the interval is of 0.4
+              averageOfThAndPrGrades > (gps.gradePoint - 0.4) &&
+              averageOfThAndPrGrades <= gps.gradePoint //starting from 1.6 the interval is of 0.4
           ) ?? {
             min: 0,
             max: 0,
@@ -96,7 +97,7 @@ export function calculateFinalGrade(marksInPercent: PercentageType[]) {
       practicalGradePoint: prGradeScale?.gradePoint ?? 0,
       thGradeLetter: thGradeScale?.gradeLetter ?? "",
       prGradeLetter: prGradeScale?.gradeLetter ?? "",
-      finalGradePoint: finalGrade ?? 0,
+      finalGradePoint: averageOfThAndPrGrades ?? 0,
       finalGradeLetter: finalGpaScale.gradeLetter,
     });
   });

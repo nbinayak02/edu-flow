@@ -188,7 +188,9 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
                     <TableCell>{marksheet.enrollment?.student?.name}</TableCell>
                     <TableCell>{marksheet.enrollment?.sclass?.name}</TableCell>
                     <TableCell>{marksheet.exam?.name}</TableCell>
-                    <TableCell className="font-bold">{marksheet.gpa}</TableCell>
+                    <TableCell className="font-bold">
+                      {marksheet.gpa?.toFixed(2)}
+                    </TableCell>
                     <TableCell>
                       {marksheet?.updatedAt &&
                         new Date(marksheet?.updatedAt).toDateString()}
