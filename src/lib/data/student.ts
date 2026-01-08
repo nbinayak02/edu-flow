@@ -1,37 +1,64 @@
 import { Student } from "@/app/(system)/student/types";
-import  prisma  from "../prisma";
+import prisma from "../prisma";
 
+export async function AddStudentAndEnroll(
+  studentData: Student,
+  sclassId: number,
+  academicYear: number
+) {
+  await prisma.$transaction(async (tx) => {
+    // add student
+    const newStudent = await prisma.student.create({
+      data: {
+        name: studentData.name,
+        address: studentData.address,
+        contact: studentData.contact,
+        gurdian: studentData.gurdian,
+        iemis: studentData.iemis,
+      },
+    });
 
-export async function AddStudent(studentData: Student) {
-  const newStudent = await prisma.student.create({
-    relationLoadStrategy: "join",
-    data: {
-      name: studentData.name,
-      address: studentData.address,
-      contact: studentData.contact,
-      gurdian: studentData.gurdian,
-      year: studentData.year,
-      iemis: studentData.iemis,
-      sclassId: Number(studentData.sclassId),
-    },
-    include: {
-      sclass: true,
-    },
+    // enroll
+    await prisma.enrollment.create({
+      data: {
+        studentId: newStudent.id,
+        sclassId: sclassId,
+        academicYear: academicYear,
+      },
+    });
   });
-
-  return newStudent;
 }
 
 export async function GetNewStudents(schoolId: number) {
   const newStudents = await prisma.student.findMany({
     relationLoadStrategy: "join",
-    include: {
-      sclass: true,
-    },
     where: {
-      sclass: {
-        schoolId: schoolId,
+      enrollment: {
+        some: {
+          sclass: {
+            schoolId: schoolId,
+          },
+        },
       },
+    },
+    select: {
+      id: true,
+      name: true,
+      address: true,
+      contact: true,
+      enrollment: {
+        select: {
+          sclass: {
+            select: {
+              name: true,
+            },
+          },
+          academicYear: true,
+        },
+      },
+      iemis: true,
+      gurdian: true,
+      createdAt: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -48,18 +75,30 @@ export async function GetStudentNamesByClassAndYear(
   const students = await prisma.student.findMany({
     relationLoadStrategy: "join",
     where: {
-      sclassId,
-      year,
+      enrollment: {
+        some: {
+          sclassId,
+          academicYear: year,
+        },
+      },
     },
     select: {
       id: true,
       name: true,
+      enrollment: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
 
   if (students.length > 0) {
     return students;
   } else {
-    throw new Error("No student found.", { cause: 404 });
+    throw new Error(
+      "Students not found for given class and year. Please make sure that students are enrolled in class for that year.",
+      { cause: 404 }
+    );
   }
 }

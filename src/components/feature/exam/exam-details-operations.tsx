@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 
 export default function ExamDetailsOperations({
   initialDetails,
@@ -37,36 +38,37 @@ export default function ExamDetailsOperations({
         onReturn={handleGetExamDetails}
       />
       <h3 className="text-2xl font-semibold my-5">Exam Details</h3>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead></TableHead>
-            <TableHead></TableHead>
-            <TableHead></TableHead>
-            <TableHead colSpan={2}>Full Marks</TableHead>
-            <TableHead colSpan={2}>Pass Marks</TableHead>
+      <Table className="border-2">
+        <TableHeader className="bg-accent">
+          <TableRow className="*:text-center ">
+            <TableHead rowSpan={2}>#</TableHead>
+            <TableHead rowSpan={2}>Class</TableHead>
+            <TableHead rowSpan={2}>Subject</TableHead>
+            <TableHead colSpan={2}>Theory</TableHead>
+            <TableHead colSpan={2}>Practical</TableHead>
+            <TableHead rowSpan={2}>Action</TableHead>
           </TableRow>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Class</TableHead>
-            <TableHead>Subject</TableHead>
-            <TableHead>TH</TableHead>
-            <TableHead>PR</TableHead>
-            <TableHead>TH</TableHead>
-            <TableHead>PR</TableHead>
+          <TableRow className="*:text-center">
+            <TableHead>Full Marks</TableHead>
+            <TableHead>Pass Marks</TableHead>
+            <TableHead>Full Marks</TableHead>
+            <TableHead>Pass Marks</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {details.map((d, i) => {
             return (
-              <TableRow key={i}>
+              <TableRow key={i} className="*:border-2 *:text-center">
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>{d.sclass?.name}</TableCell>
                 <TableCell>{d.subject?.name}</TableCell>
                 <TableCell>{d.thFullMarks}</TableCell>
-                <TableCell>{d.prFullMarks}</TableCell>
                 <TableCell>{d.thPassMarks}</TableCell>
+                <TableCell>{d.prFullMarks}</TableCell>
                 <TableCell>{d.prPassMarks}</TableCell>
+                <TableCell>
+                  <EditDeleteOptions />
+                </TableCell>
               </TableRow>
             );
           })}

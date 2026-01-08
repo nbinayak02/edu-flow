@@ -118,7 +118,7 @@ export default function MarksInputForm({
         open={errorDialogOpen}
         onOpenChange={(dialogOpen) => setErrorDialogOpen(dialogOpen)}
       />
-      {students.length > 0 && subjects.length > 0 && (
+      {students.length > 0 && (
         <Card className="w-full">
           <CardHeader>
             <CardTitle>Marks Entry Form</CardTitle>
@@ -148,7 +148,7 @@ export default function MarksInputForm({
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  <input type="hidden" name="examId" value={examId} />
+                  <input type="hidden" name="examId" defaultValue={examId} />
                 </div>
 
                 <div className="grid gap-3">
@@ -197,11 +197,11 @@ export default function MarksInputForm({
 
                   <input
                     type="hidden"
-                    name="studentId"
+                    name="enrollmentId"
                     value={
                       students.find(
                         (student) => student.name === selectedStudent
-                      )?.id
+                      )?.enrollment[0].id
                     }
                   />
                 </div>

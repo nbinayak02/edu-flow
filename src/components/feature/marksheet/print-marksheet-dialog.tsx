@@ -48,10 +48,10 @@ export default function PrintMarksheet({
     fetchRequiredData();
   }, []);
 
-  useEffect(() => {
-    console.log("School: ", schoolDetails);
-    console.log("Marksheet: ", marksheet);
-  }, [schoolDetails]);
+  // useEffect(() => {
+  //   console.log("School: ", schoolDetails);
+  //   console.log("Marksheet: ", marksheet);
+  // }, [schoolDetails]);
 
   const fetchRequiredData = async () => {
     if (!userId || !marksheet?.id) {

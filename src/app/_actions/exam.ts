@@ -16,31 +16,38 @@ import {
   GetExamByYear,
   GetExamDetails,
 } from "@/lib/data/exam";
+import { revalidatePath } from "next/cache";
 
 export async function CreateExamAction(
-  prevState: FormState,
+  _: unknown,
   formData: FormData
-) {
+): Promise<FormState> {
   const name = formData.get("name") as string;
-  const year = Number(formData.get("year"));
+  const academicYear = Number(formData.get("year"));
 
   const errors: Error = {};
 
   if (!name) errors.name = "Name is required";
-  if (!year) errors.year = "Year is required";
+  if (!academicYear) errors.year = "Year is required";
 
   if (Object.keys(errors).length > 0) {
-    return { errors };
+    return { errors, status: false };
   }
 
-  const schoolId = Number(await getSchoolId());
-  const examData: Exam = {
-    name,
-    year,
-    schoolId,
-  };
-  const createdExam = await CreateExam(examData);
-  return { createdExam };
+  try {
+    const schoolId = Number(await getSchoolId());
+    const examData: Exam = {
+      name,
+      academicYear,
+      schoolId,
+    };
+    await CreateExam(examData);
+    revalidatePath("/exam");
+    return { errors: {}, status: true };
+  } catch (error) {
+    console.log("Error on CreateExamAction: ", error);
+    return { errors: {}, status: false };
+  }
 }
 
 export async function AddExamDetailsAction(

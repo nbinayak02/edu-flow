@@ -1,6 +1,6 @@
 import { Class } from "../class/types";
 import { Exam } from "../exam/types";
-import { Student } from "../student/types";
+import { Enrollment, Student } from "../student/types";
 import { Subject } from "../subject/types";
 
 export type StudentSearch = {
@@ -19,6 +19,7 @@ export type StudentSearchError = {
 export type StudentSearchReturn = {
   id: number;
   name: string;
+  enrollment: Enrollment[];
 };
 
 export type SubjectSearchReturn = {
@@ -57,11 +58,9 @@ export type MarksObject = {
 // for marksheet table
 export type Marksheet = {
   id?: number;
-  student?: Student;
-  sclass?: Class;
+  enrollment?: Enrollment;
+  enrollmentId: number;
   exam?: Exam;
-  studentId: number;
-  sclassId: number;
   examId: number;
   totalCreditHour?: number;
   gpa?: number;

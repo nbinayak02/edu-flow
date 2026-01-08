@@ -67,9 +67,7 @@ export default function MarksOperations({ classes }: { classes: Class[] }) {
   return (
     <div>
       {state?.errors?.otherErrors && (
-        <div className="bg-rose-500 border-2 border-rose-800 p-2 rounded-xl">
-          {state?.errors?.otherErrors}
-        </div>
+        <div className="text-rose-500 p-5">{state?.errors?.otherErrors}</div>
       )}
       <Card className="w-fit mb-5">
         <CardHeader>
@@ -133,7 +131,12 @@ export default function MarksOperations({ classes }: { classes: Class[] }) {
       </Card>
 
       {/* //render form */}
-      <MarksInputForm classId={classId} students={students} subjects={subjects} exams={exams}/>
+      <MarksInputForm
+        classId={classId}
+        students={students}
+        subjects={subjects}
+        exams={exams}
+      />
     </div>
   );
 }

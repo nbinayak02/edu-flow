@@ -1,7 +1,7 @@
 export type Exam = {
   id?: number;
   name: string;
-  year: number;
+  academicYear: number;
   schoolId: number;
 };
 
@@ -11,6 +11,7 @@ export type Error = {
 };
 export type FormState = {
   errors: Error;
+  status: boolean;
 };
 
 export type ConfigureExam = {

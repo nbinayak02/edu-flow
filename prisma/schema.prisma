@@ -22,7 +22,7 @@ model School {
   address   String
   email     String
   contact   String
-  iemis     String
+  iemis     String   @unique
   estd      Int
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
@@ -38,9 +38,8 @@ model Sclass {
   schoolId    Int
   createdAt   DateTime      @default(now())
   subject     Subject[]
-  student     Student[]
   examDetails ExamDetails[]
-  marksheet   Marksheet[]
+  enrollment  Enrollment[]
 }
 
 model Subject {
@@ -55,28 +54,39 @@ model Subject {
 }
 
 model Student {
-  id        Int         @id @default(autoincrement())
-  name      String
-  address   String
-  contact   String
-  gurdian   String
-  year      Int
-  iemis     String
-  createdAt DateTime    @default(now())
-  sclass    Sclass      @relation(fields: [sclassId], references: [id])
-  sclassId  Int
-  marksheet Marksheet[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  address    String
+  contact    String
+  gurdian    String
+  iemis      String       @unique
+  createdAt  DateTime     @default(now())
+  enrollment Enrollment[]
+}
+
+model Enrollment {
+  id           Int         @id @default(autoincrement())
+  student      Student     @relation(fields: [studentId], references: [id])
+  sclass       Sclass      @relation(fields: [sclassId], references: [id])
+  studentId    Int
+  sclassId     Int
+  academicYear Int
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  marksheets   Marksheet[]
+
+  @@unique([studentId, sclassId, academicYear])
 }
 
 model Exam {
-  id          Int           @id @default(autoincrement())
-  name        String
-  year        Int
-  createdAt   DateTime      @default(now())
-  school      School        @relation(fields: [schoolId], references: [id])
-  schoolId    Int
-  examDetails ExamDetails[]
-  marksheet   Marksheet[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  academicYear Int
+  createdAt    DateTime      @default(now())
+  school       School        @relation(fields: [schoolId], references: [id])
+  schoolId     Int
+  examDetails  ExamDetails[]
+  marksheet    Marksheet[]
 }
 
 model ExamDetails {
@@ -98,18 +108,16 @@ model ExamDetails {
 }
 
 model Marksheet {
-  id              Int      @id @default(autoincrement())
-  student         Student  @relation(fields: [studentId], references: [id])
-  sclass          Sclass   @relation(fields: [sclassId], references: [id])
-  exam            Exam     @relation(fields: [examId], references: [id])
-  studentId       Int
-  sclassId        Int
+  id              Int        @id @default(autoincrement())
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  exam            Exam       @relation(fields: [examId], references: [id])
+  enrollmentId    Int
   examId          Int
   gpa             Float
-  totalCreditHour Float    @default(0)
+  totalCreditHour Float      @default(0)
   remarks         String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
   marks           Marks[]
 }
 

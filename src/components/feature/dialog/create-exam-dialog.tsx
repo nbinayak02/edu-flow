@@ -20,14 +20,10 @@ import { Label } from "@/components/ui/label";
 import { PlusCircle } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 
-export function CreateExamDialog({
-  onReturn,
-}: {
-  onReturn: (examData: Exam) => void;
-}) {
-    
+export function CreateExamDialog() {
   const initialState: FormState = {
     errors: {},
+    status: false,
   };
 
   const [open, setOpen] = useState(false);
@@ -38,8 +34,7 @@ export function CreateExamDialog({
   );
 
   useEffect(() => {
-    if (state.createdExam) {
-      onReturn(state.createdExam);
+    if (state.status) {
       setOpen(false);
     }
   }, [state]);

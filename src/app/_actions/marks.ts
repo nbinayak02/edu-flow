@@ -23,7 +23,7 @@ export async function AddMarks(
   formData: FormData
 ): Promise<MarksFormState> {
   const examId = Number(formData.get("examId"));
-  const studentId = Number(formData.get("studentId"));
+  const enrollmentId = Number(formData.get("enrollmentId"));
   const sclassId = Number(formData.get("sclassId"));
   const marksArray = JSON.parse(String(formData.get("marks")));
 
@@ -31,7 +31,7 @@ export async function AddMarks(
   const errors: MarksError = {};
 
   if (!examId) errors.exam = "Please select the exam.";
-  if (!studentId) errors.student = "Please select the student.";
+  if (!enrollmentId) errors.student = "Please select the student.";
 
   //counting no. of subject
   const subjectCount = await GetNumberOfSubjectsByClass(sclassId);
@@ -44,7 +44,7 @@ export async function AddMarks(
   }
 
   //stopping duplicate
-  const existingMarksheet = await GetMarksheet(studentId, examId);
+  const existingMarksheet = await GetMarksheet(enrollmentId, examId);
 
   if (existingMarksheet) {
     errors.otherError =
@@ -56,8 +56,7 @@ export async function AddMarks(
     //create marksheet
     const marksheet = await CreateMarksheet({
       examId,
-      studentId,
-      sclassId,
+      enrollmentId,
     });
 
     //store marksheet id in every marks
@@ -67,7 +66,7 @@ export async function AddMarks(
     const storedMarks = await AddStudentMarks(marksArray);
 
     //calculate grades
-    calculateGrades(storedMarks, studentId, sclassId, examId, marksheet.id);
+    calculateGrades(storedMarks, enrollmentId, sclassId, examId, marksheet.id);
   } catch (error) {
     console.error("Error: ", error);
   }

@@ -185,12 +185,13 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
               <TableBody>
                 {allMarksheet.map((marksheet) => (
                   <TableRow key={marksheet.id}>
-                    <TableCell>{marksheet.student?.name}</TableCell>
-                    <TableCell>{marksheet.sclass?.name}</TableCell>
+                    <TableCell>{marksheet.enrollment?.student?.name}</TableCell>
+                    <TableCell>{marksheet.enrollment?.sclass?.name}</TableCell>
                     <TableCell>{marksheet.exam?.name}</TableCell>
                     <TableCell className="font-bold">{marksheet.gpa}</TableCell>
                     <TableCell>
-                      {marksheet?.updatedAt && new Date(marksheet?.updatedAt).toDateString()}
+                      {marksheet?.updatedAt &&
+                        new Date(marksheet?.updatedAt).toDateString()}
                     </TableCell>
                     <TableCell>
                       <Button

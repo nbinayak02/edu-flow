@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Class } from "@/app/(system)/class/types";
 import { CardDescription } from "@/components/ui/card";
+import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 
 export default function StudentOperations({
   initialStudents,
@@ -20,26 +21,17 @@ export default function StudentOperations({
   initialStudents: Student[];
   allClasses: Class[];
 }) {
-  const [students, setStudents] = useState<Student[]>(initialStudents);
-
-  //get newly added student data
-  const handleGetStudentData = (studentData: Student) => {
-    setStudents(() => [...students, studentData]);
-  };
-
+  // console.log("Initial Students: ", initialStudents);
   return (
     <>
-      <AddStudentDialog
-        onReturn={handleGetStudentData}
-        allClasses={allClasses}
-      />
+      <AddStudentDialog allClasses={allClasses} />
       <h3 className="text-2xl font-semibold my-5">
         New Students
         <CardDescription>Students who were recently added.</CardDescription>
       </h3>
-      <Table>
+      <Table className="border-2">
         <TableHeader>
-          <TableRow>
+          <TableRow className="bg-accent *:text-center *:border-2">
             <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Class</TableHead>
@@ -48,20 +40,28 @@ export default function StudentOperations({
             <TableHead>Gurdian</TableHead>
             <TableHead>Year</TableHead>
             <TableHead>IEMIS</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {students.map((s, i) => {
+          {initialStudents.map((s, i) => {
             return (
-              <TableRow key={i}>
+              <TableRow key={i} className="text-center *:border-2">
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>{s.name}</TableCell>
-                <TableCell>{s.sclass?.name}</TableCell>
+                <TableCell>
+                  {s.enrollment ? s.enrollment[0]?.sclass?.name : ""}
+                </TableCell>
                 <TableCell>{s.address}</TableCell>
                 <TableCell>{s.contact}</TableCell>
                 <TableCell>{s.gurdian}</TableCell>
-                <TableCell>{s.year}</TableCell>
+                <TableCell>
+                  {s.enrollment ? s.enrollment[0]?.academicYear : ""}
+                </TableCell>
                 <TableCell>{s.iemis}</TableCell>
+                <TableCell>
+                  <EditDeleteOptions />
+                </TableCell>
               </TableRow>
             );
           })}

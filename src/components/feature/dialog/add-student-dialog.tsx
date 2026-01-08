@@ -30,17 +30,10 @@ import {
 import { PlusCircle } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 
-export function AddStudentDialog({
-  onReturn,
-  allClasses,
-}: {
-  onReturn: (studentData: Student) => void;
-  allClasses: Class[];
-}) {
-  const [classes, setClasses] = useState(allClasses);
-
+export function AddStudentDialog({ allClasses }: { allClasses: Class[] }) {
   const initialState: FormState = {
     errors: {},
+    success: false,
   };
 
   const [open, setOpen] = useState(false);
@@ -51,8 +44,7 @@ export function AddStudentDialog({
   );
 
   useEffect(() => {
-    if (state.newStudent) {
-      onReturn(state.newStudent);
+    if (state.success) {
       setOpen(false);
     }
   }, [state]);
@@ -83,7 +75,7 @@ export function AddStudentDialog({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Class</SelectLabel>
-                      {classes.map((c, i) => (
+                      {allClasses.map((c, i) => (
                         <SelectItem key={i} value={String(c.id)}>
                           {c.name}
                         </SelectItem>
@@ -91,9 +83,7 @@ export function AddStudentDialog({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <CardDescription className="text-rose-500">
-                  
-                </CardDescription>
+                <CardDescription className="text-rose-500"></CardDescription>
               </div>
 
               <div className="grid gap-3">
@@ -125,7 +115,7 @@ export function AddStudentDialog({
                 </CardDescription>
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="year">Year</Label>
+                <Label htmlFor="year">Academic Year</Label>
                 <Select name="year">
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select year" />
@@ -159,7 +149,7 @@ export function AddStudentDialog({
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Adding..." : "Add"}
+                {isPending ? "Adding..." : "Add Student"}
               </Button>
             </DialogFooter>
           </form>

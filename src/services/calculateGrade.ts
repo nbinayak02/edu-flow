@@ -12,7 +12,7 @@ import { UpdateGradesInMarksAction } from "@/app/_actions/marks";
 
 export async function calculateGrades(
   marks: Marks[],
-  studentId: number,
+  enrollmentId: number,
   sclassId: number,
   examId: number,
   marksheetId: number
@@ -28,8 +28,12 @@ export async function calculateGrades(
       allSubjectsBothFullMarks
     );
 
+    console.log("Obtained Marks in percent: ", obtainedMarksInPercent);
+
     // all subjects grades
     const allSubjectFinalGrades = calculateFinalGrade(obtainedMarksInPercent);
+
+    console.log("All Subject Final Grades: ", allSubjectFinalGrades);
 
     // find credit hour
     const creditHour = await GetAllSubjectCreditHourByClass(sclassId);

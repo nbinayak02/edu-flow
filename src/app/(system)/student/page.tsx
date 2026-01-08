@@ -1,11 +1,11 @@
+import { GetStudentsBySchoolId } from "@/app/_actions/student";
 import StudentOperations from "@/components/feature/student/student-operations";
 import { getSchoolId } from "@/lib/auth";
 import { GetAllClasses } from "@/lib/data/class";
-import { GetNewStudents } from "@/lib/data/student";
 
 export default async function Student() {
   const schoolId = Number(await getSchoolId());
-  const newStudents = await GetNewStudents(schoolId);
+  const newStudents = await GetStudentsBySchoolId(schoolId);
   const allClasses = await GetAllClasses(schoolId);
 
   return (

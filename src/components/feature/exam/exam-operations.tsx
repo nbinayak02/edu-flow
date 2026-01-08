@@ -10,20 +10,16 @@ export default function ExamOperations({
 }: {
   initialExams: Exam[];
 }) {
-  const [exam, setExam] = useState<Exam[]>(initialExams);
-  const handleCreateExam = (examData: Exam) => {
-    setExam(() => [...exam, examData]);
-  };
   return (
     <>
-      <CreateExamDialog onReturn={handleCreateExam} />
+      <CreateExamDialog />
       <h3 className="text-2xl font-semibold my-5">Recent Exams</h3>
       <div className="grid grid-cols-3 gap-4">
-        {exam.map((e, i) => (
+        {initialExams.map((e, i) => (
           <ExamCard
             key={i}
             examName={e.name}
-            examYear={e.year}
+            examYear={e.academicYear}
             examId={Number(e.id)}
           />
         ))}

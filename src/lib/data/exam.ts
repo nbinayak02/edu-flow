@@ -16,7 +16,7 @@ export async function CreateExam(examData: Exam) {
   const createdExam = await prisma.exam.create({
     data: {
       name: examData.name,
-      year: examData.year,
+      academicYear: examData.academicYear,
       schoolId: examData.schoolId,
     },
   });
@@ -59,7 +59,7 @@ export async function GetExamDetails(examId: number) {
 
 export async function GetExamByYear(year: number) {
   const exams = await prisma.exam.findMany({
-    where: { year: year },
+    where: { academicYear: year },
   });
   return exams;
 }

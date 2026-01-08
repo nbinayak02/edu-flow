@@ -35,7 +35,7 @@ const GradeSheet = ({
     <>
       {/* Page */}
       <div
-        className={`w-[210mm] h-[285mm] mx-auto bg-white ${inter.className}`}
+        className={`w-[210mm] h-[285mm] mx-auto bg-white ${inter.className} text-black`}
         ref={ref}
       >
         <div className="mt-10 border-[3px] border-blue-900/80 p-[1mm] h-full">
@@ -54,7 +54,7 @@ const GradeSheet = ({
                 </h1>
                 <h3 className="text-[18px]">{school.address}</h3>
                 <h2 className="text-blue-700 text-xl font-extrabold uppercase">
-                  {marksheet.exam?.name}-{marksheet.exam?.year}
+                  {marksheet.exam?.name}-{marksheet.exam?.academicYear}
                 </h2>
                 <p className="mt-5 px-4 py-1 bg-blue-700 text-white font-extrabold uppercase text-xl tracking-wide">
                   Gradesheet
@@ -67,23 +67,25 @@ const GradeSheet = ({
               <div className="font-bold">
                 Student Name:{" "}
                 <span className="font-medium text-blue-700">
-                  {marksheet.student?.name}
+                  {marksheet.enrollment?.student?.name}
                 </span>
               </div>
 
               <div className="flex justify-between font-bold mt-1">
                 <p>
                   Class:{" "}
-                  <span className="font-medium">{marksheet.sclass?.name}</span>
+                  <span className="font-medium">
+                    {marksheet.enrollment?.sclass?.name}
+                  </span>
                 </p>
                 <p>
                   Roll Number:{" "}
-                  <span className="font-medium">{marksheet.student?.id}</span>
+                  {/* <span className="font-medium">{marksheet.student?.id}</span> */}
                 </p>
                 <p>
-                  Section:{" "}
+                  IEMIS:{" "}
                   <span className="font-medium">
-                    {marksheet.student?.iemis}
+                    {marksheet.enrollment?.student?.iemis}
                   </span>
                 </p>
               </div>

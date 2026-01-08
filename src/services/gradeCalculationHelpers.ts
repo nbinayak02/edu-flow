@@ -43,8 +43,8 @@ export function calculatePercentage(
     // push to returnArray
     returnArray.push({
       subjectId: om.subjectId,
-      theoryPercent: percentTh,
-      practicalPercent: percentPr,
+      theoryPercent: Number(percentTh.toFixed(2)),
+      practicalPercent: Number(percentPr.toFixed(2)),
     });
   });
 
@@ -117,7 +117,7 @@ export function calculateGPA(
     return crh * fg.finalGradePoint;
   });
 
-  console.log("Products: ", products);
+  // console.log("Products: ", products);
 
   // find sum of all products
   const sum = products.reduce(
@@ -134,7 +134,7 @@ export function calculateGPA(
   // find gpa
   const gpa = sum / totalCrh;
 
-  console.log(`GPA: ${gpa} Total CH: ${totalCrh} Total Marks: ${sum}`);
+  // console.log(`GPA: ${gpa} Total CH: ${totalCrh} Total Marks: ${sum}`);
 
   return { gpa, totalCrh };
 }

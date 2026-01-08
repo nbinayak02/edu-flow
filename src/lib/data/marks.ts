@@ -1,13 +1,12 @@
 import { Marks, Marksheet } from "@/app/(system)/marks/types";
-import  prisma  from "../prisma";
+import prisma from "../prisma";
 
 import { FinalGradeType } from "../types";
 
 export async function CreateMarksheet(data: Marksheet) {
   const msheet = await prisma.marksheet.create({
     data: {
-      studentId: data.studentId,
-      sclassId: data.sclassId,
+      enrollmentId: data.enrollmentId,
       examId: data.examId,
       gpa: 0,
       remarks: "",
@@ -23,10 +22,12 @@ export async function AddStudentMarks(data: Marks[]) {
   return mrks;
 }
 
-export async function GetMarksheet(studentId: number, examId: number) {
+// TODO: make enrollment id to be used instead of student id
+
+export async function GetMarksheet(enrollmentId: number, examId: number) {
   const marksheet = await prisma.marksheet.findFirst({
     where: {
-      studentId,
+      enrollmentId: enrollmentId,
       examId,
     },
   });
@@ -57,12 +58,19 @@ export async function GetAllMarksheeetByClassAndExam(
 ) {
   const marksheets = await prisma.marksheet.findMany({
     where: {
-      sclassId,
+      enrollment: {
+        sclassId: sclassId,
+      },
       examId,
     },
     include: {
-      sclass: true,
-      student: true,
+      enrollment: {
+        include: {
+          student: true,
+          sclass: true,
+        },
+
+      },
       exam: true,
     },
   });

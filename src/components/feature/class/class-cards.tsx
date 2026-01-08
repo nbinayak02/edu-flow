@@ -1,61 +1,50 @@
 "use client";
 import { DeleteFormState } from "@/app/(system)/class/types";
 import { DeleteClassAction } from "@/app/_actions/class";
+import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Edit2, Ellipsis, Trash2 } from "lucide-react";
 import { useActionState, useState } from "react";
 
 export default function ClassCard({
   className,
   classId,
-  onReturn,
 }: {
   className: string;
   classId: number;
-  onReturn: (classId: number) => void;
 }) {
-  const initialDeleteState: DeleteFormState = {
-    message: {},
-  };
-
-  const [mouseOver, setMouseOver] = useState(false);
-  // const [deleteState, formDeleteAction, isDeletePending] = useActionState(
-  //   DeleteClassAction,
-  //   initialDeleteState
-  // );
   return (
-    <Card
-      onMouseOver={() => setMouseOver(true)}
-      onMouseOut={() => setMouseOver(false)}
-    >
+    <Card>
       <CardHeader>
         Class {className}
-        <CardAction className="space-x-3">
-          <form>
-            <input type="hidden" value={classId} />
-            <Button
-              type="submit"
-              variant={"outline"}
-              className={`${mouseOver ? `inline-flex` : `hidden`}`}
-            >
-              Edit
-            </Button>
-          </form>
-          <form
-          //  action={formDeleteAction}
-           >
-            <Input type="hidden" name="id" value={classId}/>
-            <Button
-              type="submit"
-              variant={"destructive"}
-              className={`${mouseOver ? `inline-flex` : `hidden`}`}
-            >
-              Delete
-            </Button>
-          </form>
+        <CardAction>
+          <EditDeleteOptions />
         </CardAction>
       </CardHeader>
+      <CardContent className="flex justify-evenly">
+        <CardDescription className="font-semibold">
+          Students: 100
+        </CardDescription>
+        <CardDescription className="font-semibold">
+          Subjects: 100
+        </CardDescription>
+      </CardContent>
     </Card>
   );
 }
