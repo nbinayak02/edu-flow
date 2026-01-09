@@ -29,6 +29,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="dark">
+      <meta name="apple-mobile-web-app-title" content="EduFlow" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

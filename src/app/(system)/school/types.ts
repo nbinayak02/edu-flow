@@ -7,6 +7,7 @@ export interface School {
   iemis: string;
   estd: number;
   userId?: number;
+  logoPublicId?: string;
 }
 
 //partial makes all field optional
@@ -23,4 +24,5 @@ export type Error = {
 
 export type FormState = {
   errors: Error;
+  status: boolean;
 };
