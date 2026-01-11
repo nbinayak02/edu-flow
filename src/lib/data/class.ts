@@ -11,7 +11,7 @@ export async function CreateNewClass(schoolId: number, clss: Class) {
   return newClass;
 }
 
-export async function GetAllClasses(schoolId: number) {
+export async function getAllClasses(schoolId: number) {
   const allClasses = await prisma.sclass.findMany({
     where: {
       schoolId: schoolId,

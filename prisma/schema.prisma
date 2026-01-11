@@ -60,6 +60,7 @@ model Student {
   address    String
   contact    String
   gurdian    String
+  rollNumber Int
   iemis      String       @unique
   createdAt  DateTime     @default(now())
   enrollment Enrollment[]

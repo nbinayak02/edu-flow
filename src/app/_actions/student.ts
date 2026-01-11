@@ -1,16 +1,15 @@
 "use server";
 import {
   AddStudentAndEnroll,
+  assignRollNumber,
+  getAllStudentByClassAndYear,
   GetNewStudents,
-  GetStudentNamesByClassAndYear,
 } from "@/lib/data/student";
 import { Student, FormState, StudentError } from "../(system)/student/types";
 import {
-  FetchedDataType,
   StudentSearchError,
   StudentSearchFormState,
 } from "../(system)/marks/types";
-import { GetSubjectNamesByClass, GetSubjectsByClass } from "@/lib/data/subject";
 import { revalidatePath } from "next/cache";
 
 export async function AddStudentAction(
@@ -45,6 +44,7 @@ export async function AddStudentAction(
       contact,
       gurdian,
       iemis,
+      rollNumber: 0,
     };
 
     await AddStudentAndEnroll(studentData, sclassId, academicYear);
@@ -57,36 +57,38 @@ export async function AddStudentAction(
 }
 
 export async function SearchStudentsAction(
-  prevState: StudentSearchFormState,
+  _: unknown,
   formData: FormData
 ): Promise<StudentSearchFormState> {
   const sclassId = Number(formData.get("classId"));
-  const examYear = Number(formData.get("year"));
+  const academicYear = Number(formData.get("year"));
 
   const errors: StudentSearchError = {};
 
   if (!sclassId) errors.class = "Please select a class.";
-  if (!examYear) errors.year = "Please select a year.";
+  if (!academicYear) errors.year = "Please select a year.";
 
   if (Object.entries(errors).length > 0) {
-    return { errors, data: { students: [], subjects: [] } };
+    return { errors, success: false };
   }
 
   try {
     //get data from db
-    const promise1 = GetStudentNamesByClassAndYear(sclassId, examYear);
-    const promise2 = GetSubjectNamesByClass(sclassId);
-
-    //wait for data
-    const [students, subjects] = await Promise.all([promise1, promise2]);
-
-    return { errors: {}, data: { students: students, subjects: subjects } };
+    const data = await getAllStudentByClassAndYear(sclassId, academicYear);
+    return { data, success: true };
   } catch (error) {
     if (error instanceof Error && error.cause === 404) {
-      errors.otherErrors = error.message;
+      return {
+        errors: { otherErrors: error.message },
+        success: true,
+        data: [],
+      };
     }
     console.log("Error in SearchStudentAction: ", error);
-    return { errors, data: { students: [], subjects: [] } };
+    return {
+      errors: { otherErrors: "Something went wrong! Please try again later." },
+      success: false,
+    };
   }
 }
 
@@ -97,5 +99,39 @@ export async function GetStudentsBySchoolId(schoolId: number) {
   } catch (error) {
     console.log("Error on GetStudentsBySchoolId: ", error);
     return [];
+  }
+}
+
+export async function AssignRollNumbers(
+  sclassId: number | undefined,
+  academicYear: number | undefined
+) {
+  // console.log("Assign roll number reached.");
+  try {
+    if (!sclassId || !academicYear) {
+      return false;
+    }
+
+    // get all students
+    const students = await getAllStudentByClassAndYear(sclassId, academicYear);
+
+    // sort them alphabetically
+    students.sort((stu1, stu2) => stu1.name.localeCompare(stu2.name));
+
+    // console.log("Student sorted alphabetically: ", students);
+
+    // make update payload - in sorted order
+    const updatePayload = students.map((stu, index) => ({
+      studentId: stu.id,
+      index,
+    }));
+
+    // console.log("Update payload is: ", updatePayload);
+    // make db call
+    await assignRollNumber(updatePayload);
+    return true;
+  } catch (error) {
+    console.log("Error at AssignRollNumbers: ", error);
+    return false;
   }
 }

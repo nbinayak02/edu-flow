@@ -1,6 +1,7 @@
+import { GetAllClasses } from "@/app/_actions/class";
+import ErrorBox from "@/components/custom-components/errorBox";
 import MarksOperations from "@/components/marks/marks-operations";
 import { getSchoolId } from "@/lib/auth";
-import { GetAllClasses } from "@/lib/data/class";
 
 export default async function MarksPage() {
   const schoolId = Number(await getSchoolId());
@@ -9,8 +10,11 @@ export default async function MarksPage() {
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-3">Marks</h1>
-      <MarksOperations classes={allClasses} />
-     
+      {allClasses ? (
+        <MarksOperations classes={allClasses} />
+      ) : (
+        <ErrorBox />
+      )}
     </section>
   );
 }

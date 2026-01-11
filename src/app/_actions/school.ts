@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { Error, FormState } from "../(system)/school/types";
 import { CreateOrUpdateSchool, findSchoolByUser } from "@/lib/data/school";
 import { getUser } from "@/lib/auth";

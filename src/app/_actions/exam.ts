@@ -13,6 +13,7 @@ import {
 import {
   AddExamDetails,
   CreateExam,
+  GetAllExams,
   GetExamByYear,
   GetExamDetails,
 } from "@/lib/data/exam";
@@ -114,4 +115,14 @@ export async function GetExamDetailsAction(examId: number) {
 export async function GetExamByYearAction(year: number) {
   const exams = await GetExamByYear(year);
   return exams;
+}
+
+export async function GetAllExamAction(schoolId: number) {
+  try {
+    const exam = await GetAllExams(schoolId);
+    return exam;
+  } catch (error) {
+    console.log("Error in GetAllExamAction: ", error);
+    return null;
+  }
 }

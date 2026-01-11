@@ -40,6 +40,7 @@ import MarksInputField from "./marks-entry-field";
 import { AddMarks } from "@/app/_actions/marks";
 import ErrorDialog from "../feature/dialog/error-dialog-box";
 import SuccessDialog from "../feature/dialog/success-dialog-box";
+import { Student } from "@/app/(system)/student/types";
 
 export default function MarksInputForm({
   students,
@@ -47,7 +48,7 @@ export default function MarksInputForm({
   exams,
   classId,
 }: {
-  students: StudentSearchReturn[];
+  students: Student[];
   subjects: SubjectSearchReturn[];
   exams: Exam[] | undefined;
   classId: number;

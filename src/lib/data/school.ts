@@ -22,7 +22,6 @@ export async function CreateOrUpdateSchool(userId: number, data: School) {
       contact: data.contact,
       iemis: data.iemis,
       estd: data.estd,
-      logoPublicId: data.logoPublicId,
     },
     create: {
       name: data.name,
@@ -32,7 +31,6 @@ export async function CreateOrUpdateSchool(userId: number, data: School) {
       iemis: data.iemis,
       estd: data.estd,
       userId: userId,
-      logoPublicId: data.logoPublicId,
     },
   });
 }

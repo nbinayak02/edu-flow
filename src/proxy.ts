@@ -37,7 +37,7 @@ export const config = {
   matcher: [
     "/dashboard",
     "/school",
-    "/student",
+    "/student/:path*",
     "/class",
     "/exam/:path*",
     "/subject",

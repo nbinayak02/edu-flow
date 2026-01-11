@@ -1,6 +1,7 @@
+import { GetAllClasses } from "@/app/_actions/class";
+import ErrorBox from "@/components/custom-components/errorBox";
 import MarksheetOperation from "@/components/feature/marksheet/marksheet-operations";
 import { getSchoolId } from "@/lib/auth";
-import { GetAllClasses } from "@/lib/data/class";
 
 export default async function Marksheet() {
   const schoolId = Number(await getSchoolId());
@@ -8,7 +9,7 @@ export default async function Marksheet() {
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-3">Marksheet</h1>
-      <MarksheetOperation classes={allClasses} />
+      {allClasses ? <MarksheetOperation classes={allClasses} /> : <ErrorBox />}
     </section>
   );
 }

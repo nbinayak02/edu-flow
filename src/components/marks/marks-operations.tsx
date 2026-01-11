@@ -1,142 +1,68 @@
 "use client";
 
 import { Class } from "@/app/(system)/class/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useActionState, useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Exam } from "@/app/(system)/exam/types";
 import { GetExamByYearAction } from "@/app/_actions/exam";
 import {
-  StudentSearchFormState,
   StudentSearchReturn,
   SubjectSearchReturn,
 } from "@/app/(system)/marks/types";
-import { SearchStudentsAction } from "@/app/_actions/student";
+
 import MarksInputForm from "./marks-input-form";
+import SearchStudent from "../feature/student/search-student";
+import { GetSubjectByClassAction } from "@/app/_actions/subject";
+import { Student } from "@/app/(system)/student/types";
 
-export default function MarksOperations({ classes }: { classes: Class[] }) {
-  const [year, setYear] = useState<number>(0);
+export default function MarksOperations({
+  classes = [],
+}: {
+  classes: Class[];
+}) {
   const [exams, setExams] = useState<Exam[]>();
-  const [classId, setClassId] = useState<number>(0);
-  const [students, setStudents] = useState<StudentSearchReturn[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
   const [subjects, setSubjects] = useState<SubjectSearchReturn[]>([]);
+  const [classId, setClassId] = useState<number>(0);
+  const [year, setYear] = useState<number>(0);
 
-  const initialState: StudentSearchFormState = {
-    errors: {},
-    data: {
-      students: [],
-      subjects: [],
-    },
+  const handleSearchStudent = (
+    students: Student[],
+    selectedClass: number,
+    selectedYear: number
+  ) => {
+    console.log("Students: ", students);
+    setStudents(students);
+    setClassId(selectedClass);
+    setYear(selectedYear);
   };
-
-  const [state, formAction, isPending] = useActionState(
-    SearchStudentsAction,
-    initialState
-  );
 
   useEffect(() => {
     fetchExam();
+    fetchSubject();
   }, [year]);
-
-  useEffect(() => {
-    console.log("State is: ", state);
-    setStudents(state?.data?.students);
-    setSubjects(state?.data?.subjects);
-  }, [state]);
 
   const fetchExam = async () => {
     const exams = await GetExamByYearAction(Number(year));
     setExams(exams);
   };
+
+  const fetchSubject = async () => {
+    const subjects = await GetSubjectByClassAction(Number(classId));
+    if (subjects) setSubjects(subjects);
+  };
   return (
     <div>
-      {state?.errors?.otherErrors && (
-        <div className="text-rose-500 p-5">{state?.errors?.otherErrors}</div>
-      )}
-      <Card className="w-fit mb-5">
-        <CardHeader>
-          <CardTitle>Search Students</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="flex flex-row gap-5" action={formAction}>
-            <div className="grid gap-3">
-              <Label htmlFor="cname">Class</Label>
-              <Select onValueChange={(value) => setClassId(Number(value))}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a class" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Classes</SelectLabel>
-                    {classes.map((c) => (
-                      <SelectItem key={c.id} value={String(c.id)}>
-                        Class {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <input type="hidden" name="classId" value={String(classId)} />
-              <CardDescription className="text-rose-500">
-                {state.errors?.class}
-              </CardDescription>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="cname">Year</Label>
-              <Select
-                onValueChange={(selectedYear) => setYear(Number(selectedYear))}
-                name="year"
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Year</SelectLabel>
-                    <SelectItem value="2082">B.S. 2082</SelectItem>
-                    <SelectItem value="2083">B.S. 2083</SelectItem>
-                    <SelectItem value="2084">B.S. 2084</SelectItem>
-                    <SelectItem value="2085">B.S. 2085</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <CardDescription className="text-rose-500">
-                {state?.errors?.year}
-              </CardDescription>
-            </div>
-
-            <div className="mt-6">
-              <Button className="w-50" disabled={isPending}>
-                {isPending ? "Searching..." : "Search"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-
+      <SearchStudent classes={classes} onSuccess={handleSearchStudent} />
       {/* //render form */}
-      <MarksInputForm
-        classId={classId}
-        students={students}
-        subjects={subjects}
-        exams={exams}
-      />
+      {students && students.length > 0 && subjects.length > 0 && (
+        <MarksInputForm
+          classId={classId}
+          students={students}
+          subjects={subjects}
+          exams={exams}
+        />
+      )}
     </div>
   );
 }
