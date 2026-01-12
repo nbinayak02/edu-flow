@@ -2,6 +2,7 @@ import { Marks, Marksheet } from "@/app/(system)/marks/types";
 import prisma from "../prisma";
 
 import { FinalGradeType } from "../types";
+import { Prisma } from "@prisma/client";
 
 export async function CreateMarksheet(data: Marksheet) {
   const msheet = await prisma.marksheet.create({
@@ -69,7 +70,6 @@ export async function GetAllMarksheeetByClassAndExam(
           student: true,
           sclass: true,
         },
-
       },
       exam: true,
     },
@@ -81,7 +81,7 @@ export async function UpdateGradesInMarks(
   marksheetId: number,
   updateMarksPayload: FinalGradeType[]
 ) {
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     // begin the transaction
 
     // update parallely

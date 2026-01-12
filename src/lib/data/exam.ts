@@ -1,6 +1,5 @@
 import { ConfigureExamDbType, Exam } from "@/app/(system)/exam/types";
 import prisma from "../prisma";
-import { Prisma } from "@prisma/client";
 
 export async function GetAllExams(schoolId: number) {
   const exams = await prisma.exam.findMany({
@@ -36,12 +35,7 @@ export async function AddExamDetails(data: ConfigureExamDbType[]) {
     }
     return examDetails;
   } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      return "The subject detail(s) already exists.";
-    }
+    console.log("Error occured at AddExamDetails: ", error);
     return "An unknown error occured. Please try again later!";
   }
 }
