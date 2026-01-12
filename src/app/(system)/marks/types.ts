@@ -1,7 +1,11 @@
-import { Class } from "../class/types";
 import { Exam } from "../exam/types";
-import { Enrollment, Student, StudentSearch } from "../student/types";
+import { Enrollment, StudentSearch } from "../student/types";
 import { Subject } from "../subject/types";
+
+export type SubjectSearchReturn = {
+  id: number;
+  name: string;
+};
 
 export type StudentSearchError = {
   class?: string;

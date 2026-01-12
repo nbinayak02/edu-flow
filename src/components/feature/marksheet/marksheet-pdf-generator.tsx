@@ -180,7 +180,7 @@ const GradeSheet = ({
               </div>
 
               <p className="text-center mt-3">
-                Date of Issue: <b>2082-05-02</b>
+                Date of Issue: <b>{marksheet.exam?.resultDate}</b>
               </p>
             </div>
           </div>

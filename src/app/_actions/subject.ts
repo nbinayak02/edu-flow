@@ -4,13 +4,10 @@ import {
   GetAllSubjects,
   GetSubjectsByClass,
 } from "@/lib/data/subject";
-import { Error, FormState, Subject } from "../(system)/subject/types";
+import { Error, Subject } from "../(system)/subject/types";
 
-export async function CreateNewSubjectAction(
-  prevState: FormState,
-  formData: FormData
-) {
-  console.log("Form submitted");
+export async function CreateNewSubjectAction(_: unknown, formData: FormData) {
+  // console.log("Form submitted");
 
   const name = formData.get("name") as string;
   const credit_hour = Number(formData.get("creditHour"));

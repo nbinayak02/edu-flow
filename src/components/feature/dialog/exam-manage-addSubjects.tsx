@@ -66,7 +66,7 @@ export function AddSubjectMarksDialog({
       const fetch = async () => {
         setLoading(true);
         const subjects = await GetSubjectByClassAction(Number(selectedClass));
-        setSubjectList(subjects);
+        if (subjects) setSubjectList(subjects);
         setLoading(false);
       };
 
@@ -75,7 +75,7 @@ export function AddSubjectMarksDialog({
   }, [selectedClass]);
 
   useEffect(() => {
-    console.log("The state is: ", state);
+    // console.log("The state is: ", state);
     onReturn(state.data);
     if (Object.entries(state?.errors).length === 0) {
       setOpen(false);

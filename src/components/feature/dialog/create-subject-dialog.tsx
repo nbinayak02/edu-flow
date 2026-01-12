@@ -40,7 +40,7 @@ export function CreateSubjectDialog({
   };
 
   const [open, setOpen] = useState(false);
-  const [classes, setClass] = useState<Class[]>(allClasses);
+
 
   const [state, formAction, isPending] = useActionState(
     CreateNewSubjectAction,
@@ -87,7 +87,7 @@ export function CreateSubjectDialog({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Class</SelectLabel>
-                    {classes.map((c, i) => (
+                    {allClasses.map((c, i) => (
                       <SelectItem key={i} value={String(c.id)}>
                         {c.name}
                       </SelectItem>

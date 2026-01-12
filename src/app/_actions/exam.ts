@@ -57,7 +57,7 @@ export async function AddExamDetailsAction(
   prevState: ConfigureExamFormState,
   formData: FormData
 ): Promise<ConfigureExamFormState> {
-  console.log("Form data: ", formData);
+  // console.log("Form data: ", formData);
   const classId = Number(formData.get("classId"));
   const subjects = formData.get("subjects")?.toString().split(",") ?? [];
   const thfm = Number(formData.get("thfm"));

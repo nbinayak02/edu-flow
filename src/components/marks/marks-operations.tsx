@@ -9,11 +9,8 @@ import { GetExamByYearAction } from "@/app/_actions/exam";
 import MarksInputForm from "./marks-input-form";
 import SearchStudent from "../feature/student/search-student";
 import { GetSubjectByClassAction } from "@/app/_actions/subject";
-import { Student } from "@/app/(system)/student/types";
-import { Subject } from "@/app/(system)/subject/types";
-import { Button } from "../ui/button";
-import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { StudentSearch } from "@/app/(system)/student/types";
+import { SubjectSearchReturn } from "@/app/(system)/marks/types";
 
 export default function MarksOperations({
   classes = [],
@@ -21,14 +18,13 @@ export default function MarksOperations({
   classes: Class[];
 }) {
   const [exams, setExams] = useState<Exam[]>();
-  const [students, setStudents] = useState<Student[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [students, setStudents] = useState<StudentSearch[]>([]);
+  const [subjects, setSubjects] = useState<SubjectSearchReturn[]>([]);
   const [classId, setClassId] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-  const router = useRouter();
 
   const handleSearchStudent = (
-    students: Student[],
+    students: StudentSearch[],
     selectedClass: number,
     selectedYear: number
   ) => {
