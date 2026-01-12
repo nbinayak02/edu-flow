@@ -5,7 +5,12 @@ import {
   getAllStudentByClassAndYear,
   GetNewStudents,
 } from "@/lib/data/student";
-import { Student, FormState, StudentError } from "../(system)/student/types";
+import {
+  Student,
+  FormState,
+  StudentError,
+  Enrollment,
+} from "../(system)/student/types";
 import {
   StudentSearchError,
   StudentSearchFormState,
@@ -102,6 +107,18 @@ export async function GetStudentsBySchoolId(schoolId: number) {
   }
 }
 
+// define type
+type StudentType = {
+  id: number;
+  name: string;
+  address: string;
+  contact: string;
+  gurdian: string;
+  iemis: string;
+  rollNumber: number;
+  enrollment: Enrollment[];
+};
+
 export async function AssignRollNumbers(
   sclassId: number | undefined,
   academicYear: number | undefined
@@ -116,12 +133,14 @@ export async function AssignRollNumbers(
     const students = await getAllStudentByClassAndYear(sclassId, academicYear);
 
     // sort them alphabetically
-    students.sort((stu1, stu2) => stu1.name.localeCompare(stu2.name));
+    students.sort((stu1: StudentType, stu2: StudentType) =>
+      stu1.name.localeCompare(stu2.name)
+    );
 
     // console.log("Student sorted alphabetically: ", students);
 
     // make update payload - in sorted order
-    const updatePayload = students.map((stu, index) => ({
+    const updatePayload = students.map((stu: StudentType, index) => ({
       studentId: stu.id,
       index,
     }));
