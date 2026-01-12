@@ -116,7 +116,7 @@ export async function AssignRollNumbers(
     const students = await getAllStudentByClassAndYear(sclassId, academicYear);
 
     // sort them alphabetically
-    students.sort((stu1, stu2) => stu1.name.localeCompare(stu2.name));
+    students.sort((stu1:Student, stu2:Student) => stu1.name.localeCompare(stu2.name));
 
     // console.log("Student sorted alphabetically: ", students);
 
