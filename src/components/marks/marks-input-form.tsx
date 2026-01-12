@@ -18,7 +18,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { ChevronsUpDown } from "lucide-react";
 import {
   Command,
@@ -83,7 +83,9 @@ export default function MarksInputForm({
     if (marksObject.length === subjects.length) {
       const payloadString = JSON.stringify(marksObject);
       formData.append("marks", payloadString);
-      formAction(formData);
+      startTransition(async () => {
+        formAction(formData);
+      });
       setMarksObject([]);
     } else {
       state.errors.otherError = "Please input all marks.";

@@ -20,9 +20,10 @@ export type Error = {
   contact?: string;
   iemis?:string;
   estd?:string;
+  otherError?: string;
 };
 
 export type FormState = {
   errors: Error;
-  status: boolean;
+  success: boolean;
 };

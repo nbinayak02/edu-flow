@@ -10,27 +10,38 @@ export async function findSchoolByUser(userId: number) {
   return sch;
 }
 
-export async function CreateOrUpdateSchool(userId: number, data: School) {
-  await prisma.school.upsert({
+export async function updateSchool(data: School) {
+  const school = await prisma.school.update({
     where: {
-      userId: userId,
+      userId: data.userId,
     },
-    update: {
-      name: data.name,
+    data: {
       address: data.address,
-      email: data.email,
       contact: data.contact,
-      iemis: data.iemis,
+      email: data.email,
       estd: data.estd,
-    },
-    create: {
+      iemis: data.iemis,
       name: data.name,
-      address: data.address,
-      email: data.email,
-      contact: data.contact,
-      iemis: data.iemis,
-      estd: data.estd,
-      userId: userId,
+      logoPublicId: data.logoPublicId ?? "eduflow_school_default_logo",
     },
   });
+
+  return school;
+}
+
+export async function createSchool(userId: number, data: School) {
+  const school = await prisma.school.create({
+    data: {
+      name: data.name,
+      address: data.address,
+      email: data.email,
+      contact: data.contact,
+      iemis: data.iemis,
+      estd: data.estd,
+      userId: userId,
+      logoPublicId: data.logoPublicId ?? "eduflow_school_default_logo",
+    },
+  });
+
+  return school;
 }

@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Edit } from "lucide-react";
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 
 type UpdateDialogProps = {
   schoolData: Partial<School> | School | null;
@@ -24,7 +24,7 @@ type UpdateDialogProps = {
 export function UpdateDialog({ schoolData }: UpdateDialogProps) {
   const initialState: FormState = {
     errors: {},
-    status: false,
+    success: false,
   };
 
   const [state, formAction, isPending] = useActionState(
@@ -57,7 +57,9 @@ export function UpdateDialog({ schoolData }: UpdateDialogProps) {
     }
 
     // call server action
-    formAction(formData);
+    startTransition(async () => {
+      formAction(formData);
+    });
   };
 
   const uploadImage = async (url: string, formData: FormData) => {
@@ -76,7 +78,7 @@ export function UpdateDialog({ schoolData }: UpdateDialogProps) {
   };
 
   useEffect(() => {
-    if (state.status) {
+    if (state.success) {
       setOpen(false);
     }
   }, [state]);

@@ -1,7 +1,11 @@
 "use server";
 
-import { Error, FormState } from "../(system)/school/types";
-import { CreateOrUpdateSchool, findSchoolByUser } from "@/lib/data/school";
+import { Error, FormState, School } from "../(system)/school/types";
+import {
+  createSchool,
+  findSchoolByUser,
+  updateSchool,
+} from "@/lib/data/school";
 import { getUser } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
@@ -28,21 +32,43 @@ export async function UpdateSchoolAction(
   if (!estd) errors.estd = "Eastablished year is required";
 
   if (Object.keys(errors).length > 0) {
-    return { errors, status: false };
+    return { errors, success: false };
   }
 
-  await CreateOrUpdateSchool(user.id, {
-    name,
+  const data: School = {
     address,
-    email,
     contact,
-    iemis,
+    email,
     estd,
+    iemis,
+    name,
     logoPublicId,
-  });
+    userId: user.id,
+  };
 
-  revalidatePath("/school");
-  return { errors, status: true };
+  try {
+    // find if school is already created by user
+
+    const existingSchool = await findSchoolByUser(user.id);
+
+    if (existingSchool) {
+      // update
+      await updateSchool(data);
+      revalidatePath("/school");
+      return { errors: {}, success: true };
+    } else {
+      // create
+      await createSchool(user.id, data);
+      revalidatePath("/school");
+      return { errors: {}, success: true };
+    }
+  } catch (error) {
+    console.log("Error in CreateOrUpdateSchoolAction: ", error);
+    return {
+      errors: { otherError: "Something went wrong! Please try again later." },
+      success: false,
+    };
+  }
 }
 
 export async function GetSchoolDetails(userId: number) {
