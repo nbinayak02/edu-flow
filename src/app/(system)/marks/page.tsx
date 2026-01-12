@@ -9,12 +9,10 @@ export default async function MarksPage() {
 
   return (
     <section>
-      <h1 className="text-2xl font-semibold mb-3">Marks</h1>
-      {allClasses ? (
-        <MarksOperations classes={allClasses} />
-      ) : (
-        <ErrorBox />
-      )}
+      <h1 className="text-2xl font-semibold">Marks</h1>
+      <p className=" text-muted-foreground mb-5">Save/View Marks</p>
+
+      {allClasses ? <MarksOperations classes={allClasses} /> : <ErrorBox />}
     </section>
   );
 }

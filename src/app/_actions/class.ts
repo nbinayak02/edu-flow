@@ -4,7 +4,7 @@ import { Class, Error, FormState } from "../(system)/class/types";
 import { getSchoolId } from "@/lib/auth";
 
 export async function CreateNewClassAction(
-  prevState: FormState,
+  _: unknown,
   formData: FormData
 ) {
   console.log("Form submitted");

@@ -41,7 +41,7 @@ export const config = {
     "/class",
     "/exam/:path*",
     "/subject",
-    "/marks",
+    "/marks/:path*",
     "/gradesheet",
   ],
 };

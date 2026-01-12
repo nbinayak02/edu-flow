@@ -1,6 +1,5 @@
 "use client";
-import { DeleteFormState } from "@/app/(system)/class/types";
-import { DeleteClassAction } from "@/app/_actions/class";
+
 import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,17 +9,6 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Edit2, Ellipsis, Trash2 } from "lucide-react";
-import { useActionState, useState } from "react";
 
 export default function ClassCard({
   className,
@@ -33,18 +21,19 @@ export default function ClassCard({
     <Card>
       <CardHeader>
         Class {className}
-        <CardAction>
+        <CardAction className="space-x-10">
+          {/* <Button variant={"secondary"}>Assign Subjects</Button> */}
           <EditDeleteOptions />
         </CardAction>
       </CardHeader>
-      <CardContent className="flex justify-evenly">
+      {/* <CardContent className="flex justify-evenly">
         <CardDescription className="font-semibold">
           Students: 100
         </CardDescription>
         <CardDescription className="font-semibold">
           Subjects: 100
         </CardDescription>
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 }

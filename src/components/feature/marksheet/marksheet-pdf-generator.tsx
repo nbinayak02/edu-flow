@@ -85,7 +85,9 @@ const GradeSheet = ({
                 </p>
                 <p>
                   Roll Number:{" "}
-                  {/* <span className="font-medium">{marksheet.student?.id}</span> */}
+                  <span className="font-medium">
+                    {marksheet.enrollment?.student?.rollNumber}
+                  </span>
                 </p>
                 <p>
                   Student IEMIS No. :{" "}

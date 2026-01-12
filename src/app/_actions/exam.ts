@@ -25,6 +25,7 @@ export async function CreateExamAction(
 ): Promise<FormState> {
   const name = formData.get("name") as string;
   const academicYear = Number(formData.get("year"));
+  const resultDate = formData.get("rdate") as string;
 
   const errors: Error = {};
 
@@ -41,6 +42,7 @@ export async function CreateExamAction(
       name,
       academicYear,
       schoolId,
+      resultDate
     };
     await CreateExam(examData);
     revalidatePath("/exam");

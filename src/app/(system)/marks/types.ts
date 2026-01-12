@@ -61,6 +61,8 @@ export type Marks = {
   subjectId: number;
   theoryMarks: number;
   practicalMarks: number;
+  marksheet?: Marksheet;
+  subject?: Subject;
 };
 
 export type UpdateGradeInMarksType = {
@@ -79,4 +81,16 @@ export type MarksInMarksheet = {
   finalGrade: string;
   gradePoint: number;
   subject?: Subject;
+};
+
+type MarksSearchError = {
+  sclass?: string;
+  year?: string;
+  otherErrors?: string;
+};
+
+export type MarksSearch = {
+  success: boolean;
+  data?: Marks;
+  error?: MarksSearchError;
 };

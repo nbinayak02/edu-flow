@@ -60,6 +60,7 @@ export async function GetNewStudents(schoolId: number) {
       iemis: true,
       gurdian: true,
       createdAt: true,
+      rollNumber: true,
     },
     orderBy: {
       createdAt: "desc",

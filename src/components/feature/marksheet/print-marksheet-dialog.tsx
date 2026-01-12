@@ -15,11 +15,9 @@ import {
 import { useUserContext } from "@/context/user-context";
 import { Printer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import PdfGenerator from "./marksheet-pdf-generator";
 import { useReactToPrint } from "react-to-print";
 import GradeSheet from "./marksheet-pdf-generator";
 import { GetMarks } from "@/app/_actions/marks";
-import { Marks } from "@prisma/client";
 
 export default function PrintMarksheet({
   marksheet,
