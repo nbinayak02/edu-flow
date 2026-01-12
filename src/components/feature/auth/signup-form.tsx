@@ -22,6 +22,8 @@ import { useActionState, useState } from "react";
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const initialState: FormState = {
     errors: {},
+    status: false,
+    userId: null,
   };
 
   const [state, formAction, isPending] = useActionState(
@@ -120,7 +122,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   Sign Up
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <Link href="/auth/login">Log in</Link>
+                  Already have an account?{" "}
+                  <Link href="/auth/login">Log in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

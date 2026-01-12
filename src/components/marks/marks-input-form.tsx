@@ -3,16 +3,9 @@ import { Exam } from "@/app/(system)/exam/types";
 import {
   MarksFormState,
   MarksObject,
-  StudentSearchReturn,
   SubjectSearchReturn,
 } from "@/app/(system)/marks/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -23,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useActionState, useEffect, useState } from "react";
@@ -40,7 +32,7 @@ import MarksInputField from "./marks-entry-field";
 import { AddMarks } from "@/app/_actions/marks";
 import ErrorDialog from "../feature/dialog/error-dialog-box";
 import SuccessDialog from "../feature/dialog/success-dialog-box";
-import { Student } from "@/app/(system)/student/types";
+import { StudentSearch } from "@/app/(system)/student/types";
 
 export default function MarksInputForm({
   students,
@@ -48,7 +40,7 @@ export default function MarksInputForm({
   exams,
   classId,
 }: {
-  students: Student[];
+  students: StudentSearch[];
   subjects: SubjectSearchReturn[];
   exams: Exam[] | undefined;
   classId: number;

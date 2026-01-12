@@ -11,8 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Class } from "@/app/(system)/class/types";
-import { Button } from "@/components/ui/button";
-import { Edit2, Trash2 } from "lucide-react";
 import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 
 export default function SubjectOperations({

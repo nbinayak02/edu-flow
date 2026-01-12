@@ -65,7 +65,7 @@ export default function MarksheetOperation({ classes }: { classes: Class[] }) {
   }, [selectedYear]);
 
   useEffect(() => {
-    console.log(state);
+    // console.log(state);
     if (state.data) {
       setAllMarksheet(state.data);
     }
