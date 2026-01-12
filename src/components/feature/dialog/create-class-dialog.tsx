@@ -35,9 +35,9 @@ export function CreateClassDialog({
   );
 
   useEffect(() => {
-    console.log("State changed, use effect running. State is: ", state);
+    // console.log("State changed, use effect running. State is: ", state);
     if (state?.newClass) {
-      console.log("Sending new class data to parent...");
+      // console.log("Sending new class data to parent...");
       onReturn(state?.newClass);
       setOpen(false);
     }

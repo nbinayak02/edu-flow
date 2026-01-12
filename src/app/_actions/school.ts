@@ -1,9 +1,9 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { Error, FormState } from "../(system)/school/types";
 import { CreateOrUpdateSchool, findSchoolByUser } from "@/lib/data/school";
 import { getUser } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function UpdateSchoolAction(
   prevState: FormState,
@@ -15,6 +15,7 @@ export async function UpdateSchoolAction(
   const contact = formdata.get("contact") as string;
   const iemis = formdata.get("iemis") as string;
   const estd = Number(formdata.get("estd"));
+  const logoPublicId = formdata.get("logo_public_id") as string;
 
   const errors: Error = {};
   const user = await getUser();
@@ -27,7 +28,7 @@ export async function UpdateSchoolAction(
   if (!estd) errors.estd = "Eastablished year is required";
 
   if (Object.keys(errors).length > 0) {
-    return { errors };
+    return { errors, status: false };
   }
 
   await CreateOrUpdateSchool(user.id, {
@@ -37,8 +38,11 @@ export async function UpdateSchoolAction(
     contact,
     iemis,
     estd,
+    logoPublicId,
   });
-  redirect("/school");
+
+  revalidatePath("/school");
+  return { errors, status: true };
 }
 
 export async function GetSchoolDetails(userId: number) {

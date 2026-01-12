@@ -1,8 +1,9 @@
+import { GetAllClasses } from "@/app/_actions/class";
 import { GetExamDetailsAction } from "@/app/_actions/exam";
+import ErrorBox from "@/components/custom-components/errorBox";
 import { AddSubjectMarksDialog } from "@/components/feature/dialog/exam-manage-addSubjects";
 import ExamDetailsOperations from "@/components/feature/exam/exam-details-operations";
 import { getSchoolId } from "@/lib/auth";
-import { GetAllClasses } from "@/lib/data/class";
 
 export default async function ExamManagePage({
   params,
@@ -29,11 +30,15 @@ export default async function ExamManagePage({
         {examName}-{examYear}
       </h1>
       <p className=" text-muted-foreground mb-5">Add exam info, marks etc.</p>
-      <ExamDetailsOperations
-        initialDetails={examDetails}
-        allClasses={allClasses}
-        examId={examId}
-      />
+      {allClasses ? (
+        <ExamDetailsOperations
+          initialDetails={examDetails}
+          allClasses={allClasses}
+          examId={examId}
+        />
+      ) : (
+        <ErrorBox />
+      )}
     </section>
   );
 }

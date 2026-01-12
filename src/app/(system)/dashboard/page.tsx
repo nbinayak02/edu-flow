@@ -1,9 +1,9 @@
+import { GetSchoolDetails } from "@/app/_actions/school";
 import { getUser } from "@/lib/auth";
-import { findSchoolByUser } from "@/lib/data/school";
 
 export default async function Page() {
   const user = await getUser();
-  const userSchool = await findSchoolByUser(user.id);
+  const userSchool = await GetSchoolDetails(user.id);
 
   return (
     <section>

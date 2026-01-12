@@ -1,6 +1,5 @@
 import { EmptySchool, School } from "@/app/(system)/school/types";
-import  prisma  from "../prisma";
-
+import prisma from "../prisma";
 
 export async function findSchoolByUser(userId: number) {
   const sch = await prisma.school.findUnique({
@@ -12,7 +11,7 @@ export async function findSchoolByUser(userId: number) {
 }
 
 export async function CreateOrUpdateSchool(userId: number, data: School) {
-  const update = await prisma.school.upsert({
+  await prisma.school.upsert({
     where: {
       userId: userId,
     },
@@ -34,6 +33,4 @@ export async function CreateOrUpdateSchool(userId: number, data: School) {
       userId: userId,
     },
   });
-
-  console.log("Updated? ", update);
 }

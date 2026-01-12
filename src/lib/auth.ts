@@ -2,6 +2,7 @@
 import { cookies, headers } from "next/headers";
 import prisma from "./prisma";
 import { jwtVerify } from "jose";
+import { GetSchoolDetails } from "@/app/_actions/school";
 
 export async function getUser() {
   const header = await headers();
@@ -17,14 +18,7 @@ export async function getUser() {
 
 export async function getSchoolId() {
   const user = await getUser();
-  const school = await prisma.school.findUnique({
-    where: {
-      userId: user.id,
-    },
-    select: {
-      id: true,
-    },
-  });
+  const school = await GetSchoolDetails(user?.id);
 
   return school?.id;
 }

@@ -1,10 +1,10 @@
 "use server";
-import { CreateNewClass, DeleteClass } from "@/lib/data/class";
+import { CreateNewClass, DeleteClass, getAllClasses } from "@/lib/data/class";
 import { Class, Error, FormState } from "../(system)/class/types";
 import { getSchoolId } from "@/lib/auth";
 
 export async function CreateNewClassAction(
-  prevState: FormState,
+  _: unknown,
   formData: FormData
 ) {
   console.log("Form submitted");
@@ -27,4 +27,14 @@ export async function DeleteClassAction(formData: FormData) {
   // const id = Number(formData.get("id") as string);
   // const isDeleted = await DeleteClass(id);
   // console.log("IS deleted? ", isDeleted);
+}
+
+export async function GetAllClasses(schoolId: number) {
+  try {
+    const classes = await getAllClasses(schoolId);
+    return classes;
+  } catch (error) {
+    console.log("Error on GetAllClasses: ", error);
+    return null;
+  }
 }

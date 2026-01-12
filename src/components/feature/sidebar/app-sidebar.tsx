@@ -2,16 +2,8 @@
 
 import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Send,
-  Settings2,
-  SquareTerminal,
   LayoutDashboard,
   BookOpenCheck,
   TableProperties,
@@ -19,11 +11,9 @@ import {
   BookMarked,
   School,
   Medal,
-  File,
   FileBadge2,
 } from "lucide-react";
 
-import { NavMain } from "@/components/feature/sidebar/nav-main";
 import { NavProjects } from "@/components/feature/sidebar/nav-projects";
 import { NavSecondary } from "@/components/feature/sidebar/nav-secondary";
 import { NavUser } from "@/components/feature/sidebar/nav-user";
@@ -36,6 +26,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 const data = {
   navSecondary: [
@@ -113,7 +104,7 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Command className="size-4" />
+                  <Image src={"/icon1.png"} alt="logo" width={100} height={100}/>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">EduFlow</span>

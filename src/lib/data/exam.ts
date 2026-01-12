@@ -18,6 +18,7 @@ export async function CreateExam(examData: Exam) {
       name: examData.name,
       academicYear: examData.academicYear,
       schoolId: examData.schoolId,
+      resultDate: examData.resultDate ?? "",
     },
   });
 

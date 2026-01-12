@@ -1,5 +1,5 @@
 "use client";
-import { Student } from "@/app/(system)/student/types";
+import { Student, StudentSearch } from "@/app/(system)/student/types";
 import { useState } from "react";
 import { AddStudentDialog } from "../dialog/add-student-dialog";
 import {
@@ -13,18 +13,28 @@ import {
 import { Class } from "@/app/(system)/class/types";
 import { CardDescription } from "@/components/ui/card";
 import EditDeleteOptions from "@/components/custom-components/editDelOptions";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function StudentOperations({
   initialStudents,
   allClasses,
 }: {
-  initialStudents: Student[];
+  initialStudents: StudentSearch[];
   allClasses: Class[];
 }) {
-  // console.log("Initial Students: ", initialStudents);
+  const router = useRouter();
   return (
     <>
       <AddStudentDialog allClasses={allClasses} />
+      <Button
+        variant={"secondary"}
+        className="ml-5 text-white bg-green-600 hover:bg-green-700"
+        onClick={() => router.push("/student/view-all-students")}
+      >
+        View All Students <ArrowRight />
+      </Button>
       <h3 className="text-2xl font-semibold my-5">
         New Students
         <CardDescription>Students who were recently added.</CardDescription>

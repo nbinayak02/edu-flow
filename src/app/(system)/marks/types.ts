@@ -1,13 +1,7 @@
 import { Class } from "../class/types";
 import { Exam } from "../exam/types";
-import { Enrollment, Student } from "../student/types";
+import { Enrollment, Student, StudentSearch } from "../student/types";
 import { Subject } from "../subject/types";
-
-export type StudentSearch = {
-  id?: number;
-  class: number;
-  year: number;
-};
 
 export type StudentSearchError = {
   class?: string;
@@ -22,19 +16,10 @@ export type StudentSearchReturn = {
   enrollment: Enrollment[];
 };
 
-export type SubjectSearchReturn = {
-  id: number;
-  name: string;
-};
-
-export type FetchedDataType = {
-  students: StudentSearchReturn[];
-  subjects: SubjectSearchReturn[];
-};
-
 export type StudentSearchFormState = {
-  errors: StudentSearchError;
-  data: FetchedDataType;
+  errors?: StudentSearchError;
+  data?: StudentSearch[];
+  success: boolean;
 };
 
 export type MarksError = {
@@ -76,6 +61,8 @@ export type Marks = {
   subjectId: number;
   theoryMarks: number;
   practicalMarks: number;
+  marksheet?: Marksheet;
+  subject?: Subject;
 };
 
 export type UpdateGradeInMarksType = {
@@ -94,4 +81,16 @@ export type MarksInMarksheet = {
   finalGrade: string;
   gradePoint: number;
   subject?: Subject;
+};
+
+type MarksSearchError = {
+  sclass?: string;
+  year?: string;
+  otherErrors?: string;
+};
+
+export type MarksSearch = {
+  success: boolean;
+  data?: Marks;
+  error?: MarksSearchError;
 };

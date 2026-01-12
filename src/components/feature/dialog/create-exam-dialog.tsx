@@ -67,9 +67,21 @@ export function CreateExamDialog() {
                 {state?.errors?.name}
               </CardDescription>
             </div>
+
             <div className="grid gap-3">
               <Label htmlFor="eyear">Exam year</Label>
               <Input id="eyear" name="year" placeholder="E.g: 2082" />
+              <CardDescription className="text-rose-500">
+                {state?.errors?.year}
+              </CardDescription>
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="rdate">Result Date</Label>
+              <Input id="rdate" name="rdate" placeholder="E.g: 2082-01-01" />
+              <CardDescription>
+                Resut Date is Optional, can be updated later.
+              </CardDescription>
               <CardDescription className="text-rose-500">
                 {state?.errors?.year}
               </CardDescription>

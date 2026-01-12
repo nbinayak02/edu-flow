@@ -1,5 +1,6 @@
 import { Marksheet, MarksInMarksheet } from "@/app/(system)/marks/types";
 import { School } from "@/app/(system)/school/types";
+import { CldImage } from "next-cloudinary";
 import { Inter } from "next/font/google";
 import React, { Ref } from "react";
 
@@ -7,18 +8,6 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
-
-const subjects = [
-  "Nepali",
-  "English",
-  "Mathematics",
-  "Science and Technology",
-  "Social Studies",
-  "Occupation",
-  "Health",
-  "Computer",
-  "Local Subject",
-];
 
 const GradeSheet = ({
   ref,
@@ -31,6 +20,13 @@ const GradeSheet = ({
   marksheet: Marksheet;
   marks: MarksInMarksheet[];
 }) => {
+  const isNG = marks.some(
+    (mark) =>
+      mark.thGradeLetter === "NG" ||
+      mark.prGradeLetter === "NG" ||
+      mark.finalGrade === "NG"
+  );
+
   return (
     <>
       {/* Page */}
@@ -42,10 +38,16 @@ const GradeSheet = ({
           <div className="border-2 border-blue-900/80 p-3 h-full">
             {/* Header */}
             <div className="flex mt-3 relative">
-              <img
-                src="https://picsum.photos/100"
-                alt="School Logo"
-                className="w-30 h-30 rounded-xl absolute translate-y-10 translate-x-1"
+              <CldImage
+                src={school?.logoPublicId ?? "eduflow_school_default_logo"} // Use this sample image or upload your own via the Media Library
+                width="150" // Transform the image: auto-crop to square aspect_ratio
+                height="150"
+                alt="image"
+                crop={{
+                  type: "auto",
+                  source: true,
+                }}
+                className="rounded-md absolute translate-x-0 translate-y-10"
               />
 
               <div className="w-full flex flex-col items-center gap-1">
@@ -53,7 +55,10 @@ const GradeSheet = ({
                   {school.name}
                 </h1>
                 <h3 className="text-[18px]">{school.address}</h3>
-                <h2 className="text-blue-700 text-xl font-extrabold uppercase">
+                <h3 className="text-sm mt-3">ESTD: {school.estd}</h3>
+                <h3 className="text-sm">Contact: {school.contact}</h3>
+                <h3 className="text-sm">IEMIS No.: {school.iemis}</h3>
+                <h2 className="text-blue-700 text-xl font-extrabold uppercase mt-3">
                   {marksheet.exam?.name}-{marksheet.exam?.academicYear}
                 </h2>
                 <p className="mt-5 px-4 py-1 bg-blue-700 text-white font-extrabold uppercase text-xl tracking-wide">
@@ -80,10 +85,12 @@ const GradeSheet = ({
                 </p>
                 <p>
                   Roll Number:{" "}
-                  {/* <span className="font-medium">{marksheet.student?.id}</span> */}
+                  <span className="font-medium">
+                    {marksheet.enrollment?.student?.rollNumber}
+                  </span>
                 </p>
                 <p>
-                  IEMIS:{" "}
+                  Student IEMIS No. :{" "}
                   <span className="font-medium">
                     {marksheet.enrollment?.student?.iemis}
                   </span>
@@ -137,7 +144,7 @@ const GradeSheet = ({
                       {mark.finalGrade}
                     </td>
                     <td className="border-l-2 border-black p-2">
-                      {mark.gradePoint}
+                      {mark.gradePoint.toFixed(2)}
                     </td>
                     <td className="border-l-2 border-black p-2"></td>
                   </tr>
@@ -153,7 +160,8 @@ const GradeSheet = ({
                       Total Credit Hour: <b>{marksheet.totalCreditHour}</b>
                     </span>
                     <span className="ml-10">
-                      Grade Point Average (GPA): <b>{marksheet.gpa}</b>
+                      Grade Point Average (GPA):{" "}
+                      <b>{isNG ? "0.00" : marksheet.gpa?.toFixed(2)}</b>
                     </span>
                   </td>
                 </tr>

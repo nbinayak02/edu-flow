@@ -3,6 +3,7 @@ export type Exam = {
   name: string;
   academicYear: number;
   schoolId: number;
+  resultDate?: string;
 };
 
 export type Error = {

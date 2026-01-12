@@ -1,5 +1,9 @@
 "use server";
-import { CreateNewSubject, GetSubjectsByClass } from "@/lib/data/subject";
+import {
+  CreateNewSubject,
+  GetAllSubjects,
+  GetSubjectsByClass,
+} from "@/lib/data/subject";
 import { Error, FormState, Subject } from "../(system)/subject/types";
 
 export async function CreateNewSubjectAction(
@@ -42,6 +46,21 @@ export async function CreateNewSubjectAction(
 }
 
 export async function GetSubjectByClassAction(classId: number) {
-  const subjects = await GetSubjectsByClass(classId);
-  return subjects;
+  try {
+    const subjects = await GetSubjectsByClass(classId);
+    return subjects;
+  } catch (error) {
+    console.log("Error on GetSubjectByClass: ", error);
+    return null;
+  }
+}
+
+export async function GetAllSubjectBySchool(schoolId: number) {
+  try {
+    const subjects = await GetAllSubjects(schoolId);
+    return subjects;
+  } catch (error) {
+    console.log("Error on GetSubjectBySchool: ", error);
+    return null;
+  }
 }
