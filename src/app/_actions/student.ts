@@ -140,7 +140,7 @@ export async function AssignRollNumbers(
     // console.log("Student sorted alphabetically: ", students);
 
     // make update payload - in sorted order
-    const updatePayload = students.map((stu: StudentType, index) => ({
+    const updatePayload = students.map((stu: StudentType, index: number) => ({
       studentId: stu.id,
       index,
     }));
