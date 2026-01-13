@@ -1,8 +1,8 @@
-import { Marksheet, MarksInMarksheet } from "@/app/(system)/marks/types";
-import { School } from "@/app/(system)/school/types";
+import { MarksDetails, Marksheet } from "@/app/(system)/marks/types";
+import { SchoolDetails } from "@/app/(system)/school/types";
 import { CldImage } from "next-cloudinary";
 import { Inter } from "next/font/google";
-import React, { Ref } from "react";
+import { Ref } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,14 +11,14 @@ const inter = Inter({
 
 const GradeSheet = ({
   ref,
-  school,
+  userSchool,
   marksheet,
   marks,
 }: {
   ref: Ref<HTMLDivElement>;
-  school: School;
+  userSchool: SchoolDetails;
   marksheet: Marksheet;
-  marks: MarksInMarksheet[];
+  marks: MarksDetails[];
 }) => {
   const isNG = marks.some(
     (mark) =>
@@ -39,7 +39,7 @@ const GradeSheet = ({
             {/* Header */}
             <div className="flex mt-3 relative">
               <CldImage
-                src={school?.logoPublicId ?? "eduflow_school_default_logo"} // Use this sample image or upload your own via the Media Library
+                src={userSchool.school?.logoPublicId ?? "eduflow_school_default_logo"} // Use this sample image or upload your own via the Media Library
                 width="150" // Transform the image: auto-crop to square aspect_ratio
                 height="150"
                 alt="image"
@@ -52,12 +52,12 @@ const GradeSheet = ({
 
               <div className="w-full flex flex-col items-center gap-1">
                 <h1 className="text-blue-700 text-3xl font-extrabold uppercase">
-                  {school.name}
+                  {userSchool.school?.name}
                 </h1>
-                <h3 className="text-[18px]">{school.address}</h3>
-                <h3 className="text-sm mt-3">ESTD: {school.estd}</h3>
-                <h3 className="text-sm">Contact: {school.contact}</h3>
-                <h3 className="text-sm">IEMIS No.: {school.iemis}</h3>
+                <h3 className="text-[18px]">{userSchool.school?.address}</h3>
+                <h3 className="text-sm mt-3">ESTD: {userSchool.school?.estd}</h3>
+                <h3 className="text-sm">Contact: {userSchool.school?.contact}</h3>
+                <h3 className="text-sm">IEMIS No.: {userSchool.school?.iemis}</h3>
                 <h2 className="text-blue-700 text-xl font-extrabold uppercase mt-3">
                   {marksheet.exam?.name}-{marksheet.exam?.academicYear}
                 </h2>
@@ -129,10 +129,10 @@ const GradeSheet = ({
                   <tr key={index}>
                     <td className="border-l-2 border-black p-2">{index + 1}</td>
                     <td className="border-l-2 border-black p-2 text-left">
-                      {mark.subject?.name}
+                      {mark.subjectName}
                     </td>
                     <td className="border-l-2 border-black p-2">
-                      {mark.subject?.credit_hour}
+                      {mark?.credit_hour}
                     </td>
                     <td className="border-l-2 border-black p-2">
                       {mark.thGradeLetter}

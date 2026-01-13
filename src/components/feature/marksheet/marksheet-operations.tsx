@@ -1,5 +1,5 @@
 "use client";
-import { Class } from "@/app/(system)/class/types";
+
 import { Exam } from "@/app/(system)/exam/types";
 import { Marksheet } from "@/app/(system)/marks/types";
 import { MarksheetSearch } from "@/app/(system)/gradesheet/types";
@@ -35,8 +35,9 @@ import {
 import { Download, Printer } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import PrintMarksheet from "./print-marksheet-dialog";
+import { Sclass } from "@prisma/client";
 
-export default function MarksheetOperation({ classes }: { classes: Class[] }) {
+export default function MarksheetOperation({ classes }: { classes: Sclass[] }) {
   const [selectedYear, setSelectedYear] = useState<number>();
   const [allExams, setAllExams] = useState<Exam[]>([]);
   const [allMarksheet, setAllMarksheet] = useState<Marksheet[]>([]);

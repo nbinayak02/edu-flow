@@ -1,19 +1,24 @@
-import { EmptySchool, School } from "@/app/(system)/school/types";
 import prisma from "../prisma";
+import { CreatePayload, UpdatePayload } from "@/app/(system)/school/types";
 
 export async function findSchoolByUser(userId: number) {
-  const sch = await prisma.school.findUnique({
+  const sch = await prisma.user.findUnique({
     where: {
-      userId: userId,
+      id: userId,
+    },
+    select: {
+      id: true,
+      fullname: true,
+      school: true,
     },
   });
   return sch;
 }
 
-export async function updateSchool(data: School) {
+export async function updateSchool(data: UpdatePayload) {
   const school = await prisma.school.update({
     where: {
-      userId: data.userId,
+      id: data.id,
     },
     data: {
       address: data.address,
@@ -29,7 +34,7 @@ export async function updateSchool(data: School) {
   return school;
 }
 
-export async function createSchool(userId: number, data: School) {
+export async function createSchool(data: CreatePayload) {
   const school = await prisma.school.create({
     data: {
       name: data.name,
@@ -38,7 +43,6 @@ export async function createSchool(userId: number, data: School) {
       contact: data.contact,
       iemis: data.iemis,
       estd: data.estd,
-      userId: userId,
       logoPublicId: data.logoPublicId ?? "eduflow_school_default_logo",
     },
   });

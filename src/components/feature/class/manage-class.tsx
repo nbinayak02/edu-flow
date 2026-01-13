@@ -1,11 +1,11 @@
 "use client";
-import { Class } from "@/app/(system)/class/types";
-import EditDeleteOptions from "@/components/custom-components/editDelOptions";
+
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Sclass } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 
-export default function ManageClass({ sclass }: { sclass: Class }) {
+export default function ManageClass({ sclass }: { sclass: Sclass }) {
   return (
     <section>
       <Button>

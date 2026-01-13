@@ -10,19 +10,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Class } from "@/app/(system)/class/types";
+
 import { CardDescription } from "@/components/ui/card";
 import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Sclass } from "@prisma/client";
 
 export default function StudentOperations({
   initialStudents,
   allClasses,
 }: {
   initialStudents: StudentSearch[];
-  allClasses: Class[];
+  allClasses: Sclass[];
 }) {
   const router = useRouter();
   return (

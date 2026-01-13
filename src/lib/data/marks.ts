@@ -113,7 +113,11 @@ export async function GetMarksByMarksheet(marksheetId: number) {
       marksheetId,
     },
     include: {
-      subject: true,
+      subject: {
+        include: {
+          subjectAssigned: true
+        }
+      },
     },
   });
   return marks;

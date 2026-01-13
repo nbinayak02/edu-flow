@@ -1,6 +1,6 @@
 "use client";
-import { Class } from "@/app/(system)/class/types";
-import { Subject, FormState } from "@/app/(system)/subject/types";
+
+import { dialogEnum, FormState } from "@/app/(system)/subject/types";
 import { CreateNewSubjectAction } from "@/app/_actions/subject";
 import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
@@ -12,35 +12,24 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Select } from "@radix-ui/react-select";
-import { PlusCircle } from "lucide-react";
-import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { SetStateAction, useActionState, useEffect } from "react";
 
 export function CreateSubjectDialog({
-  onReturn,
-  allClasses,
+  dialogOpen,
+  setDialogOpen,
 }: {
-  onReturn: (subjectData: Subject) => void;
-  allClasses: Class[];
+  dialogOpen: boolean;
+  setDialogOpen: React.Dispatch<SetStateAction<dialogEnum | null>>;
 }) {
+  const router = useRouter();
   const initialState: FormState = {
     errors: {},
+    data: null,
   };
-
-  const [open, setOpen] = useState(false);
-
 
   const [state, formAction, isPending] = useActionState(
     CreateNewSubjectAction,
@@ -48,19 +37,14 @@ export function CreateSubjectDialog({
   );
 
   useEffect(() => {
-    if (state?.newSubject) {
-      onReturn(state?.newSubject);
-      setOpen(false);
+    if (state?.data) {
+      setDialogOpen(null);
+      router.refresh()
     }
   }, [state]);
 
   return (
-    <Dialog open={open} onOpenChange={(a) => setOpen(a)}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusCircle /> Create New Subject
-        </Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(null)}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create New Subject</DialogTitle>
@@ -75,33 +59,6 @@ export function CreateSubjectDialog({
               <Input id="sname" name="name" />
               <CardDescription className="text-rose-500">
                 {state?.errors?.name}
-              </CardDescription>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="sclass">Class</Label>
-
-              <Select name="sclass">
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select class" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Class</SelectLabel>
-                    {allClasses.map((c, i) => (
-                      <SelectItem key={i} value={String(c.id)}>
-                        {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <CardDescription className="text-rose-500"></CardDescription>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="chour">Credit Hour</Label>
-              <Input id="chour" name="creditHour" placeholder="Eg: 3.0" />
-              <CardDescription className="text-rose-500">
-                {state?.errors?.creditHour}
               </CardDescription>
             </div>
           </div>

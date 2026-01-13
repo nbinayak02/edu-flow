@@ -1,6 +1,5 @@
 "use client";
 
-import { Class } from "@/app/(system)/class/types";
 import { FormState, Student } from "@/app/(system)/student/types";
 import { AddStudentAction } from "@/app/_actions/student";
 import { Button } from "@/components/ui/button";
@@ -27,10 +26,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Sclass } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 
-export function AddStudentDialog({ allClasses }: { allClasses: Class[] }) {
+export function AddStudentDialog({ allClasses }: { allClasses: Sclass[] }) {
   const initialState: FormState = {
     errors: {},
     success: false,

@@ -1,6 +1,5 @@
 "use client";
-import { Marksheet, MarksInMarksheet } from "@/app/(system)/marks/types";
-import { School } from "@/app/(system)/school/types";
+import { MarksDetails, Marksheet } from "@/app/(system)/marks/types";
 import { GetSchoolDetails } from "@/app/_actions/school";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import GradeSheet from "./marksheet-pdf-generator";
 import { GetMarks } from "@/app/_actions/marks";
+import { SchoolDetails } from "@/app/(system)/school/types";
 
 export default function PrintMarksheet({
   marksheet,
@@ -36,8 +36,8 @@ export default function PrintMarksheet({
   >; 
   open: boolean;
 }) {
-  const [schoolDetails, setSchoolDetails] = useState<School>();
-  const [marksDetails, setMarksDetails] = useState<MarksInMarksheet[]>([]);
+  const [schoolDetails, setSchoolDetails] = useState<SchoolDetails>();
+  const [marksDetails, setMarksDetails] = useState<MarksDetails[]>([]);
   const { userId } = useUserContext();
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrint = useReactToPrint({ contentRef });
@@ -92,7 +92,7 @@ export default function PrintMarksheet({
           <div className="w-full h-120 overflow-auto">
             <GradeSheet
               ref={contentRef}
-              school={schoolDetails}
+              userSchool={schoolDetails}
               marksheet={marksheet}
               marks={marksDetails}
             />

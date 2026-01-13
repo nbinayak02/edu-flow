@@ -28,7 +28,7 @@ export default async function RootLayout({
   const userId = await getUserFromToken();
 
   return (
-    <html lang="en" className="">
+    <html lang="en" className="dark">
       <meta name="apple-mobile-web-app-title" content="EduFlow" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

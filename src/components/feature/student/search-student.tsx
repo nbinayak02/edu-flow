@@ -1,10 +1,10 @@
 "use client";
-import { Class } from "@/app/(system)/class/types";
+
 import {
   StudentSearchFormState,
-  StudentSearchReturn,
+
 } from "@/app/(system)/marks/types";
-import { Student, StudentSearch } from "@/app/(system)/student/types";
+import {  StudentSearch } from "@/app/(system)/student/types";
 import { SearchStudentsAction } from "@/app/_actions/student";
 import ErrorBox from "@/components/custom-components/errorBox";
 import { Button } from "@/components/ui/button";
@@ -26,13 +26,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Sclass } from "@prisma/client";
 import { useActionState, useEffect, useState } from "react";
 
 export default function SearchStudent({
   classes,
   onSuccess,
 }: {
-  classes: Class[];
+  classes: Sclass[];
   onSuccess: (
     students: StudentSearch[],
     selectedClass: number,

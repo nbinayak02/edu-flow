@@ -1,6 +1,6 @@
+import { Subject } from "@prisma/client";
 import { Exam } from "../exam/types";
 import { Enrollment, StudentSearch } from "../student/types";
-import { Subject } from "../subject/types";
 
 export type SubjectSearchReturn = {
   id: number;
@@ -77,14 +77,13 @@ export type UpdateGradeInMarksType = {
   gradePoint: number;
 };
 
-export type MarksInMarksheet = {
-  marksheetId: number;
-  subjectId: number;
+export type MarksDetails = {
+  subjectName: string;
+  credit_hour: number | undefined;
   thGradeLetter: string;
   prGradeLetter: string;
   finalGrade: string;
   gradePoint: number;
-  subject?: Subject;
 };
 
 type MarksSearchError = {

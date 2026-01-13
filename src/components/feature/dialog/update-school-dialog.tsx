@@ -1,5 +1,5 @@
 "use client";
-import { FormState, School } from "@/app/(system)/school/types";
+import { FormState } from "@/app/(system)/school/types";
 import { UpdateSchoolAction } from "@/app/_actions/school";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { School } from "@prisma/client";
 import { Edit } from "lucide-react";
 import { startTransition, useActionState, useEffect, useState } from "react";
 
 type UpdateDialogProps = {
-  schoolData: Partial<School> | School | null;
+  schoolData: Partial<School> | School | null | undefined;
 };
 export function UpdateDialog({ schoolData }: UpdateDialogProps) {
   const initialState: FormState = {
@@ -41,7 +42,6 @@ export function UpdateDialog({ schoolData }: UpdateDialogProps) {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
     if (uploadPreset && cloudName && uploadedImage) {
-      setUploading(true);
       const imageUploadFormData = new FormData();
       imageUploadFormData.append("file", uploadedImage);
       imageUploadFormData.append("upload_preset", uploadPreset);
@@ -64,6 +64,7 @@ export function UpdateDialog({ schoolData }: UpdateDialogProps) {
 
   const uploadImage = async (url: string, formData: FormData) => {
     try {
+      setUploading(true);
       const response = await fetch(url, {
         method: "POST",
         body: formData,

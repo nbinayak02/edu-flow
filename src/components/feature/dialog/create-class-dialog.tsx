@@ -1,5 +1,6 @@
 "use client";
-import { Class, FormState } from "@/app/(system)/class/types";
+
+import { FormState } from "@/app/(system)/class/types";
 import { CreateNewClassAction } from "@/app/_actions/class";
 import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
@@ -15,13 +16,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Sclass } from "@prisma/client";
 import { PlusCircle } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 
 export function CreateClassDialog({
   onReturn,
 }: {
-  onReturn: (classData: Class) => void;
+  onReturn: (classData: Sclass) => void;
 }) {
   const initialState: FormState = {
     errors: {},

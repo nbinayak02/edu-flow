@@ -18,9 +18,9 @@ export async function getUser() {
 
 export async function getSchoolId() {
   const user = await getUser();
-  const school = await GetSchoolDetails(user?.id);
+  const details = await GetSchoolDetails(user?.id);
 
-  return school?.id;
+  return details?.school?.id;
 }
 
 export async function getUserFromToken() {

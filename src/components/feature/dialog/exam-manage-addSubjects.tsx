@@ -24,29 +24,31 @@ import {
 } from "@/components/ui/select";
 import { Select } from "@radix-ui/react-select";
 import { PlusCircle } from "lucide-react";
-import { Class } from "@/app/(system)/class/types";
+
 import { useActionState, useEffect, useState } from "react";
-import { Subject } from "@/app/(system)/subject/types";
+
 import { GetSubjectByClassAction } from "@/app/_actions/subject";
 import {
   ConfigureExamDbType,
   ConfigureExamFormState,
+  SubjectList,
 } from "@/app/(system)/exam/types";
 import { AddExamDetailsAction } from "@/app/_actions/exam";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sclass } from "@prisma/client";
 
 export function AddSubjectMarksDialog({
   allClasses,
   examId,
   onReturn,
 }: {
-  allClasses: Class[];
+  allClasses: Sclass[];
   examId: number;
   onReturn: (newDetails: Partial<ConfigureExamDbType>[]) => void;
 }) {
   const [selectedClass, setSelectedClass] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [subjectList, setSubjectList] = useState<Subject[]>([]);
+  const [subjectList, setSubjectList] = useState<SubjectList[]>([]);
   const [selectedSubjects, setSelectedSubjects] = useState<number[]>([]);
   const [open, setOpen] = useState(false);
   const initialState: ConfigureExamFormState = {
@@ -65,8 +67,8 @@ export function AddSubjectMarksDialog({
     if (selectedClass) {
       const fetch = async () => {
         setLoading(true);
-        const subjects = await GetSubjectByClassAction(Number(selectedClass));
-        if (subjects) setSubjectList(subjects);
+        const result = await GetSubjectByClassAction(Number(selectedClass));
+        if (result) setSubjectList(result);
         setLoading(false);
       };
 
@@ -118,7 +120,7 @@ export function AddSubjectMarksDialog({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Classes</SelectLabel>
-                      {allClasses.map((c: Class) => (
+                      {allClasses.map((c: Sclass) => (
                         <SelectItem key={c.id} value={String(c.id)}>
                           {c.name}
                         </SelectItem>

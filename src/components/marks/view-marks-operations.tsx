@@ -1,12 +1,13 @@
 "use client";
 
-import { Class } from "@/app/(system)/class/types";
+
+import { Sclass } from "@prisma/client";
 import SearchStudent from "../feature/student/search-student";
 
 export default function ViewMarksOperation({
   allClasses,
 }: {
-  allClasses: Class[];
+  allClasses: Sclass[];
 }) {
 
     const handleSuccess = () => {

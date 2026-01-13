@@ -18,18 +18,19 @@ model User {
 }
 
 model School {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   name         String
   address      String
   email        String
   contact      String
-  iemis        String   @unique
+  iemis        String    @unique
   estd         Int
-  logoPublicId String   @default("eduflow_school_default_logo")
-  createdAt    DateTime @default(now())
+  logoPublicId String    @default("eduflow_school_default_logo")
+  createdAt    DateTime  @default(now())
   users        User[] // one school is managed by multiple user
   sclass       Sclass[] //one to many relationship with class
   exam         Exam[]
+  subjects     Subject[]
 }
 
 model Sclass {
@@ -49,7 +50,9 @@ model Sclass {
 model Subject {
   id              Int               @id @default(autoincrement())
   name            String
+  schoolId        Int
   createdAt       DateTime          @default(now())
+  school          School            @relation(fields: [schoolId], references: [id])
   examDetails     ExamDetails[]
   marks           Marks[]
   subjectAssigned SubjectAssigned[]
