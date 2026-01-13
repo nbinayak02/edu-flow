@@ -14,3 +14,14 @@ export function createUser(user: User) {
     data: user,
   });
 }
+
+export async function updateUserSchool(userId: number, schoolId: number) {
+  return prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      schoolId: schoolId,
+    },
+  });
+}

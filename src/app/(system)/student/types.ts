@@ -1,5 +1,6 @@
+import { Sclass } from "@prisma/client";
 import { Marksheet } from "../gradesheet/types";
-import { Class } from "../class/types";
+
 
 export interface Student {
   id?: number;
@@ -12,7 +13,13 @@ export interface Student {
 }
 
 export interface StudentSearch extends Student {
-  enrollment: Enrollment[];
+  enrollment: {
+    sclass: {
+      name: string;
+    },
+    id: number;
+    academicYear: number;
+  }[]
 }
 
 export type Info = {
@@ -37,7 +44,7 @@ export type FormState = {
 export type Enrollment = {
   id?: number;
   student?: Student;
-  sclass?: Class;
+  sclass?: Sclass;
   studentId?: number;
   sclassId?: number;
   academicYear?: number;

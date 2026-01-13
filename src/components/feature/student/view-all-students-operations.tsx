@@ -1,5 +1,5 @@
 "use client";
-import { Class } from "@/app/(system)/class/types";
+
 import SearchStudent from "./search-student";
 import { useEffect, useState } from "react";
 import {
@@ -17,11 +17,12 @@ import { Download, Printer } from "lucide-react";
 import { AssignRollNumbers } from "@/app/_actions/student";
 import InfoDialogBox from "../dialog/info-dialog-box";
 import { useRouter } from "next/navigation";
+import { Sclass } from "@prisma/client";
 
 export default function ViewAllStudentsOperation({
   allClasses,
 }: {
-  allClasses: Class[];
+  allClasses: Sclass[];
 }) {
   const [students, setStudents] = useState<StudentSearch[]>([]);
   const [info, setInfo] = useState<Info>();

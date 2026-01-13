@@ -9,12 +9,12 @@ import {
   CardTitle,
 } from "../ui/card";
 import { UpdateDialog } from "../feature/dialog/update-school-dialog";
-import { School } from "@/app/(system)/school/types";
+import { School } from "@prisma/client";
 
 export default function SchoolCard({
   userSchool,
 }: {
-  userSchool: School | null;
+  userSchool: School | null | undefined;
 }) {
   return (
     <Card className="max-w-2xl">
@@ -33,10 +33,10 @@ export default function SchoolCard({
           />
           <div>
             <p className="text-2xl text-center">
-              {userSchool?.name ? userSchool?.name : "School Name"}
+              {userSchool?.name ?? "School Name"}
             </p>
             <CardDescription className="text-center">
-              {userSchool?.address ? userSchool?.address : "School Address"}
+              {userSchool?.address ?? "School Address"}
             </CardDescription>
             <CardDescription className="text-center">
               ESTD:{userSchool?.estd}

@@ -9,9 +9,9 @@ export default async function Page() {
     <section>
       <div className="w-full flex flex-col items-center gap-1">
         <h1 className="text-3xl font-extrabold uppercase">
-          {userSchool?.name}
+          {userSchool?.school?.name}
         </h1>
-        <h3 className="text-[18px]">{userSchool?.address}</h3>
+        <h3 className="text-[18px]">{userSchool?.school?.address}</h3>
       </div>
     </section>
   );

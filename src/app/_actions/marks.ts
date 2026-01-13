@@ -36,6 +36,8 @@ export async function AddMarks(
   //counting no. of subject
   const subjectCount = await GetNumberOfSubjectsByClass(sclassId);
 
+  console.log("No. of subject: ", subjectCount);
+
   if (marksArray.length < subjectCount)
     errors.subjectError = "Please input all marks.";
 
@@ -90,11 +92,21 @@ export async function UpdateGradesInMarksAction(
 export async function GetMarks(marksheetId: number) {
   try {
     const marks = await GetMarksByMarksheet(marksheetId);
-    return marks;
+    const payload = marks.map((m) => {
+      return {
+        subjectName: m.subject.name,
+        credit_hour: m.subject.subjectAssigned.find(
+          (sa) => sa.subjectId === m.subjectId
+        )?.credit_hour,
+        thGradeLetter: m.thGradeLetter,
+        prGradeLetter: m.prGradeLetter,
+        finalGrade: m.finalGrade,
+        gradePoint: m.gradePoint,
+      };
+    });
+    return payload;
   } catch (error) {
     console.log("Error on GetMarks: ", error);
     return null;
   }
 }
-
-

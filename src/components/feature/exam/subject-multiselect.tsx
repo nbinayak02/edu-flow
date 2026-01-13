@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Subject } from "@/app/(system)/subject/types";
+import { Subject } from "@prisma/client";
 
 export function SubjectMultiSelect({
   subjectList,

@@ -1,3 +1,5 @@
+import { Subject, SubjectAssigned } from "@prisma/client";
+
 export type Exam = {
   id?: number;
   name: string;
@@ -55,3 +57,6 @@ export type ConfigureExamDbType = {
 export type AddExamReturnType =
   | { success: true; data: ConfigureExamDbType[] }
   | { success: false; error: ConfigureExamError };
+
+export type SubjectList = Subject &
+  Pick<SubjectAssigned, "credit_hour" | "sclassId">;

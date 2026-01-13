@@ -9,7 +9,7 @@ export default async function SchoolPage() {
     <section>
       <h1 className="text-2xl font-semibold">School</h1>
       <p className=" text-muted-foreground mb-5">Your school details.</p>
-      <SchoolCard userSchool={userSchool} />
+      <SchoolCard userSchool={userSchool?.school} />
     </section>
   );
 }

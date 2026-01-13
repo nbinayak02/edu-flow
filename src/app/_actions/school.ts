@@ -1,9 +1,14 @@
 "use server";
 
 import { Error, FormState } from "../(system)/school/types";
-import { CreateOrUpdateSchool, findSchoolByUser } from "@/lib/data/school";
+import {
+  createSchool,
+  findSchoolByUser,
+  updateSchool,
+} from "@/lib/data/school";
 import { getUser } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { updateUserSchool } from "@/lib/data/user";
 
 export async function UpdateSchoolAction(
   prevState: FormState,
@@ -28,21 +33,51 @@ export async function UpdateSchoolAction(
   if (!estd) errors.estd = "Eastablished year is required";
 
   if (Object.keys(errors).length > 0) {
-    return { errors, status: false };
+    return { errors, success: false };
   }
 
-  await CreateOrUpdateSchool(user.id, {
-    name,
-    address,
-    email,
-    contact,
-    iemis,
-    estd,
-    logoPublicId,
-  });
+  try {
+    // find if school is already created by user
 
-  revalidatePath("/school");
-  return { errors, status: true };
+    const existingSchool = await findSchoolByUser(user.id);
+
+    if (existingSchool?.school) {
+      // update
+      await updateSchool({
+        id: existingSchool.school.id,
+        address,
+        contact,
+        email,
+        estd,
+        iemis,
+        name,
+        logoPublicId,
+      });
+    } else {
+      // create
+      const createdSchool = await createSchool({
+        address,
+        contact,
+        email,
+        estd,
+        iemis,
+        name,
+        logoPublicId,
+      });
+
+      // update user to point this school
+
+      await updateUserSchool(user.id, createdSchool.id);
+    }
+  } catch (error) {
+    console.log("Error in CreateOrUpdateSchoolAction: ", error);
+    return {
+      errors: { otherError: "Something went wrong! Please try again later." },
+      success: false,
+    };
+  }
+
+  redirect("/school");
 }
 
 export async function GetSchoolDetails(userId: number) {

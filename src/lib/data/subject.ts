@@ -1,54 +1,45 @@
-import { Subject } from "@/app/(system)/subject/types";
+import { createPayload } from "@/app/(system)/subject/types";
 import prisma from "../prisma";
+import { Prisma, SubjectAssigned } from "@prisma/client";
+import { CreditHourType } from "../types";
 
-export async function CreateNewSubject(subject: Subject) {
-  const newSubject = await prisma.subject.create({
-    relationLoadStrategy: "join",
+export function createNewSubject(payload: createPayload) {
+  return prisma.subject.create({
     data: {
-      name: subject.name,
-      credit_hour: subject.credit_hour,
-      sclassId: Number(subject.sclassId),
-    },
-    include: {
-      sclass: true,
+      name: payload.name,
+      schoolId: payload.schoolId,
     },
   });
-  return newSubject;
 }
 
-export async function GetAllSubjects(schoolId: number) {
-  const allSubjects = await prisma.subject.findMany({
-    relationLoadStrategy: "join",
-    include: {
-      sclass: true,
-    },
+export function getAllSubjects(schoolId: number) {
+  return prisma.subject.findMany({
     where: {
-      sclass: {
-        schoolId: schoolId,
-      },
+      schoolId: schoolId,
     },
   });
-  return allSubjects;
 }
 
-export async function GetSubjectsByClass(classId: number) {
-  const subjects = await prisma.subject.findMany({
-    where: {
-      sclassId: classId,
-    },
-  });
-
-  return subjects;
-}
-
-export async function GetSubjectNamesByClass(classId: number) {
-  const subjectNames = await prisma.subject.findMany({
+export function getSubjectsByClass(classId: number) {
+  return prisma.subjectAssigned.findMany({
     where: {
       sclassId: classId,
     },
     select: {
-      id: true,
-      name: true,
+      credit_hour: true,
+      sclassId: true,
+      subject: true,
+    },
+  });
+}
+
+export async function GetSubjectNamesByClass(classId: number) {
+  const subjectNames = await prisma.subjectAssigned.findMany({
+    where: {
+      sclassId: classId,
+    },
+    select: {
+      subject: true,
     },
   });
 
@@ -63,27 +54,59 @@ export async function GetSubjectNamesByClass(classId: number) {
 }
 
 export async function GetNumberOfSubjectsByClass(classId: number) {
-  const subjectCount = await prisma.subject.aggregate({
-    _count: {
-      id: true,
-    },
+  const subjectCount = await prisma.subjectAssigned.aggregate({
     where: {
       sclassId: classId,
     },
+    _count: {
+      subjectId: true,
+    },
   });
 
-  return subjectCount._count.id;
+  return subjectCount._count.subjectId;
 }
 
 export async function GetAllSubjectCreditHourByClass(classId: number) {
-  const creditHour = await prisma.subject.findMany({
+  const creditHour = await prisma.subjectAssigned.findMany({
     where: {
       sclassId: classId,
     },
     select: {
-      id: true,
+      subject: true,
       credit_hour: true,
     },
   });
-  return creditHour;
+
+  const payload:CreditHourType[] = creditHour.map((chr) => {
+    return {
+      id:chr.subject.id,
+      credit_hour: chr.credit_hour,
+    }
+  })
+
+  return payload;
+}
+
+export function assignSubject(data: SubjectAssigned[]) {
+  return prisma.subjectAssigned.createMany({
+    data,
+  });
+}
+
+export function getAllSubjectsWithClassAssigned(schoolId: number) {
+  return prisma.subject.findMany({
+    where: {
+      schoolId,
+    },
+    include: {
+      subjectAssigned: {
+        select: {
+          sclassId: true,
+          credit_hour: true,
+          sclass: true,
+          subjectId: true,
+        },
+      },
+    },
+  });
 }

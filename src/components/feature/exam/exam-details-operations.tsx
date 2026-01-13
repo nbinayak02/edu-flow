@@ -1,6 +1,6 @@
 "use client";
 
-import { Class } from "@/app/(system)/class/types";
+
 import { ConfigureExamDbType } from "@/app/(system)/exam/types";
 import { AddSubjectMarksDialog } from "../dialog/exam-manage-addSubjects";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import EditDeleteOptions from "@/components/custom-components/editDelOptions";
+import { Sclass } from "@prisma/client";
 
 export default function ExamDetailsOperations({
   initialDetails,
@@ -20,7 +21,7 @@ export default function ExamDetailsOperations({
   examId,
 }: {
   initialDetails: ConfigureExamDbType[];
-  allClasses: Class[];
+  allClasses: Sclass[];
   examId: number;
 }) {
   const [details, setDetails] =

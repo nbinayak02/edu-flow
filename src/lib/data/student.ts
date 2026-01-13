@@ -54,6 +54,7 @@ export async function GetNewStudents(schoolId: number) {
               name: true,
             },
           },
+          id: true,
           academicYear: true,
         },
       },

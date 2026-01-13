@@ -1,11 +1,10 @@
-export type Class = {
-  id?: number;
-  name: string;
-  schoolId?: number;
-};
+import { Sclass } from "@prisma/client";
+
+export type createPayload = Omit<Sclass, "id" | "createdAt">;
 
 export type Error = {
   name?: string;
+  otherError?: string;
 };
 
 export type FormState = {
@@ -18,5 +17,5 @@ export type DeleteInitialState = {
 };
 
 export type DeleteFormState = {
-    message: DeleteInitialState;
-  };
+  message: DeleteInitialState;
+};

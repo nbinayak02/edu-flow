@@ -2,24 +2,25 @@
 
 import { useState } from "react";
 import { CreateClassDialog } from "../dialog/create-class-dialog";
-import { Class } from "@/app/(system)/class/types";
+
 import ClassCard from "./class-cards";
+import { Sclass } from "@prisma/client";
 
 export default function ClassOperations({
   initialClasses,
 }: {
-  initialClasses: Class[];
+  initialClasses: Sclass[];
 }) {
-  const [classes, setClasses] = useState<Class[]>(initialClasses);
+  const [classes, setClasses] = useState<Sclass[]>(initialClasses);
 
   //get newly added classes data
-  const handleGetClassData = (classData: Class) => {
+  const handleGetClassData = (classData: Sclass) => {
     setClasses(() => [...classes, classData]);
   };
 
-  const handleDelete = (classId: number) => {
-    setClasses((prevClass) => prevClass.filter((c) => c.id != classId));
-  };
+  // const handleDelete = (classId: number) => {
+  //   setClasses((prevClass) => prevClass.filter((c) => c.id != classId));
+  // };
 
   return (
     <>

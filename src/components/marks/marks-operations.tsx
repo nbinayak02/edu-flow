@@ -1,7 +1,5 @@
 "use client";
 
-import { Class } from "@/app/(system)/class/types";
-
 import { useEffect, useState } from "react";
 import { Exam } from "@/app/(system)/exam/types";
 import { GetExamByYearAction } from "@/app/_actions/exam";
@@ -11,11 +9,12 @@ import SearchStudent from "../feature/student/search-student";
 import { GetSubjectByClassAction } from "@/app/_actions/subject";
 import { StudentSearch } from "@/app/(system)/student/types";
 import { SubjectSearchReturn } from "@/app/(system)/marks/types";
+import { Sclass } from "@prisma/client";
 
 export default function MarksOperations({
   classes = [],
 }: {
-  classes: Class[];
+  classes: Sclass[];
 }) {
   const [exams, setExams] = useState<Exam[]>();
   const [students, setStudents] = useState<StudentSearch[]>([]);
