@@ -2,7 +2,6 @@
 
 import { Exam } from "@/app/(system)/exam/types";
 import { CreateExamDialog } from "../dialog/create-exam-dialog";
-import { useState } from "react";
 import ExamCard from "./exam-cards";
 
 export default function ExamOperations({

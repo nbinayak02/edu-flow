@@ -1,5 +1,5 @@
 "use server";
-import { CreateNewClass, getAllClasses } from "@/lib/data/class";
+import { CreateNewClass, getAllClasses, getClass } from "@/lib/data/class";
 import {  Error } from "../(system)/class/types";
 import { getSchoolId } from "@/lib/auth";
 
@@ -35,6 +35,16 @@ export async function GetAllClasses(schoolId: number) {
     return classes;
   } catch (error) {
     console.log("Error on GetAllClasses: ", error);
+    return null;
+  }
+}
+
+export async function GetClass(sclassId: number){
+  try {
+    const sclass = await  getClass(sclassId);
+    return sclass;
+  } catch (error) {
+    console.log("Error on GetClassAction: ", error);
     return null;
   }
 }

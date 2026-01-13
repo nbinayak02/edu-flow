@@ -17,9 +17,9 @@ export default function ClassOperations({
     setClasses(() => [...classes, classData]);
   };
 
-  const handleDelete = (classId: number) => {
-    setClasses((prevClass) => prevClass.filter((c) => c.id != classId));
-  };
+  // const handleDelete = (classId: number) => {
+  //   setClasses((prevClass) => prevClass.filter((c) => c.id != classId));
+  // };
 
   return (
     <>

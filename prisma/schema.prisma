@@ -13,7 +13,8 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
-  school    School? //user can have zero school or one
+  schoolId  Int? // user can manage zero or more school
+  school    School?  @relation(fields: [schoolId], references: [id])
 }
 
 model School {
@@ -26,32 +27,42 @@ model School {
   estd         Int
   logoPublicId String   @default("eduflow_school_default_logo")
   createdAt    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       Int      @unique //school must be connected to one user
+  users        User[] // one school is managed by multiple user
   sclass       Sclass[] //one to many relationship with class
   exam         Exam[]
 }
 
 model Sclass {
-  id          Int           @id @default(autoincrement())
-  name        String
-  school      School        @relation(fields: [schoolId], references: [id])
-  schoolId    Int
-  createdAt   DateTime      @default(now())
-  subject     Subject[]
-  examDetails ExamDetails[]
-  enrollment  Enrollment[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  section         String
+  school          School            @relation(fields: [schoolId], references: [id])
+  schoolId        Int
+  createdAt       DateTime          @default(now())
+  subjectAssigned SubjectAssigned[]
+  examDetails     ExamDetails[]
+  enrollment      Enrollment[]
+
+  @@unique([name, schoolId, section])
 }
 
 model Subject {
-  id          Int           @id @default(autoincrement())
-  name        String
-  credit_hour Float
-  createdAt   DateTime      @default(now())
-  sclass      Sclass        @relation(fields: [sclassId], references: [id])
+  id              Int               @id @default(autoincrement())
+  name            String
+  createdAt       DateTime          @default(now())
+  examDetails     ExamDetails[]
+  marks           Marks[]
+  subjectAssigned SubjectAssigned[]
+}
+
+model SubjectAssigned {
+  subjectId   Int
   sclassId    Int
-  examDetails ExamDetails[]
-  marks       Marks[]
+  credit_hour Float
+  subject     Subject @relation(fields: [subjectId], references: [id])
+  sclass      Sclass  @relation(fields: [sclassId], references: [id])
+
+  @@id([subjectId, sclassId])
 }
 
 model Student {
@@ -107,7 +118,7 @@ model ExamDetails {
   //only "subjectId" unique constraint didn't work so making composite key and also
   //model a weak entity.
 
-  @@id(name: "examDetailsId", [examId, subjectId])
+  @@id(name: "examDetailsId", [examId, subjectId, sclassId])
 }
 
 model Marksheet {

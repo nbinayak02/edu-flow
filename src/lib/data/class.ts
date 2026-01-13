@@ -1,5 +1,5 @@
 import { Class } from "@/app/(system)/class/types";
-import  prisma  from "../prisma";
+import prisma from "../prisma";
 
 export async function CreateNewClass(schoolId: number, clss: Class) {
   const newClass = await prisma.sclass.create({
@@ -28,4 +28,13 @@ export async function DeleteClass(classId: number) {
       id: classId,
     },
   });
+}
+
+export async function getClass(sclassId: number) {
+  const sclass = await prisma.sclass.findFirst({
+    where: {
+      id: sclassId,
+    },
+  });
+  return sclass;
 }
