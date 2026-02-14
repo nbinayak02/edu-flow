@@ -5,6 +5,8 @@ import { CreateClassDialog } from "../dialog/create-class-dialog";
 
 import ClassCard from "./class-cards";
 import { Sclass } from "@prisma/client";
+import InfoDialogBox from "../dialog/info-dialog-box";
+import { DeleteClassAction } from "@/app/_actions/class";
 
 export default function ClassOperations({
   initialClasses,
@@ -12,15 +14,38 @@ export default function ClassOperations({
   initialClasses: Sclass[];
 }) {
   const [classes, setClasses] = useState<Sclass[]>(initialClasses);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   //get newly added classes data
   const handleGetClassData = (classData: Sclass) => {
     setClasses(() => [...classes, classData]);
   };
+  
+  const handleClassAction = (action: "edit" | "delete", classId: number) => {
+    switch (action) {
+      case "delete":
+        setOpen(true);
+        setSelectedClassId(classId);
+        break;
+      case "edit":
+        // Handle edit action here (e.g., open an edit dialog)
+        break;
+      default:
+        break;
+    }
+  };
 
-  // const handleDelete = (classId: number) => {
-  //   setClasses((prevClass) => prevClass.filter((c) => c.id != classId));
-  // };
+  const handleDelete = async () => {
+    setLoading(true);
+    await DeleteClassAction(Number(selectedClassId));
+    setClasses((prevClass) =>
+      prevClass.filter((c) => c.id != Number(selectedClassId)),
+    );
+    setLoading(false);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -33,10 +58,26 @@ export default function ClassOperations({
             key={i}
             className={c.name}
             classId={Number(c.id)}
-            // onReturn={handleDelete}
+            onClassAction={handleClassAction}
           />
         ))}
       </div>
+
+      {open && (
+        <InfoDialogBox
+          open={open}
+          setOpen={setOpen}
+          title="Delete?"
+          description="This action cannot be undone."
+          message="This will delete all the data related to this class, including students, teachers, and subjects. Are you sure you want to continue?"
+          buttonLabel="Delete"
+          loading={loading}
+          onContinue={handleDelete}
+          setTimer={true}
+          timer={10}
+          variant="destructive"
+        />
+      )}
     </>
   );
 }

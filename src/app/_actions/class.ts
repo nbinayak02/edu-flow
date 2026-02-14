@@ -1,6 +1,7 @@
 "use server";
 import {
   CreateNewClass,
+  DeleteClass,
   findClassByNameAndSection,
   getAllClasses,
   getClass,
@@ -39,11 +40,13 @@ export async function CreateNewClassAction(_: unknown, formData: FormData) {
   }
 }
 
-export async function DeleteClassAction(formData: FormData) {
-  // console.log("The formdata: ", formData);
-  // const id = Number(formData.get("id") as string);
-  // const isDeleted = await DeleteClass(id);
-  // console.log("IS deleted? ", isDeleted);
+export async function DeleteClassAction(classId: number) {
+  try {
+    const isDeleted = await DeleteClass(classId);
+    console.log("Deleted class: ", isDeleted);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function GetAllClasses(schoolId: number) {

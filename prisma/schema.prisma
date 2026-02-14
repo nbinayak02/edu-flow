@@ -37,7 +37,7 @@ model Sclass {
   id              Int               @id @default(autoincrement())
   name            String
   section         String
-  school          School            @relation(fields: [schoolId], references: [id])
+  school          School            @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   schoolId        Int
   createdAt       DateTime          @default(now())
   subjectAssigned SubjectAssigned[]
@@ -52,7 +52,7 @@ model Subject {
   name            String
   schoolId        Int
   createdAt       DateTime          @default(now())
-  school          School            @relation(fields: [schoolId], references: [id])
+  school          School            @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   examDetails     ExamDetails[]
   marks           Marks[]
   subjectAssigned SubjectAssigned[]
@@ -62,8 +62,8 @@ model SubjectAssigned {
   subjectId   Int
   sclassId    Int
   credit_hour Float
-  subject     Subject @relation(fields: [subjectId], references: [id])
-  sclass      Sclass  @relation(fields: [sclassId], references: [id])
+  subject     Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  sclass      Sclass  @relation(fields: [sclassId], references: [id], onDelete: Cascade)
 
   @@id([subjectId, sclassId])
 }
@@ -82,8 +82,8 @@ model Student {
 
 model Enrollment {
   id           Int         @id @default(autoincrement())
-  student      Student     @relation(fields: [studentId], references: [id])
-  sclass       Sclass      @relation(fields: [sclassId], references: [id])
+  student      Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  sclass       Sclass      @relation(fields: [sclassId], references: [id], onDelete: Cascade)
   studentId    Int
   sclassId     Int
   academicYear Int
@@ -99,7 +99,7 @@ model Exam {
   name         String
   academicYear Int
   createdAt    DateTime      @default(now())
-  school       School        @relation(fields: [schoolId], references: [id])
+  school       School        @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   schoolId     Int
   resultDate   String
   examDetails  ExamDetails[]
@@ -107,9 +107,9 @@ model Exam {
 }
 
 model ExamDetails {
-  exam        Exam    @relation(fields: [examId], references: [id])
-  sclass      Sclass  @relation(fields: [sclassId], references: [id])
-  subject     Subject @relation(fields: [subjectId], references: [id])
+  exam        Exam    @relation(fields: [examId], references: [id], onDelete: Cascade)
+  sclass      Sclass  @relation(fields: [sclassId], references: [id], onDelete: Cascade)
+  subject     Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   examId      Int
   sclassId    Int
   subjectId   Int
@@ -126,8 +126,8 @@ model ExamDetails {
 
 model Marksheet {
   id              Int        @id @default(autoincrement())
-  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
-  exam            Exam       @relation(fields: [examId], references: [id])
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  exam            Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
   enrollmentId    Int
   examId          Int
   gpa             Float
@@ -139,8 +139,8 @@ model Marksheet {
 }
 
 model Marks {
-  marksheet      Marksheet @relation(fields: [marksheetId], references: [id])
-  subject        Subject   @relation(fields: [subjectId], references: [id])
+  marksheet      Marksheet @relation(fields: [marksheetId], references: [id], onDelete: Cascade)
+  subject        Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   marksheetId    Int
   subjectId      Int
   theoryMarks    Float

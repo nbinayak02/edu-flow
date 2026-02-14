@@ -41,7 +41,7 @@ export async function getClass(sclassId: number) {
 }
 
 export function findClassByNameAndSection(
-  data: Omit<Sclass, "id" | "schoolId" | "createdAt">
+  data: Omit<Sclass, "id" | "schoolId" | "createdAt">,
 ) {
   return prisma.sclass.findFirst({
     where: {

@@ -8,9 +8,11 @@ import { useRouter } from "next/navigation";
 export default function ClassCard({
   className,
   classId,
+  onClassAction,
 }: {
   className: string;
   classId: number;
+  onClassAction: (action: "edit" | "delete", classId: number) => void;
 }) {
   const router = useRouter();
   return (
@@ -18,10 +20,7 @@ export default function ClassCard({
       <CardHeader>
         Class - {className}
         <CardAction className="flex flex-row gap-5">
-          {/* <Button onClick={() => router.push(`/class/${classId}/manage`)}>
-            Manage
-          </Button> */}
-          <EditDeleteOptions />
+          <EditDeleteOptions classId={classId} onClick={onClassAction} />
         </CardAction>
       </CardHeader>
     </Card>
