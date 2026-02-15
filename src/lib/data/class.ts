@@ -12,6 +12,17 @@ export function CreateNewClass(clss: createPayload) {
   });
 }
 
+export async function updateClass(className: string, classId: number) {
+  return await prisma.sclass.update({
+    data: {
+      name: className,
+    },
+    where: {
+      id: classId,
+    },
+  });
+}
+
 export async function getAllClasses(schoolId: number) {
   const allClasses = await prisma.sclass.findMany({
     where: {
@@ -20,8 +31,6 @@ export async function getAllClasses(schoolId: number) {
   });
   return allClasses;
 }
-
-export async function EditClass(classId: number) {}
 
 export async function DeleteClass(classId: number) {
   await prisma.sclass.delete({

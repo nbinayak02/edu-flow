@@ -28,6 +28,18 @@ export default function SubjectOperations({
   allClasses: Sclass[];
 }) {
   const [activeDialog, setActiveDialog] = useState<dialogEnum | null>(null);
+  const handleAction = (action: "edit" | "delete", id: number) => {
+    switch (action) {
+      case "delete":
+        // Handle delete action here (e.g., open a confirmation dialog)
+        break;
+      case "edit":
+        // Handle edit action here (e.g., open an edit dialog)
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -85,11 +97,11 @@ export default function SubjectOperations({
                         <span>Class - {sa.sclass.name}</span>
                         <span>Credit Hour: {sa.credit_hour}</span>
                       </div>
-                    )
+                    ),
                   )}
                 </TableCell>
                 <TableCell>
-                  <EditDeleteOptions />
+                  <EditDeleteOptions id={s.id} onClick={handleAction} />
                 </TableCell>
               </TableRow>
             );

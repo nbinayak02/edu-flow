@@ -10,10 +10,10 @@ import {
 } from "../ui/dropdown-menu";
 
 export default function EditDeleteOptions({
-  classId,
+  id,
   onClick,
 }: {
-  classId: number;
+  id: number;
   onClick: (type: "edit" | "delete", id: number) => void;
 }) {
   return (
@@ -24,13 +24,13 @@ export default function EditDeleteOptions({
       <DropdownMenuContent>
         <DropdownMenuLabel>Select Action</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => onClick("edit", classId)}>
+        <DropdownMenuItem onClick={() => onClick("edit", id)}>
           <Edit2 />
           Edit
         </DropdownMenuItem>
         <DropdownMenuItem
           variant="destructive"
-          onClick={() => onClick("delete", classId)}
+          onClick={() => onClick("delete", id)}
         >
           <Trash2 />
           Delete

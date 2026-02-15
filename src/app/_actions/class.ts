@@ -5,8 +5,9 @@ import {
   findClassByNameAndSection,
   getAllClasses,
   getClass,
+  updateClass,
 } from "@/lib/data/class";
-import { Error } from "../(system)/class/types";
+import { Error, FormState } from "../(system)/class/types";
 import { getSchoolId } from "@/lib/auth";
 
 export async function CreateNewClassAction(_: unknown, formData: FormData) {
@@ -37,6 +38,39 @@ export async function CreateNewClassAction(_: unknown, formData: FormData) {
     return { newClass };
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function UpdateClassAction(
+  _: unknown,
+  formData: FormData,
+): Promise<FormState> {
+  // console.log("Form submitted");
+  const name = formData.get("name") as string;
+  const classId = Number(formData.get("classId"));
+
+  const errors: Error = {};
+
+  if (!name) {
+    errors.name = "Class name is required";
+    return { errors, success: false, data: {} };
+  }
+
+  try {
+    const existingClass = await getClass(classId);
+
+    if (!existingClass) {
+      errors.name = "Class doesn't exists.";
+      return { errors, success: false, data: {} };
+    }
+
+    const updated = await updateClass(name, classId);
+
+    return { errors: {}, success: true, data: updated };
+  } catch (error) {
+    errors.otherError = "Something went wrong!";
+    console.log(error);
+    return { errors, success: false, data: {} };
   }
 }
 
