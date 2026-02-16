@@ -18,17 +18,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Subject } from "@prisma/client";
 
-export function SubjectMultiSelect({
-  subjectList,
+export function MultiSelect({
+  list,
+  label,
   isLoading,
   onReturn,
   defaultValue,
 }: {
-  subjectList: Subject[];
+  list: any[];
+  label: string;
   isLoading: boolean;
-  onReturn: (subjects: number[]) => void;
+  onReturn: (selectedValues: number[]) => void;
   defaultValue?: number[];
 }) {
   const [open, setOpen] = React.useState(false);
@@ -64,18 +65,14 @@ export function SubjectMultiSelect({
         >
           {!isLoading && value.length > 0 ? (
             <p className="truncate">
-              {subjectList
-                .map((subject) =>
-                  subject.id
-                    ? value.includes(subject.id)
-                      ? subject.name
-                      : null
-                    : null,
+              {list
+                .map((l) =>
+                  l.id ? (value.includes(l.id) ? l.name : null) : null,
                 )
                 .join(" ")}
             </p>
           ) : (
-            "Select subject..."
+            `Select ${label}...`
           )}
 
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -83,19 +80,19 @@ export function SubjectMultiSelect({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search subject..." />
+          <CommandInput placeholder={`Search ${label}`} />
           <CommandList>
             <CommandEmpty>
-              {isLoading ? "Loading... Please wait!" : "No subjects found."}
+              {isLoading ? "Loading... Please wait!" : `No ${label} found.`}
             </CommandEmpty>
             {isLoading ? (
               <></>
             ) : (
               <CommandGroup>
-                {subjectList.map((subject) => (
+                {list.map((l) => (
                   <CommandItem
-                    key={subject.id}
-                    value={String(subject.id)}
+                    key={l.id}
+                    value={String(l.id)}
                     onSelect={(currentValue) =>
                       handleSelection(Number(currentValue))
                     }
@@ -103,12 +100,12 @@ export function SubjectMultiSelect({
                     <CheckIcon
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value.includes(subject.id ?? NaN)
+                        value.includes(l.id ?? NaN)
                           ? "opacity-100"
                           : "opacity-0",
                       )}
                     />
-                    {subject.name}
+                    {l.name}
                   </CommandItem>
                 ))}
               </CommandGroup>

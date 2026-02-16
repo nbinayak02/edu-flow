@@ -26,7 +26,7 @@ export default function ExamCard({
           >
             <Button className="cursor-pointer">Manage</Button>
           </Link>
-          <EditDeleteOptions />
+          {/* <EditDeleteOptions /> */}
         </CardAction>
       </CardHeader>
     </Card>

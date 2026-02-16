@@ -9,6 +9,8 @@ export type Error = {
 
 export type FormState = {
   errors: Error;
+  success: boolean;
+  data: Sclass | null;
 };
 
 export type DeleteInitialState = {

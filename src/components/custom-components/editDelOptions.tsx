@@ -1,3 +1,4 @@
+"use client";
 import { Edit2, Ellipsis, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,7 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-export default function EditDeleteOptions() {
+export default function EditDeleteOptions({
+  id,
+  onClick,
+}: {
+  id: number;
+  onClick: (type: "edit" | "delete", id: number) => void;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -17,11 +24,14 @@ export default function EditDeleteOptions() {
       <DropdownMenuContent>
         <DropdownMenuLabel>Select Action</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onClick("edit", id)}>
           <Edit2 />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive">
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => onClick("delete", id)}
+        >
           <Trash2 />
           Delete
         </DropdownMenuItem>

@@ -1,11 +1,13 @@
 "use server";
 import {
   CreateNewClass,
+  DeleteClass,
   findClassByNameAndSection,
   getAllClasses,
   getClass,
+  updateClass,
 } from "@/lib/data/class";
-import { Error } from "../(system)/class/types";
+import { Error, FormState } from "../(system)/class/types";
 import { getSchoolId } from "@/lib/auth";
 
 export async function CreateNewClassAction(_: unknown, formData: FormData) {
@@ -39,11 +41,46 @@ export async function CreateNewClassAction(_: unknown, formData: FormData) {
   }
 }
 
-export async function DeleteClassAction(formData: FormData) {
-  // console.log("The formdata: ", formData);
-  // const id = Number(formData.get("id") as string);
-  // const isDeleted = await DeleteClass(id);
-  // console.log("IS deleted? ", isDeleted);
+export async function UpdateClassAction(
+  _: unknown,
+  formData: FormData,
+): Promise<FormState> {
+  // console.log("Form submitted");
+  const name = formData.get("name") as string;
+  const classId = Number(formData.get("classId"));
+
+  const errors: Error = {};
+
+  if (!name) {
+    errors.name = "Class name is required";
+    return { errors, success: false, data: null };
+  }
+
+  try {
+    const existingClass = await getClass(classId);
+
+    if (!existingClass) {
+      errors.name = "Class doesn't exists.";
+      return { errors, success: false, data: null };
+    }
+
+    const updated = await updateClass(name, classId);
+
+    return { errors: {}, success: true, data: updated };
+  } catch (error) {
+    errors.otherError = "Something went wrong!";
+    console.log(error);
+    return { errors, success: false, data: null };
+  }
+}
+
+export async function DeleteClassAction(classId: number) {
+  try {
+    const isDeleted = await DeleteClass(classId);
+    console.log("Deleted class: ", isDeleted);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function GetAllClasses(schoolId: number) {

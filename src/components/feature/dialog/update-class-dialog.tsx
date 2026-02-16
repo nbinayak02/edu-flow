@@ -1,7 +1,7 @@
 "use client";
 
 import { FormState } from "@/app/(system)/class/types";
-import { CreateNewClassAction } from "@/app/_actions/class";
+import { CreateNewClassAction, UpdateClassAction } from "@/app/_actions/class";
 import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
 import {
@@ -17,55 +17,62 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sclass } from "@prisma/client";
-import { PlusCircle } from "lucide-react";
-import { useActionState, useEffect, useState } from "react";
+import { Edit, Loader, Loader2, PlusCircle } from "lucide-react";
+import { SetStateAction, useActionState, useEffect, useState } from "react";
 
-export function CreateClassDialog({
-  onReturn,
+export function UpdateClassDialog({
+  defaultValue,
+  isSuccess,
+  open,
+  setOpen,
 }: {
-  onReturn: (classData: Sclass) => void;
+  defaultValue: Sclass | undefined;
+  isSuccess: (success: boolean, data: Sclass | null) => void;
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
   const initialState: FormState = {
     errors: {},
-    data: null,
     success: false,
+    data: null,
   };
 
-  const [open, setOpen] = useState(false)
-
   const [state, formAction, isPending] = useActionState(
-    CreateNewClassAction,
-    initialState
+    UpdateClassAction,
+    initialState,
   );
 
   useEffect(() => {
-    // console.log("State changed, use effect running. State is: ", state);
-    if (state?.newClass) {
-      // console.log("Sending new class data to parent...");
-      onReturn(state?.newClass);
+    if (state.success && state.data) {
+      isSuccess(true, state.data);
       setOpen(false);
     }
   }, [state]);
 
   return (
-    <Dialog open={open}  onOpenChange={(a) => setOpen(a)}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusCircle /> Create New Class
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Class</DialogTitle>
+          <DialogTitle>Update Class</DialogTitle>
           <DialogDescription>
-            Enter details of new class here. Click save when you&apos;re done.
+            Edit details of class here. Click update when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form action={formAction}>
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="cname">Class Name</Label>
-              <Input id="cname" name="name" placeholder="Eg: 10" />
+              <Input
+                id="cname"
+                name="name"
+                placeholder="Eg: 10"
+                defaultValue={defaultValue?.name}
+              />
+              <Input
+                type="hidden"
+                name="classId"
+                defaultValue={defaultValue?.id}
+              />
               <CardDescription className="text-rose-500">
                 {state?.errors?.name}
               </CardDescription>
@@ -77,7 +84,14 @@ export function CreateClassDialog({
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create"}
+              {isPending ? (
+                <>
+                  Updating
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Update"
+              )}
             </Button>
           </DialogFooter>
         </form>

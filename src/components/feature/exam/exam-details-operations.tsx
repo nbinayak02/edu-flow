@@ -68,7 +68,7 @@ export default function ExamDetailsOperations({
                 <TableCell>{d.prFullMarks}</TableCell>
                 <TableCell>{d.prPassMarks}</TableCell>
                 <TableCell>
-                  <EditDeleteOptions />
+                  {/* <EditDeleteOptions /> */}
                 </TableCell>
               </TableRow>
             );
