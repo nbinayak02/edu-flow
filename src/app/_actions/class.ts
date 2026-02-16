@@ -53,7 +53,7 @@ export async function UpdateClassAction(
 
   if (!name) {
     errors.name = "Class name is required";
-    return { errors, success: false, data: {} };
+    return { errors, success: false, data: null };
   }
 
   try {
@@ -61,7 +61,7 @@ export async function UpdateClassAction(
 
     if (!existingClass) {
       errors.name = "Class doesn't exists.";
-      return { errors, success: false, data: {} };
+      return { errors, success: false, data: null };
     }
 
     const updated = await updateClass(name, classId);
@@ -70,7 +70,7 @@ export async function UpdateClassAction(
   } catch (error) {
     errors.otherError = "Something went wrong!";
     console.log(error);
-    return { errors, success: false, data: {} };
+    return { errors, success: false, data: null };
   }
 }
 

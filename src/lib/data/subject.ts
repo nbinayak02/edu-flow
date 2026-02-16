@@ -12,6 +12,17 @@ export function createNewSubject(payload: createPayload) {
   });
 }
 
+export function updateSubject(subjectId: number, subjectName: string) {
+  return prisma.subject.update({
+    where: {
+      id: subjectId,
+    },
+    data: {
+      name: subjectName,
+    },
+  });
+}
+
 export function getAllSubjects(schoolId: number) {
   return prisma.subject.findMany({
     where: {
@@ -48,7 +59,7 @@ export async function GetSubjectNamesByClass(classId: number) {
   } else {
     throw new Error(
       "Subjects not found for the given class. Please make sure that subjects have been setup in this class, as it is required for this operation.",
-      { cause: 404 }
+      { cause: 404 },
     );
   }
 }
@@ -77,12 +88,12 @@ export async function GetAllSubjectCreditHourByClass(classId: number) {
     },
   });
 
-  const payload:CreditHourType[] = creditHour.map((chr) => {
+  const payload: CreditHourType[] = creditHour.map((chr) => {
     return {
-      id:chr.subject.id,
+      id: chr.subject.id,
       credit_hour: chr.credit_hour,
-    }
-  })
+    };
+  });
 
   return payload;
 }

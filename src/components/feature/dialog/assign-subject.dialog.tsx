@@ -29,7 +29,7 @@ import { SetStateAction, useActionState, useEffect, useState } from "react";
 import { AssignSubject, GetAllSubjectBySchool } from "@/app/_actions/subject";
 import {
   AssignSubjectFormState,
-  dialogEnum,
+  subjectDialogEnum,
 } from "@/app/(system)/subject/types";
 
 export function AssignSubjectDialog({
@@ -39,7 +39,7 @@ export function AssignSubjectDialog({
 }: {
   allClasses: Sclass[];
   dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<SetStateAction<dialogEnum | null>>;
+  setDialogOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
   const [isSubjectLoading, setSubjectLoading] = useState<boolean>(false);
   const [subjectList, setSubjectList] = useState<Subject[]>([]);
@@ -62,17 +62,17 @@ export function AssignSubjectDialog({
 
   const [state, formAction, isPending] = useActionState(
     AssignSubject,
-    initialState
+    initialState,
   );
 
   useEffect(() => {
     if (state.success) {
-      setDialogOpen(null);
+      setDialogOpen(false);
     }
   }, [state]);
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(null)}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Assign Subject to Class</DialogTitle>

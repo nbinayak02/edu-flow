@@ -1,7 +1,8 @@
-"use client";
-
-import { FormState } from "@/app/(system)/subject/types";
-import { CreateNewSubjectAction } from "@/app/_actions/subject";
+import {
+  SubjectWithClassAssigned,
+  UpdateSubjectFormState,
+} from "@/app/(system)/subject/types";
+import { UpdateSubject } from "@/app/_actions/subject";
 import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
 import {
@@ -15,51 +16,65 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
+import { Subject } from "@prisma/client";
+import { Loader2 } from "lucide-react";
 import { SetStateAction, useActionState, useEffect } from "react";
 
-export function CreateSubjectDialog({
-  dialogOpen,
-  setDialogOpen,
+export default function UpdateSubjectDialog({
+  subjectDefaultValue,
+  isSuccess,
+  open,
+  setOpen,
 }: {
-  dialogOpen: boolean;
-  setDialogOpen: React.Dispatch<SetStateAction<boolean>>;
+  subjectDefaultValue: SubjectWithClassAssigned | undefined;
+  isSuccess: (success: boolean, data: unknown) => void;
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
-  const initialState: FormState = {
+  const initialState: UpdateSubjectFormState = {
     errors: {},
+    success: false,
     data: null,
   };
 
   const [state, formAction, isPending] = useActionState(
-    CreateNewSubjectAction,
+    UpdateSubject,
     initialState,
   );
 
   useEffect(() => {
-    if (state?.data) {
-      setDialogOpen(false);
-      router.refresh();
+    if (state.success && state.data) {
+      isSuccess(true, state.data);
+      setOpen(false);
     }
   }, [state]);
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Subject</DialogTitle>
+          <DialogTitle>Update Subject</DialogTitle>
           <DialogDescription>
-            Enter details of new subject here. Click save when you&apos;re done.
+            Edit details of subject here. Click update when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form action={formAction}>
           <div className="grid gap-4">
             <div className="grid gap-3">
               <Label htmlFor="sname">Subject Name</Label>
-              <Input id="sname" name="name" />
+              <Input
+                id="sname"
+                name="name"
+                defaultValue={subjectDefaultValue?.name}
+              />
               <CardDescription className="text-rose-500">
                 {state?.errors?.name}
               </CardDescription>
+              <Input
+                type="hidden"
+                name="id"
+                defaultValue={subjectDefaultValue?.id}
+              />
             </div>
           </div>
 
@@ -68,7 +83,14 @@ export function CreateSubjectDialog({
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create"}
+              {isPending ? (
+                <>
+                  Updating
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Update"
+              )}
             </Button>
           </DialogFooter>
         </form>

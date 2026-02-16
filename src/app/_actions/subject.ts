@@ -5,12 +5,15 @@ import {
   getAllSubjects,
   getAllSubjectsWithClassAssigned,
   getSubjectsByClass,
+  updateSubject,
 } from "@/lib/data/subject";
 import {
   AssignSubjectError,
   AssignSubjectFormState,
   CreateSubjectError,
   FormState,
+  UpdateSubjectError,
+  UpdateSubjectFormState,
 } from "../(system)/subject/types";
 import { getSchoolId } from "@/lib/auth";
 import { SubjectAssigned } from "@prisma/client";
@@ -18,7 +21,7 @@ import { revalidatePath, unstable_noStore } from "next/cache";
 
 export async function CreateNewSubjectAction(
   _: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   const name = formData.get("name") as string;
 
@@ -81,7 +84,7 @@ export async function GetAllSubjectBySchool() {
 
 export async function AssignSubject(
   _: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<AssignSubjectFormState> {
   const sclassId = Number(formData.get("sclass"));
   const subjectsIds = formData.get("subjects") as String;
@@ -128,5 +131,39 @@ export async function GetAllSubjectWithClassAssigned() {
   } catch (error) {
     console.log("Error on GetSubjectBySchool: ", error);
     return null;
+  }
+}
+
+export async function UpdateSubject(
+  _: unknown,
+  formData: FormData,
+): Promise<UpdateSubjectFormState> {
+  const name = formData.get("name") as string;
+  const subjectId = Number(formData.get("id"));
+
+  const errors: UpdateSubjectError = {};
+
+  if (!name) errors.name = "Subject name is required";
+  if (!subjectId) errors.otherError = "Subject id is required";
+
+  if (Object.entries(errors).length > 0) {
+    return { errors, success: false, data: null };
+  }
+
+  try {
+    const updatedSubject = await updateSubject(subjectId, name);
+
+    return {
+      errors: {},
+      success: updatedSubject ? true : false,
+      data: updatedSubject,
+    };
+  } catch (error) {
+    console.log("Error at UpdateSubject: ", error);
+    return {
+      errors: { otherError: "Something went wrong, Please try again later!" },
+      success: false,
+      data: null,
+    };
   }
 }

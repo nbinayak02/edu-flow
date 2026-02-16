@@ -18,19 +18,32 @@ export interface AssignSubjectError extends FormError {
   credit_hour?: string;
 }
 
+export interface UpdateSubjectError extends FormError, AssignSubjectError {
+  name?: string;
+}
+
 export type AssignSubjectFormState = {
   errors: AssignSubjectError;
   success: boolean;
 };
 
-// subject module ui dialogs
-export enum dialogEnum {
-  create,
-  assign,
-}
+export type UpdateSubjectFormState = {
+  errors: UpdateSubjectError;
+  success: boolean;
+  data: Subject | SubjectAssigned[] | null;
+};
 
 export type SubjectAssignedWithClass = SubjectAssigned & { sclass: Sclass };
 
 export type SubjectWithClassAssigned = Subject & {
   subjectAssigned: SubjectAssignedWithClass[];
 };
+
+export enum subjectDialogEnum {
+  editSubject,
+  editSubAssigned,
+  delete,
+  create,
+  assign,
+  none,
+}
