@@ -104,6 +104,22 @@ export function assignSubject(data: SubjectAssigned[]) {
   });
 }
 
+export function updateAssignedSubject(
+  data: SubjectAssigned,
+  classId: number,
+  subjectId: number,
+) {
+  return prisma.subjectAssigned.update({
+    data,
+    where: {
+      subjectId_sclassId: {
+        sclassId: classId,
+        subjectId: subjectId,
+      },
+    },
+  });
+}
+
 export function getAllSubjectsWithClassAssigned(schoolId: number) {
   return prisma.subject.findMany({
     where: {

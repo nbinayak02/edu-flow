@@ -5,6 +5,7 @@ import {
   getAllSubjects,
   getAllSubjectsWithClassAssigned,
   getSubjectsByClass,
+  updateAssignedSubject,
   updateSubject,
 } from "@/lib/data/subject";
 import {
@@ -12,12 +13,15 @@ import {
   AssignSubjectFormState,
   CreateSubjectError,
   FormState,
+  UpdateSubAssignFormState,
   UpdateSubjectError,
   UpdateSubjectFormState,
 } from "../(system)/subject/types";
 import { getSchoolId } from "@/lib/auth";
 import { SubjectAssigned } from "@prisma/client";
 import { revalidatePath, unstable_noStore } from "next/cache";
+import { error } from "console";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 export async function CreateNewSubjectAction(
   _: unknown,
@@ -164,6 +168,60 @@ export async function UpdateSubject(
       errors: { otherError: "Something went wrong, Please try again later!" },
       success: false,
       data: null,
+    };
+  }
+}
+
+export async function UpdateSubjectAssigned(
+  _: unknown,
+  formData: FormData,
+): Promise<UpdateSubAssignFormState> {
+  const subjectId = Number(formData.get("subjectId"));
+  const classId = Number(formData.get("classId"));
+  const sclassId = Number(formData.get("sclass"));
+  const credit_hour = Number(formData.get("creditHour"));
+
+  const errors: AssignSubjectError = {};
+
+  if (!subjectId || !classId) errors.otherError = "Missing id";
+  if (!sclassId) errors.sclass = "Class is required";
+  if (!credit_hour) errors.credit_hour = "Credit Hour is required";
+
+  if (Object.entries(errors).length > 0) {
+    return { errors, success: false };
+  }
+
+  try {
+    const updatedSubjectAssign = await updateAssignedSubject(
+      { credit_hour, sclassId, subjectId },
+      classId,
+      subjectId,
+    );
+    console.log(updatedSubjectAssign);
+    return {
+      errors: {},
+      success: updatedSubjectAssign ? true : false,
+    };
+  } catch (error) {
+    console.log("Error at UpdateSubject: ", error);
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return {
+        errors: {
+          otherError:
+            "This subject has already been assigned to the selected class.",
+        },
+        success: false,
+        // data: null,
+      };
+    }
+
+    return {
+      errors: { otherError: "Something went wrong, Please try again later!" },
+      success: false,
+      // data: null,
     };
   }
 }

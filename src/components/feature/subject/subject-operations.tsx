@@ -12,6 +12,7 @@ import {
 import { Sclass } from "@prisma/client";
 import { AssignSubjectDialog } from "../dialog/assign-subject.dialog";
 import {
+  handleAssignPayload,
   SubjectAssignedWithClass,
   subjectDialogEnum,
   SubjectWithClassAssigned,
@@ -20,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import { BookPlus, PlusCircle } from "lucide-react";
 import SubjectActions from "./subject-actions";
 import UpdateSubjectDialog from "../dialog/update-subject-dialog";
+import UpdateSubjectAssignedDialog from "../dialog/update-subject-assign-dialog";
+import EditDeleteOptions from "@/components/custom-components/editDelOptions";
 
 export default function SubjectOperations({
   subjects,
@@ -36,19 +39,17 @@ export default function SubjectOperations({
   );
 
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
+  const [selectedSubAssign, setSelectedSubAssign] =
+    useState<handleAssignPayload | null>(null);
 
-  useEffect(() => {
-    console.log("Active Dialog: ", activeDialog);
-  }, [activeDialog]);
-
-  const handleAction = (action: subjectDialogEnum, id: number) => {
+  const handleAction = (action: "edit" | "delete", id: number) => {
     console.log(action, id);
     switch (action) {
-      case subjectDialogEnum.editSubject:
+      case "edit":
         setActiveDialog(subjectDialogEnum.editSubject);
         break;
 
-      case subjectDialogEnum.editSubAssigned:
+      case "delete":
         setActiveDialog(subjectDialogEnum.editSubAssigned);
         break;
 
@@ -59,14 +60,29 @@ export default function SubjectOperations({
     setSelectedSubjectId(id);
   };
 
-  const handleUpdateSubjectSuccess = (success: boolean, data: unknown) => {
-    if (success && data) {
-      const updatedSubject = data as SubjectWithClassAssigned;
-      setSubjectsData((prev) =>
-        prev.map((s) => (s.id === updatedSubject.id ? updatedSubject : s)),
-      );
+  const handleAssignAction = (
+    action: "edit" | "delete",
+    payload: handleAssignPayload,
+  ) => {
+    setSelectedSubAssign(payload);
+    switch (action) {
+      case "edit":
+        setActiveDialog(subjectDialogEnum.editSubAssigned);
+        break;
+      case "delete":
+        setActiveDialog(subjectDialogEnum.deleteSubAssigned);
+        break;
     }
   };
+
+  // const handleUpdateSubjectSuccess = (success: boolean, data: unknown) => {
+  //   if (success && data) {
+  //     const updatedSubject = data as SubjectWithClassAssigned;
+  //     setSubjectsData((prev) =>
+  //       prev.map((s) => (s.id === updatedSubject.id ? updatedSubject : s)),
+  //     );
+  //   }
+  // };
   return (
     <>
       <CreateSubjectDialog
@@ -127,15 +143,51 @@ export default function SubjectOperations({
                 <TableCell>
                   {s.subjectAssigned?.map(
                     (sa: SubjectAssignedWithClass, index: number) => (
-                      <div className="space-x-5" key={index}>
+                      <div
+                        className="space-x-5 flex flex-row justify-center items-center"
+                        key={index}
+                      >
                         <span>Class - {sa.sclass.name}</span>
                         <span>Credit Hour: {sa.credit_hour}</span>
+                        <div>
+                          <Button
+                            variant={"link"}
+                            className="text-green-300"
+                            onClick={() =>
+                              handleAssignAction("edit", {
+                                className: sa.sclass.name,
+                                subjectName: s.name,
+                                credit_hour: sa.credit_hour,
+                                subjectId: sa.subjectId,
+                                classId: sa.sclassId,
+                              })
+                            }
+                          >
+                            Edit
+                          </Button>
+                          {/* <Button
+                            variant={"link"}
+                            className="text-red-300"
+                            onClick={() =>
+                              handleAssignAction("edit", {
+                                className: sa.sclass.name,
+                                subjectName: s.name,
+                                credit_hour: sa.credit_hour,
+                                subjectId: sa.subjectId,
+                                classId: sa.sclassId,
+                              })
+                            }
+                          >
+                            Delete
+                          </Button> */}
+                        </div>
                       </div>
                     ),
                   )}
                 </TableCell>
                 <TableCell>
-                  <SubjectActions id={s.id} onClick={handleAction} />
+                  {/* <SubjectActions id={s.id} onClick={handleAction} /> */}
+                  <EditDeleteOptions id={s.id} onClick={handleAction} />
                 </TableCell>
               </TableRow>
             );
@@ -154,7 +206,23 @@ export default function SubjectOperations({
           subjectDefaultValue={subjectsData.find(
             (s) => s.id === selectedSubjectId,
           )}
-          isSuccess={handleUpdateSubjectSuccess}
+          isSuccess={(isSuccess) => isSuccess && window.location.reload()}
+        />
+      )}
+
+      {activeDialog === subjectDialogEnum.editSubAssigned && (
+        <UpdateSubjectAssignedDialog
+          open={activeDialog === subjectDialogEnum.editSubAssigned}
+          setOpen={(isOpen) =>
+            setActiveDialog(
+              isOpen
+                ? subjectDialogEnum.editSubAssigned
+                : subjectDialogEnum.none,
+            )
+          }
+          allClasses={allClasses}
+          data={selectedSubAssign}
+          isSuccess={(isSuccess) => isSuccess && window.location.reload()}
         />
       )}
     </>

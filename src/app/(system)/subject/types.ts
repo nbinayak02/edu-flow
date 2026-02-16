@@ -33,6 +33,11 @@ export type UpdateSubjectFormState = {
   data: Subject | SubjectAssigned[] | null;
 };
 
+export type UpdateSubAssignFormState = {
+  errors: AssignSubjectError;
+  success: boolean;
+};
+
 export type SubjectAssignedWithClass = SubjectAssigned & { sclass: Sclass };
 
 export type SubjectWithClassAssigned = Subject & {
@@ -42,8 +47,17 @@ export type SubjectWithClassAssigned = Subject & {
 export enum subjectDialogEnum {
   editSubject,
   editSubAssigned,
+  deleteSubAssigned,
   delete,
   create,
   assign,
   none,
 }
+
+export type handleAssignPayload = {
+  className: string;
+  subjectName: string;
+  credit_hour: number;
+  subjectId: number;
+  classId: number;
+};
