@@ -27,6 +27,8 @@ export function CreateClassDialog({
 }) {
   const initialState: FormState = {
     errors: {},
+    data: null,
+    success: false,
   };
 
   const [open, setOpen] = useState(false)

@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.2.0] - 2026-02-16
+
+### Added
+- Update Class
+- Update Subject and Subject Assignment
+
+### Changed
+- Prisma client from v7.2.0 to v7.4.0
+- All models relations from Restrict on delete to Cascade
+
 ## [1.1.0] - 2026-01-14
 
 ### Changed

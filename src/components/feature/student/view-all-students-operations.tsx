@@ -125,7 +125,7 @@ export default function ViewAllStudentsOperation({
                     </TableCell>
                     <TableCell>{s.iemis}</TableCell>
                     <TableCell>
-                      <EditDeleteOptions />
+                      {/* <EditDeleteOptions /> */}
                     </TableCell>
                   </TableRow>
                 );

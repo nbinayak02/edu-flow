@@ -71,7 +71,7 @@ export default function StudentOperations({
                 </TableCell>
                 <TableCell>{s.iemis}</TableCell>
                 <TableCell>
-                  <EditDeleteOptions />
+                  {/* <EditDeleteOptions /> */}
                 </TableCell>
               </TableRow>
             );
