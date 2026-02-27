@@ -27,6 +27,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { ModeToggle } from "@/components/themes/modeToogle";
 
 const data = {
   navSecondary: [
@@ -120,9 +121,11 @@ export function AppSidebar({ user, ...props }: AppSideBarProps) {
         <NavProjects projects={data.navItems} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
+        <ModeToggle />
       <SidebarFooter>
         <NavUser user={user ?? { name: "", email: "" }} />
       </SidebarFooter>
+
     </Sidebar>
   );
 }

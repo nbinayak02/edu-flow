@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/user-context";
 import { getUserFromToken } from "@/lib/auth";
+import { ThemeProvider } from "@/components/themes/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +29,19 @@ export default async function RootLayout({
   const userId = await getUserFromToken();
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <meta name="apple-mobile-web-app-title" content="EduFlow" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserProvider user={Number(userId)}>{children}</UserProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <UserProvider user={Number(userId)}>{children}</UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
