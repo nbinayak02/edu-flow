@@ -2,7 +2,7 @@
 ## 1. Overview
 
 ### 1.1 Purpose
-EduFlow is a web-based marks and student management system designed to simplify academic record handling for educational institutions. The system enables administrators to manage student data, record marks, compute Grade Point Average (GPA), and generate academic certificates such as marksheets and transcripts. The goal is to minimize manual errors, automate repetitive academic processes, and integrate artificial intelligence to provide data-driven insights.
+EduFlow is a web-based marks and student management system designed to simplify academic record handling for educational institutions. The system enables administrators to manage student data, record marks, compute Grade Point Average (GPA), and generate academic certificates such as marksheets and transcripts. The goal is to minimize manual errors and automate repetitive academic processes.
 
 The project serves as an improved and well-engineered version of a real client application developed earlier, focusing on better design, scalability, and modern development practices.
 
@@ -22,9 +22,7 @@ Future versions will support multi-role systems (teachers, students, parents).
 
 ---
 
-## 3. Functional Requirements
-
-### 3.1 Core Features
+## 3. Core Features
 
 1. **Student Management**  
    Add, update, delete, and view student details.
@@ -52,117 +50,27 @@ Future versions will support multi-role systems (teachers, students, parents).
 
 ---
 
-### 3.2 AI-Integrated Features
-
-1. **Performance Insights (Gemini API)**  
-   After marks entry, the system can analyze performance trends and generate feedback for each student using the Gemini AI API.  
-   Example:  
-   *“The student has shown consistent improvement in Mathematics but needs to focus more on Science.”*
-
-2. **Report Summarization**  
-   AI summarizes class-wide reports or GPA distributions into human-readable text for admin review.
-
-3. **Natural Language Query (Optional Experimental Feature)**  
-   Admin can ask questions like:  
-   *“Show top three students in Class 11 this year.”*  
-   Gemini processes the query and suggests corresponding database actions.
-
----
-
-## 4. Non-Functional Requirements
-
-| Attribute | Description |
-|------------|-------------|
-| **Reliability** | GPA logic follows NEB standards. AI features are optional and fallback-safe. |
-| **Usability** | UI should be intuitive and responsive. |
-| **Scalability** | Support multiple classes, and exams per admin. |
-| **Performance** | Core operations complete within 2 seconds; AI calls handled asynchronously. |
-| **Security** | Passwords hashed; API keys stored securely via environment variables. |
-| **Maintainability** | Modular code with separate AI integration layer (`/lib/ai`). |
-| **Availability** | Deployed on Vercel with managed PostgreSQL database. |
-| **Ethical Use of AI** | AI-generated content reviewed by admin before finalization. No student data shared beyond intended use. |
-
----
-
-## 5. System Design
-
-### 5.1 Architecture
-
-EduFlow follows a client–server model built using **Next.js 15 (App Router)**, **TypeScript**, and **Prisma ORM** with **PostgreSQL**.  
-AI integration is modular through a Gemini API client.
-
-
----
-
-### 5.2 Database Schema
-
-| Table | Fields | Description |
-|--------|---------|-------------|
-| **Users** | id, name, role, email, password | Authentication and role management |
-| **Schools** | id, name, address, contact, user_id | Represents institutions managed by admins |
-| **Classes** | id, name, school_id | Academic classes |
-| **Subjects** | id, name, class_id, school_id, credit_hour | Subjects taught in a class |
-| **Students** | id, name, address, contact, school_id, class_id, year | Student details |
-| **Exams** | id, name, year, class_id | Exam metadata |
-| **ExamInfo** | id, exam_id, subject_id, full_marks, pass_marks | Subject-level exam setup |
-| **Marksheet** | id, stu_id, class_id, year, exam_id, total, gpa | Aggregated results |
-| **Marks** | id, marksheet_id, subject_id, obtained_marks | Individual subject marks |
-
----
-
-### 5.3 AI Integration Layer
-
-| Component | Function |
-|------------|-----------|
-| **geminiClient.ts** | Handles API communication with Gemini (fetch, prompt, response). |
-| **prompts/** | Stores pre-defined prompt templates for performance analysis, certificate generation, and report summaries. |
-| **cache/** | Optional caching of AI responses for performance. |
-| **safetyChecks.ts** | Sanitizes input/output to prevent prompt injection and ensure clean responses. |
-
----
-
-### 5.4. Technology Stack
+### 4. Technology Stack
 
 | Layer | Technology |
 |-------|-------------|
 | **Frontend** | Next.js (App Router), TypeScript, TailwindCSS, shadcn/ui |
 | **Backend** | Prisma ORM, Server Actions |
 | **Database** | PostgreSQL |
-| **AI Integration** | Gemini API |
-| **Authentication** | NextAuth.js |
-| **Deployment** | Vercel + Neon Database |
+| **Authentication** | JWT |
+| **Deployment** | Vercel + Supabase |
 
 ---
 
-### 6. Development Roadmap
-
-| Phase | Description |
-|--------|-------------|
-| **Phase 1** | Core CRUD: Students, Exams, Marks |
-| **Phase 2** | GPA and Marksheet Generation |
-| **Phase 3** | Certificate Module |
-| **Phase 4** | Gemini AI Integration |
-| **Phase 5** | UI Enhancements, Optimization, Deployment |
-
----
-
-## 7. Future Enhancements
+## 5. Future Enhancements
 
 - Multi-role system (Teacher, Student, Parent)
 - Advanced analytics (GPA distribution graphs)
-- Chat-based data querying
+- AI integration
 
 ---
 
-## 8. References
-
-- **NEB GPA Calculation Standards (Nepal)**  
-- **Gemini API Documentation**  
-- **Next.js 15 & Prisma Documentation**
-
----
-
-## 9. Getting Started
+## 6. Getting Started
 
 First, run the development server:
 
@@ -175,6 +83,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-*Version:* `v0.1.0`  
-*Author:* Binayak Niraula  
+Binayak Niraula  
 *Date:* October 2025
