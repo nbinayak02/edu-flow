@@ -28,7 +28,7 @@ const CTASection = () => {
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of Nepalese schools that trust EduFlow for accurate,
+            Trusted platform for accurate,
             efficient, and NEB-compliant marks management.
           </p>
 
@@ -65,10 +65,10 @@ const CTASection = () => {
             </Button>
           </motion.div>
 
-          {/* No Credit Card Note */}
+          {/* No Credit Card Note
           <p className="text-primary-foreground/70 text-sm mt-6">
             No credit card required · Free forever for small schools
-          </p>
+          </p> */}
         </motion.div>
       </div>
     </section>

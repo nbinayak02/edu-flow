@@ -49,7 +49,7 @@ export function LoginForm({
   }, [state]);
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 w-full", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
@@ -84,12 +84,12 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Link
+                  {/* <Link
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
-                  </Link>
+                  </Link> */}
                 </div>
                 <Input id="password" type="password" name="password" />
                 {state?.errors?.password && (
