@@ -74,13 +74,13 @@ const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Button>
-                <Link href="/signup">Get Started Free</Link>
+                <Link href="/auth/signup">Get Started Free</Link>
                 <ArrowRight className="w-5 h-5" />
               </Button>
-              <Button>
+              {/* <Button>
                 <Play className="w-5 h-5" />
                 Watch Demo
-              </Button>
+              </Button> */}
             </motion.div>
           </motion.div>
 
