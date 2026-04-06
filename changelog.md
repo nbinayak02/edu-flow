@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - GPA calculation delay
+- Not showing exam of that school only
+- Misalignment of school name in marksheet
 
 ## [1.4.1] - 2026-03-10
 
