@@ -21,7 +21,7 @@ import { revalidatePath } from "next/cache";
 
 export async function CreateExamAction(
   _: unknown,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   const name = formData.get("name") as string;
   const academicYear = Number(formData.get("year"));
@@ -42,7 +42,7 @@ export async function CreateExamAction(
       name,
       academicYear,
       schoolId,
-      resultDate
+      resultDate,
     };
     await CreateExam(examData);
     revalidatePath("/exam");
@@ -55,7 +55,7 @@ export async function CreateExamAction(
 
 export async function AddExamDetailsAction(
   prevState: ConfigureExamFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ConfigureExamFormState> {
   // console.log("Form data: ", formData);
   const classId = Number(formData.get("classId"));
@@ -94,7 +94,7 @@ export async function AddExamDetailsAction(
       thPassMarks: thpm,
       prFullMarks: prfm,
       prPassMarks: prpm,
-    })
+    }),
   );
 
   const returnedValue = await AddExamDetails(data);
@@ -115,7 +115,9 @@ export async function GetExamDetailsAction(examId: number) {
 }
 
 export async function GetExamByYearAction(year: number) {
-  const exams = await GetExamByYear(year);
+  const schoolId = Number(await getSchoolId());
+  const exams = await GetExamByYear(year, schoolId);
+
   return exams;
 }
 

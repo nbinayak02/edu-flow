@@ -68,7 +68,7 @@ export async function AddMarks(
     const storedMarks = await AddStudentMarks(marksArray);
 
     //calculate grades
-    calculateGrades(storedMarks, enrollmentId, sclassId, examId, marksheet.id);
+    await calculateGrades(storedMarks, enrollmentId, sclassId, examId, marksheet.id);
   } catch (error) {
     console.error("Error: ", error);
   }

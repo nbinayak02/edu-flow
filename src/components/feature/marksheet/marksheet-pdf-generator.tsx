@@ -40,8 +40,8 @@ const GradeSheet = ({
             <div className="flex mt-3 relative">
               <CldImage
                 src={userSchool.school?.logoPublicId ?? "eduflow_school_default_logo"} // Use this sample image or upload your own via the Media Library
-                width="150" // Transform the image: auto-crop to square aspect_ratio
-                height="150"
+                width="120" // Transform the image: auto-crop to square aspect_ratio
+                height="120"
                 alt="image"
                 crop={{
                   type: "auto",
@@ -51,7 +51,7 @@ const GradeSheet = ({
               />
 
               <div className="w-full flex flex-col items-center gap-1">
-                <h1 className="text-blue-700 text-3xl font-extrabold uppercase">
+                <h1 className="text-blue-700 text-3xl text-center font-extrabold uppercase">
                   {userSchool.school?.name}
                 </h1>
                 <h3 className="text-[18px]">{userSchool.school?.address}</h3>
