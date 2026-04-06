@@ -52,9 +52,9 @@ export async function GetExamDetails(examId: number) {
   return details;
 }
 
-export async function GetExamByYear(year: number) {
+export async function GetExamByYear(year: number, schoolId: number) {
   const exams = await prisma.exam.findMany({
-    where: { academicYear: year },
+    where: { academicYear: year, schoolId },
   });
   return exams;
 }
@@ -88,7 +88,7 @@ export async function GetTotalPrMarks(examId: number, sclassId: number) {
 
 export async function GetAllSubjectsThAndPrFullMarks(
   examId: number,
-  sclassId: number
+  sclassId: number,
 ) {
   const allSubjectsBothFullMarks = await prisma.examDetails.findMany({
     where: {
